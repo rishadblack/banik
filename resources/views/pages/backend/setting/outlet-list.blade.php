@@ -16,5 +16,6 @@
 
 
     <x-layouts.backend.card>
+        <livewire:backend.setting.datatable.outlet-table />
     </x-layouts.backend.card>
 </div>

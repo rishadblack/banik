@@ -20,8 +20,12 @@ class SalesReturnTable extends DataTableComponent
     {
         $this->setPrimaryKey('id');
         // $this->setAdditionalSelects(['users.id as id']);
-        $this->setSearchPlaceholder('Enter Search Biller');
+        $this->setSearchPlaceholder('Enter Search Sales return');
         $this->setSearchDebounce(1000);
+        $this->setTheadAttributes([
+            'default' => true,
+            'class' => 'custom-dt-thead',
+          ]);
     }
 
     public function builder(): Builder

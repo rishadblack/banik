@@ -1,8 +1,5 @@
 @push('css')
     <style>
-        .form-check {
-            margin-top: 10px;
-        }
     </style>
 @endpush
 
@@ -20,10 +17,10 @@
                         <x-input.text wire:model="code" label="Code" />
                     </div>
                     <div class="col-4">
-                        <x-input.text wire:model="name" label="Catagory Name" />
+                        <x-input.text wire:model="name" label="Name" />
                     </div>
                     <div class="col-4">
-                        <x-input.text wire:model="location" label="Location" />
+                        <x-input.text wire:model="address" label="Address" />
                     </div>
                 </div>
             </x-layouts.backend.card>
@@ -31,22 +28,38 @@
         </div>
         <div class="col-xl-4">
             <x-layouts.backend.card>
-                <x-slot:title>Note</x-slot:title>
+                <x-slot:title>Address</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
-                        <x-button.default wire:click="storeCategory" wire:target="storeCategory"
+                        <x-button.default wire:click="storeWarehouse" wire:target="storeWarehouse"
                             class="btn-success">{{ $warehouse_id ? 'Update' : 'Create' }}</x-button.default>
-                        <x-button.default wire:click="storeCategory('new')" wire:target="storeCategory"
+                        <x-button.default wire:click="storeWarehouse('new')" wire:target="storeWarehouse"
                             class="btn-success">Save & New
                         </x-button.default>
                         <a href="{{ route('backend.setting.warehouse_list') }}"
                             wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>
-                <p>Customize and manage your business outlets with ease using our outlet settings feature. <br><br>
-                    Tailor the settings for each location to match your specific operational needs. <br><br>Efficiently
-                    manage the configuration and settings for your business outlets through our intuitive software to
-                    streamline operations.</p>
+                <x-input.select wire:model="country_id" label="Country">
+                    @foreach ($country as $country )
+                      <option value="{{$country->id}}">{{$country->name}}</option>
+                    @endforeach
+                </x-input.select>
+                <x-input.select wire:model="division_id" label="Division">
+                    @foreach ($division as $division )
+                      <option value="{{$division->id}}">{{$division->name}}</option>
+                    @endforeach
+                </x-input.select>
+                <x-input.select wire:model="district_id" label="District">
+                    @foreach ($district as $district )
+                      <option value="{{$district->id}}">{{$district->name}}</option>
+                    @endforeach
+                </x-input.select>
+                <x-input.select wire:model="upazila_id" label="Thana/Upazila">
+                    @foreach ($thana as $thana )
+                      <option value="{{$thana->id}}">{{$thana->name}}</option>
+                    @endforeach
+                </x-input.select>
             </x-layouts.backend.card>
 
         </div>

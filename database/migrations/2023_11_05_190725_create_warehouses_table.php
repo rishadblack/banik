@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('phone', 30)->nullable();
             $table->string('mobile', 30)->nullable();
             $table->string('postcode', 10)->nullable();
+            $table->string('code', 100)->nullable();
             $table->text('address')->nullable();
             $table->text('address1')->nullable();
             $table->foreignId('country_id')->nullable();

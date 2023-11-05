@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('serial')->nullable();
             $table->foreignId('user_id')->nullable();
-            $table->foreignId('website_id')->unsigned();
-            $table->foreignId('hostname_id')->unsigned();
+            $table->foreignId('website_id')->nullable();
+            $table->foreignId('hostname_id')->nullable();
             $table->text('name')->nullable();
             $table->string('code', 100)->nullable();
             $table->string('logo_url')->nullable();

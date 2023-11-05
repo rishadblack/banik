@@ -6,7 +6,7 @@
     </style>
 @endpush
 <div>
-    <div class="d-flex align-items-center mb-3">
+    <div class="d-flex align-items-center m-3">
         <x-slot:title>Warehouse List</x-slot:title>
     <x-slot:button>
             <a href="{{ route('backend.setting.warehouse_details') }}" wire:navigate class="btn d-flex float-end btn-theme"><i
@@ -16,5 +16,6 @@
 
 
     <x-layouts.backend.card>
+        <livewire:backend.setting.datatable.warehouse-table />
     </x-layouts.backend.card>
 </div>

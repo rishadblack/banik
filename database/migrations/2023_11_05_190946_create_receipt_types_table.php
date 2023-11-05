@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('serial')->nullable();
             $table->foreignId('user_id')->nullable();
-            $table->foreignId('website_id')->unsigned()->nullable();
-            $table->foreignId('hostname_id')->unsigned()->nullable();
+            $table->foreignId('website_id')->nullable();
+            $table->foreignId('hostname_id')->nullable();
             $table->tinyInteger('form_type')->nullable();
             $table->tinyInteger('flow_type')->nullable();
             $table->tinyInteger('type')->nullable();

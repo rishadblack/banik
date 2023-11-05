@@ -21,6 +21,10 @@ class UnitTable extends DataTableComponent
         $this->setSearchPlaceholder('Enter Search Unit');
         $this->setSearchDebounce(1000);
         $this->setPaginationMethod('simple');
+        $this->setTheadAttributes([
+            'default' => true,
+            'class' => 'custom-dt-thead',
+          ]);
     }
 
     public function builder(): Builder

@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Pages\Backend\Contact\Datatable;
+namespace App\Pages\Backend\Setting\Datatable;
 
 
-use App\Models\Contact\Contact;
-use App\Models\Contact\Customer;
+use App\Models\Setting\Outlet;
+use App\Models\Setting\Warehouse;
 use App\Http\Common\DataTableComponent;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
-use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
 
-class CustomerTable extends DataTableComponent
+class OutletTable extends DataTableComponent
 {
     protected $index = 0;
 
@@ -21,17 +20,19 @@ class CustomerTable extends DataTableComponent
     {
         $this->setPrimaryKey('id');
         // $this->setAdditionalSelects(['users.id as id']);
-        $this->setSearchPlaceholder('Enter Search Customer');
+        $this->setSearchPlaceholder('Enter Search Biller');
         $this->setSearchDebounce(1000);
+
         $this->setTheadAttributes([
             'default' => true,
             'class' => 'custom-dt-thead',
           ]);
     }
 
+
     public function builder(): Builder
     {
-        return Contact::query();
+        return Outlet::query();
     }
     public function filters(): array
     {
@@ -42,46 +43,45 @@ class CustomerTable extends DataTableComponent
                     'maxlength' => '25',
                 ])
                 ->filter(function (Builder $builder, string $value) {
-                    $builder->where('contacts.code', 'like', '%' . $value . '%');
+                    $builder->where('outlets.code', 'like', '%' . $value . '%');
                 }),
         ];
     }
 
     public function columns(): array
     {
+
         return [
-            Column::make('SN', 'id')
-                ->format(fn () => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
+            Column::make('Id', 'id')
+                ->format(fn() => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
                 ->sortable()
                 ->searchable()
                 ->excludeFromColumnSelect(),
-            Column::make('Customer Code', 'code')
+                Column::make('Code', 'code')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Mobile', 'mobile')
-                ->sortable()
-                ->searchable()
-                ->deselected(),
-            Column::make('Opening Balance', 'opening_balance')
+                Column::make('Warehouse Name', 'name')
                 ->sortable()
                 ->searchable(),
-            Column::make('Credit Limit', 'credit_limit')
+                Column::make('Address', 'address')
                 ->sortable()
                 ->searchable(),
-            Column::make('Create BY', 'User.name')
+
+            Column::make('Create By', 'User.name')
                 ->format(
-                    fn ($value, $row, Column $column) => $value ? $value : '-'
+                    fn($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->eagerLoadRelations()
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->deselected(),
 
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')
-                        ->title(fn ($row) => 'Edit')
-                        ->location(fn ($row) => route('backend.contact.customer_details', ['customer_id' => $row->id]))
+                        ->title(fn($row) => 'Edit')
+                        ->location(fn($row) => route('backend.setting.outlet_details', ['outlet_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
@@ -92,12 +92,12 @@ class CustomerTable extends DataTableComponent
                             ];
                         }),
                     LinkColumn::make(' Delete')
-                        ->title(fn ($row) => 'Delete')
-                        ->location(fn ($row) => 'javascript:void(0)')
+                        ->title(fn($row) => 'Delete')
+                        ->location(fn($row) => 'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
-                                'data-listener' => 'CustomerDelete',
+                                'data-listener' => 'outletDelete',
                                 'class' => 'badge bg-danger me-1 p-2 ',
                                 'icon' => 'fa fa-trash',
                                 'title' => 'Delete',
@@ -106,5 +106,7 @@ class CustomerTable extends DataTableComponent
                         }),
                 ]),
             ];
+
     }
+
 }
