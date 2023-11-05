@@ -1,5 +1,4 @@
 {{-- <a href="{{ $path }}" {!! count($attributes) ? $column->arrayToAttributes($attributes) : '' !!}>{{ $title }}</a> --}}
-
 <a href="{{ $path }}"
     @isset($attributes['data-id'])
         @php

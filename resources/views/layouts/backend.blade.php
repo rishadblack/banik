@@ -93,6 +93,30 @@
             margin-left: 15rem;
         }
     </style>
+    <style>
+        .custom-dt-thead {
+            vertical-align: bottom;
+            background-color: #acacde;
+        }
+
+        /* a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: white;
+            opacity: 0.9;
+        }
+
+
+        .dropdown-toggle {
+            white-space: nowrap;
+            background-color: orange;
+        }
+        .dropdown-toggle:hover {
+            background-color: orange;
+        }rgb(240, 187, 88) */
+    </style>
     @vite(['resources/sass/backend.scss', 'resources/js/backend.js'])
     @stack('css')
 </head>

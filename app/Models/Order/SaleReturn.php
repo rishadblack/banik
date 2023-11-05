@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\order;
+namespace App\Models\Order;
 
 use App\Models\User;
 use App\Models\Order\Sale;

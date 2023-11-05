@@ -7,6 +7,8 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
+                "resources/js/auth.js",
+                "resources/sass/auth.scss",
                 "resources/js/backend.js",
                 "resources/sass/backend.scss",
                 "resources/js/frontend.js",
@@ -16,6 +18,7 @@ export default defineConfig({
         }),
         livewire({
             refresh: [
+                "resources/sass/auth.scss",
                 "resources/sass/backend.scss",
                 "resources/sass/frontend.scss",
             ],

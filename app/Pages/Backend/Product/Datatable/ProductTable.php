@@ -21,6 +21,11 @@ class ProductTable extends DataTableComponent
         // $this->setAdditionalSelects(['users.id as id']);
         $this->setSearchPlaceholder('Enter Search Product');
         $this->setSearchDebounce(1000);
+
+        $this->setTheadAttributes([
+            'default' => true,
+            'class' => 'custom-dt-thead',
+          ]);
     }
 
     public function builder(): Builder
@@ -45,7 +50,7 @@ class ProductTable extends DataTableComponent
     {
         return [
             Column::make('SN', 'id')
-                ->format(fn () => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
+                ->format(fn() => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
                 ->sortable()
                 ->searchable()
                 ->excludeFromColumnSelect(),
@@ -58,7 +63,7 @@ class ProductTable extends DataTableComponent
 
             Column::make('Create BY', 'User.name')
                 ->format(
-                    fn ($value, $row, Column $column) => $value ? $value : '-'
+                    fn($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->eagerLoadRelations()
                 ->sortable()
@@ -78,8 +83,8 @@ class ProductTable extends DataTableComponent
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')
-                        ->title(fn ($row) => 'Edit')
-                        ->location(fn ($row) => route('backend.product.product_details', ['product_id' => $row->id]))
+                        ->title(fn($row) => 'Edit')
+                        ->location(fn($row) => route('backend.product.product_details', ['product_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
@@ -90,8 +95,8 @@ class ProductTable extends DataTableComponent
                             ];
                         }),
                     LinkColumn::make(' Delete')
-                        ->title(fn ($row) => 'Delete')
-                        ->location(fn ($row) => 'javascript:void(0)')
+                        ->title(fn($row) => 'Delete')
+                        ->location(fn($row) => 'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,

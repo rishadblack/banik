@@ -11,14 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('districts', function (Blueprint $table) {
+        Schema::create('parameters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('division_id')->nullable();
-            $table->string('name')->nullable();
-            $table->string('bn_name')->nullable();
-            $table->string('lat')->nullable();
-            $table->string('lon')->nullable();
-            $table->string('url')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('districts');
+        Schema::dropIfExists('parameters');
     }
 };

@@ -19,7 +19,9 @@ class CreateDivisionsTable extends Migration
             $table->string('name')->nullable();
             $table->string('bn_name')->nullable();
             $table->string('url')->nullable();
+            $table->tinyInteger('status')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

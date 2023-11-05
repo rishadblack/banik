@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('upazilas', function (Blueprint $table) {
+        Schema::create('stock_receipt_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('district_id')->nullable();
-            $table->string('name')->nullable();
-            $table->string('bn_name')->nullable();
-            $table->string('url')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('upazilas');
+        Schema::dropIfExists('stock_receipt_items');
     }
 };
