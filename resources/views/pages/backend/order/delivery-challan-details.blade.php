@@ -1,8 +1,6 @@
 @push('css')
     <style>
-        .form-check {
-            margin-top: 10px;
-        }
+
     </style>
 @endpush
 
@@ -40,7 +38,7 @@
                         <x-button.default wire:click="storeCategory('new')" wire:target="storeCategory"
                             class="btn-success">Save & New
                         </x-button.default>
-                        <a href="{{ route('backend.setting.delivery_challan_list') }}"
+                        <a href="{{ route('backend.order.delivery_challan_list') }}"
                             wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>

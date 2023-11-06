@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Pages\Backend\Setting;
+namespace App\Pages\Backend\Order;
 
-use Livewire\Component;
+
+use App\Http\Common\Component;
 use Livewire\Attributes\Layout;
 
 
@@ -12,6 +13,6 @@ class DeliveryChallanDetails extends Component
     public $challan_id;
     public function render()
     {
-        return view('pages.backend.setting.delivery-challan-details');
+        return view('pages.backend.order.delivery-challan-details');
     }
 }

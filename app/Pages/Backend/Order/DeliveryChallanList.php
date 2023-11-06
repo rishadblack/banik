@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Pages\Backend\Setting;
+namespace App\Pages\Backend\Order;
 
 use App\Http\Common\Component;
 use Livewire\Attributes\Layout;
@@ -11,6 +11,6 @@ class DeliveryChallanList extends Component
 {
     public function render()
     {
-        return view('pages.backend.setting.delivery-challan-list');
+        return view('pages.backend.order.delivery-challan-list');
     }
 }

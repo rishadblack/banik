@@ -2,8 +2,7 @@
 
 namespace App\Pages\Backend\Setting\Datatable;
 
-
-use App\Models\Setting\PaymentMethod;
+use App\Models\Accounting\Transaction;
 use App\Http\Common\DataTableComponent;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -11,7 +10,7 @@ use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
 
-class PaymentMethodTable extends DataTableComponent
+class TransactionTable extends DataTableComponent
 {
     protected $index = 0;
 
@@ -31,7 +30,7 @@ class PaymentMethodTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        return PaymentMethod::query();
+        return Transaction::query();
     }
     public function filters(): array
     {
@@ -42,7 +41,7 @@ class PaymentMethodTable extends DataTableComponent
                     'maxlength' => '25',
                 ])
                 ->filter(function (Builder $builder, string $value) {
-                    $builder->where('payment_methods.code', 'like', '%' . $value . '%');
+                    $builder->where('transactions.code', 'like', '%' . $value . '%');
                 }),
         ];
     }
@@ -60,20 +59,12 @@ class PaymentMethodTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
 
-                Column::make('Name', 'name')
+                Column::make('Patment Method', 'PaymentMethod.name')
+                ->format(
+                    fn($value, $row, Column $column) => $value ? $value : '-'
+                )
                 ->sortable()
                 ->searchable(),
-                Column::make('Ledger Account', 'ledger_account_id')
-                ->sortable()
-                ->searchable()
-                ->deselected(),
-                Column::make('Account No', 'account_no')
-                ->sortable()
-                ->searchable(),
-                Column::make('Branch', 'branch')
-                ->sortable()
-                ->searchable(),
-
             Column::make('Create By', 'User.name')
                 ->format(
                     fn($value, $row, Column $column) => $value ? $value : '-'

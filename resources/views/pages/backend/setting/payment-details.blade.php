@@ -1,8 +1,5 @@
 @push('css')
     <style>
-        .form-check {
-            margin-top: 10px;
-        }
     </style>
 @endpush
 
@@ -21,10 +18,10 @@
                         <x-input.text wire:model="code" label="Code" />
                     </div>
                     <div class="col-4">
-                        <x-input.text wire:model="product_name" label="Name" />
+                        <x-input.text wire:model="name" label="Name" />
                     </div>
                     <div class="col-4">
-                        <x-input.select wire:model="quantity" label="Ledger Acount">
+                        <x-input.select wire:model="ledger_account_id" label="Ledger Acount">
 
                         </x-input.select>
                     </div>
@@ -32,13 +29,17 @@
                 <div class="row">
 
                     <div class="col-4">
-                        <x-input.text wire:model="code" label="Opening Balance" />
+                        <x-input.text-group wire:model="opening_balance" label="Balance">
+                            <x-slot:suffix>
+                                <span class="btn btn-default price">৳</span>
+                            </x-slot:suffix>
+                        </x-input.text-group>
                     </div>
                     <div class="col-4">
-                        <x-input.text wire:model="product_name" label="Account No" />
+                        <x-input.text wire:model="account_no" label="Account No" />
                     </div>
                     <div class="col-4">
-                        <x-input.text wire:model="product_name" label="Branch" />
+                        <x-input.text wire:model="branch" label="Branch" />
                     </div>
                 </div>
             </x-layouts.backend.card>
@@ -49,9 +50,9 @@
                 <x-slot:title>Note</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
-                        <x-button.default wire:click="storeCategory" wire:target="storeCategory"
+                        <x-button.default wire:click="storeMethod" wire:target="storeMethod"
                             class="btn-success">{{ $payment_id ? 'Update' : 'Create' }}</x-button.default>
-                        <x-button.default wire:click="storeCategory('new')" wire:target="storeCategory"
+                        <x-button.default wire:click="storeMethod('new')" wire:target="storeMethod"
                             class="btn-success">Save & New
                         </x-button.default>
                         <a href="{{ route('backend.setting.payment_list') }}"
@@ -59,7 +60,8 @@
                     </div>
                 </x-slot:button>
                 <p>Our small business accounting software offers a variety of payment options to make financial
-                    transactions as convenient as possible for you. <br><br> We understand that flexibility is crucial when it
+                    transactions as convenient as possible for you. <br><br> We understand that flexibility is crucial
+                    when it
                     comes to managing your business's finances. <br><br>
 
                     Payment Gateways: Seamlessly integrate with popular payment gateways, allowing you to accept

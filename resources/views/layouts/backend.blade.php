@@ -216,12 +216,7 @@
                                     <span class="menu-text">Warehouse</span>
                                 </a>
                             </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.setting.delivery_challan_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Delivery Challan</span>
-                                </a>
-                            </div>
+
                             <div class="menu-item">
                                 <a href="{{ route('backend.setting.multiple_payment_list') }}" wire:navigate
                                     class="menu-link">
@@ -342,6 +337,12 @@
                             <div class="menu-item">
                                 <a href="{{ route('backend.order.quotation_list') }}" wire:navigate class="menu-link">
                                     <span class="menu-text">Quotation</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="{{ route('backend.order.delivery_challan_list') }}" wire:navigate
+                                    class="menu-link">
+                                    <span class="menu-text">Delivery Challan</span>
                                 </a>
                             </div>
                         </div>

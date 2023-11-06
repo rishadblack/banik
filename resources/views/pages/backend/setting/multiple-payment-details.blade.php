@@ -14,26 +14,38 @@
     <div class="row gx-4">
         <div class="col-xl-8">
             <x-layouts.backend.card>
-                <x-slot:title>Delivery Challan Information</x-slot:title>
+                <x-slot:title>Multiple Payment Information</x-slot:title>
                 <div class="row">
 
                     <div class="col-4">
                         <x-input.text wire:model="code" label="Transaction Code" />
                     </div>
                     <div class="col-4">
-                        <x-input.text wire:model="product_name" label="Payment Method" />
+                        <x-input.select wire:model="payment_method_id" label="Payment Method">
+                            @foreach ($payment as $method)
+                                <option value="{{ $method->id }}">{{ $method->name }}</option>
+                            @endforeach
+                        </x-input.select>
                     </div>
                     <div class="col-4">
-                        <x-input.text wire:model="quantity" label="Charge" />
+                        <x-input.text-group wire:model="charge" label="Charge">
+                            <x-slot:suffix>
+                                <span class="btn btn-default price">৳</span>
+                            </x-slot:suffix>
+                        </x-input.text-group>
                     </div>
                 </div>
                 <div class="row">
 
                     <div class="col-4">
-                        <x-input.text wire:model="code" label="Net Amount" />
+                        <x-input.text-group wire:model="net_amount" label="Net Amount">
+                            <x-slot:suffix>
+                                <span class="btn btn-default price">৳</span>
+                            </x-slot:suffix>
+                        </x-input.text-group>
                     </div>
                     <div class="col-4">
-                        <x-input.text wire:model="product_name" label="Remark" />
+
                     </div>
                 </div>
             </x-layouts.backend.card>
@@ -44,9 +56,9 @@
                 <x-slot:title>Note</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
-                        <x-button.default wire:click="storeCategory" wire:target="storeCategory"
-                            class="btn-success">{{ $payment_id ? 'Update' : 'Create' }}</x-button.default>
-                        <x-button.default wire:click="storeCategory('new')" wire:target="storeCategory"
+                        <x-button.default wire:click="storeMultiplePayment" wire:target="storeMultiplePayment"
+                            class="btn-success">{{ $multi_payment_id ? 'Update' : 'Create' }}</x-button.default>
+                        <x-button.default wire:click="storeMultiplePayment('new')" wire:target="storeMultiplePayment"
                             class="btn-success">Save & New
                         </x-button.default>
                         <a href="{{ route('backend.setting.multiple_payment_list') }}"
@@ -54,15 +66,15 @@
                     </div>
                 </x-slot:button>
                 <p>Our small business accounting software offers a variety of payment options to make financial
-                    transactions as convenient as possible for you. <br><br> We understand that flexibility is crucial when it
-                    comes to managing your business's finances. <br><br>
-
+                    transactions as convenient as possible for you. <br><br>
                     Payment Gateways: Seamlessly integrate with popular payment gateways, allowing you to accept
                     payments from your customers with ease. <br><br>
                     Multiple Payment Methods: Provide your customers with various payment methods, including credit
                     cards, bank transfers, and more.
                 </p>
+                <x-input.textarea wire:model="note" label="Remark" />
             </x-layouts.backend.card>
+
 
         </div>
 

@@ -1,8 +1,5 @@
 @push('css')
     <style>
-        .caret{
-            display: none;
-        }
     </style>
 @endpush
 <div>
@@ -16,5 +13,6 @@
 
 
     <x-layouts.backend.card>
+        <livewire:backend.setting.datatable.payment-method-table />
     </x-layouts.backend.card>
 </div>

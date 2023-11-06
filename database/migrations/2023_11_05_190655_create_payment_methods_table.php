@@ -23,6 +23,8 @@ return new class extends Migration
             $table->decimal('minimum_payment', 20, 6)->nullable();
             $table->decimal('maximum_payment', 20, 6)->nullable();
             $table->foreignId('ledger_account_id')->nullable();
+            $table->string('branch')->nullable();
+            $table->string('account_no')->nullable();
             $table->string('charge', 20)->nullable();
             $table->foreignId('charge_ledger_account_id')->nullable();
             $table->bigInteger('demo_id')->nullable();
