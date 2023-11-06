@@ -5,8 +5,10 @@ namespace App\Pages\Backend\Accounting;
 
 use Livewire\Attributes\Url;
 use App\Http\Common\Component;
-use App\Models\Accounting\LedgerAccount;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Accounting\LedgerAccount;
+use App\Models\Accounting\ChartOfAccount;
 
 #[Layout('layouts.backend')]
 class LedgerAccountDetails extends Component
@@ -14,36 +16,22 @@ class LedgerAccountDetails extends Component
     #[Url]
     public $ledger_account_id;
     public $ledger_code;
-    public $particular;
-    public $reference;
-    public $outlet;
-    public $date;
-    public $customer_supplier;
-    public $stock_adjustment_status;
-    public $note;
-    public $quantity;
-    public $adjustment_amount;
-    public $cost_price;
-    public $discount;
-    public $biller_id;
+    public $chart_of_account_id;
+    public $name;
+
 
     public function storeLedgerAccount($storeType = null)
     {
     $this->validate([
-        'outlet' => 'required|string',
+        'name' => 'required|string',
         'ledger_code' => 'required|string',
     ]);
 
     $Ledger = LedgerAccount::findOrNew($this->ledger_account_id);
+    $Ledger->user_id = Auth::id();
     $Ledger->ledger_code = $this->ledger_code;
-    $Ledger->particular = $this->particular;
-    $Ledger->reference = $this->reference;
-    $Ledger->outlet = $this->outlet;
-    $Ledger->note = $this->note;
-    $Ledger->date = $this->date;
-    $Ledger->biller_id = $this->biller_id;
-    $Ledger->customer_supplier = $this->customer_supplier;
-    $Ledger->stock_adjustment_status = $this->stock_adjustment_status;
+    $Ledger->chart_of_account_id = $this->chart_of_account_id;
+    $Ledger->name = $this->name;
     $Ledger->save();
 
     if($storeType == 'new'){
@@ -65,18 +53,13 @@ public function mount()
     if($this->ledger_account_id) {
         $Ledger = LedgerAccount::find($this->ledger_account_id);
         $this->ledger_code = $Ledger->ledger_code;
-        $this->particular = $Ledger->particular;
-        $this->reference = $Ledger->reference;
-        $this->outlet = $Ledger->outlet;
-        $this->note = $Ledger->note;
-        $this->date = $Ledger->date;
-        $this->biller_id = $Ledger->biller_id;
-        $this->customer_supplier = $Ledger->customer_supplier;
-        $this->stock_adjustment_status = $Ledger->stock_adjustment_status;
+        $this->chart_of_account_id = $Ledger->chart_of_account_id;
+        $this->name = $Ledger->name;
     }
 }
     public function render()
     {
-        return view('pages.backend.accounting.ledger-account-details');
+        $chart = ChartOfAccount::all();
+        return view('pages.backend.accounting.ledger-account-details',compact('chart'));
     }
 }

@@ -16,6 +16,6 @@
 
 
     <x-layouts.backend.card>
-        <livewire:backend.product.datatable.category-table/>
+        <livewire:backend.accounting.datatable.chart-of-account-table/>
     </x-layouts.backend.card>
 </div>

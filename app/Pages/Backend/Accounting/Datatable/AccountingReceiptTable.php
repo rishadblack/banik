@@ -3,39 +3,46 @@
 namespace App\Pages\Backend\Accounting\Datatable;
 
 
-use App\Models\Accounting\Capital;
+use App\Models\Accounting\Receipt;
+use App\Models\Accounting\ReceiptType;
 use App\Http\Common\DataTableComponent;
+use App\Models\Accounting\LedgerAccount;
+use App\Models\Accounting\ChartOfAccount;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
 
-class CapitalTable extends DataTableComponent
+class AccountingReceiptTable extends DataTableComponent
 {
     protected $index = 0;
 
     public function configure(): void
     {
         $this->setPrimaryKey('id');
-        $this->setSearchPlaceholder('Enter Search Capital');
+        $this->setSearchPlaceholder('Enter Search Ledger Account');
         $this->setSearchDebounce(1000);
+        $this->setTheadAttributes([
+            'default' => true,
+            'class' => 'custom-dt-thead',
+        ]);
     }
 
     public function builder(): Builder
     {
-        return Capital::query();
+        return Receipt::query();
     }
     public function filters(): array
     {
         return [
             TextFilter::make('Code')
                 ->config([
-                    'placeholder' => 'Search Code',
+                    'placeholder' => 'Search code',
                     'maxlength' => '25',
                 ])
                 ->filter(function (Builder $builder, string $value) {
-                    $builder->where('capitals.capital_code', 'like', '%' . $value . '%');
+                    $builder->where('receipts.code', 'like', '%' . $value . '%');
                 }),
         ];
     }
@@ -45,41 +52,48 @@ class CapitalTable extends DataTableComponent
 
         return [
             Column::make('Id', 'id')
-                ->format(fn() => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
+                ->format(fn () => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
                 ->sortable()
                 ->searchable()
                 ->excludeFromColumnSelect(),
 
-                Column::make('Code', 'capital_code')
+            Column::make('Code', 'code')
                 ->sortable()
                 ->searchable(),
-                Column::make('Particular', 'particular')
+            Column::make('Payment Method', 'PaymentMethod.name')
+            ->format(
+                fn ($value, $row, Column $column) => $value ? $value : '-'
+            )
                 ->sortable()
                 ->searchable(),
-                Column::make('Amount', 'cost_price')
-                ->sortable()
-                ->searchable(),
-                Column::make('Outlet', 'outlet')
-                ->sortable()
-                ->searchable()
-                ->deselected(),
-            Column::make('Create BY', 'User.name')
+            Column::make('Ledger Account', 'LedgerAccount.name')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? $value : '-'
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
+                )
+                ->sortable()
+                ->searchable(),
+
+            Column::make('Flow', 'flow_type')
+                ->format(
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
+                )
+                ->eagerLoadRelations()
+                ->sortable()
+                ->searchable(),
+            Column::make('Create By', 'User.name')
+                ->format(
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->eagerLoadRelations()
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-            Column::make('Status', 'stock_adjustment_status')
-                ->format(
-                    fn($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.delivery_status.{$value}.class") . '">' . config("status.delivery_status.{$value}.name") . '</span>' : ''
-                )->sortable()->html(),
+
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')
-                        ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.accounting.capital_details', ['capital_id' => $row->id]))
+                        ->title(fn ($row) => 'Edit')
+                        ->location(fn ($row) => route('backend.accounting.receipt_type_details', ['receiptType_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
@@ -90,12 +104,12 @@ class CapitalTable extends DataTableComponent
                             ];
                         }),
                     LinkColumn::make(' Delete')
-                        ->title(fn($row) => 'Delete')
-                        ->location(fn($row) => 'javascript:void(0)')
+                        ->title(fn ($row) => 'Delete')
+                        ->location(fn ($row) => 'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
-                                'data-listener' => 'capitalDelete',
+                                'data-listener' => 'receiptDelete',
                                 'class' => 'badge bg-danger me-1 p-2 ',
                                 'icon' => 'fa fa-trash',
                                 'title' => 'Delete',
@@ -104,7 +118,5 @@ class CapitalTable extends DataTableComponent
                         }),
                 ]),
         ];
-
     }
-
 }

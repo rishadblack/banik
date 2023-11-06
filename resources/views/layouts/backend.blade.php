@@ -205,8 +205,7 @@
                         </a>
                         <div class="menu-submenu">
                             <div class="menu-item">
-                                <a href="{{ route('backend.setting.outlet_list') }}" wire:navigate
-                                    class="menu-link">
+                                <a href="{{ route('backend.setting.outlet_list') }}" wire:navigate class="menu-link">
                                     <span class="menu-text">Outlet</span>
                                 </a>
                             </div>
@@ -241,7 +240,8 @@
                         </a>
                         <div class="menu-submenu">
                             <div class="menu-item">
-                                <a href="{{ route('backend.product.product_list') }}" wire:navigate class="menu-link">
+                                <a href="{{ route('backend.product.product_list') }}" wire:navigate
+                                    class="menu-link">
                                     <span class="menu-text">Products</span>
                                 </a>
                             </div>
@@ -251,7 +251,8 @@
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="{{ route('backend.product.categorie_list') }}" wire:navigate class="menu-link">
+                                <a href="{{ route('backend.product.categorie_list') }}" wire:navigate
+                                    class="menu-link">
                                     <span class="menu-text">Categories</span>
                                 </a>
                             </div>
@@ -285,14 +286,12 @@
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="{{ route('backend.contact.biller_list') }}" wire:navigate
-                                    class="menu-link">
+                                <a href="{{ route('backend.contact.biller_list') }}" wire:navigate class="menu-link">
                                     <span class="menu-text">Billers</span>
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="{{ route('backend.contact.stuff_list') }}" wire:navigate
-                                    class="menu-link">
+                                <a href="{{ route('backend.contact.stuff_list') }}" wire:navigate class="menu-link">
                                     <span class="menu-text">Stuffs</span>
                                 </a>
                             </div>
@@ -330,12 +329,14 @@
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="{{ route('backend.order.sales_return_list') }}" wire:navigate class="menu-link">
+                                <a href="{{ route('backend.order.sales_return_list') }}" wire:navigate
+                                    class="menu-link">
                                     <span class="menu-text">Sales Return</span>
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="{{ route('backend.order.quotation_list') }}" wire:navigate class="menu-link">
+                                <a href="{{ route('backend.order.quotation_list') }}" wire:navigate
+                                    class="menu-link">
                                     <span class="menu-text">Quotation</span>
                                 </a>
                             </div>
@@ -413,7 +414,8 @@
         </div>
 
         <div id="content" class="app-content">
-            <div>
+
+            <div class="mt-2 mb-1">
                 <h1 class="page-header">
                     @isset($title)
                         {{ $title }}
@@ -422,7 +424,6 @@
                         <span {{ $button->attributes->merge(['class' => 'float-end']) }}>{{ $button }}</span>
                     @endisset
                 </h1>
-
             </div>
             {{ $slot }}
         </div>

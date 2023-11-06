@@ -19,10 +19,12 @@ return new class extends Migration
             $table->foreignId('hostname_id')->nullable();
             $table->foreignId('customer_id')->nullable();
             $table->foreignId('biller_id')->nullable();
+            $table->foreignId('chart_of_account_id')->nullable();
             $table->foreignId('supplier_id')->nullable();
             $table->foreignId('sale_code')->nullable();
             $table->foreignId('purchase_code')->nullable();
-            $table->string('legder_code')->nullable();
+            $table->string('ledger_code')->nullable();
+            $table->string('name')->nullable();
             $table->string('particular')->nullable();
             $table->string('reference')->nullable();
             $table->string('outlet')->nullable();

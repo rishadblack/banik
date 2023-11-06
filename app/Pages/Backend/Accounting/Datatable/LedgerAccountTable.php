@@ -20,6 +20,10 @@ class LedgerAccountTable extends DataTableComponent
         $this->setPrimaryKey('id');
         $this->setSearchPlaceholder('Enter Search Ledger Account');
         $this->setSearchDebounce(1000);
+        $this->setTheadAttributes([
+            'default' => true,
+            'class' => 'custom-dt-thead',
+          ]);
     }
 
     public function builder(): Builder
@@ -53,17 +57,11 @@ class LedgerAccountTable extends DataTableComponent
                 Column::make('Code', 'ledger_code')
                 ->sortable()
                 ->searchable(),
-                Column::make('Particular', 'particular')
+                Column::make('name', 'name')
                 ->sortable()
                 ->searchable(),
-                Column::make('Amount', 'cost_price')
-                ->sortable()
-                ->searchable(),
-                Column::make('Outlet', 'outlet')
-                ->sortable()
-                ->searchable()
-                ->deselected(),
-            Column::make('Create BY', 'User.name')
+
+            Column::make('Create By', 'User.name')
                 ->format(
                     fn($value, $row, Column $column) => $value ? $value : '-'
                 )
@@ -71,10 +69,7 @@ class LedgerAccountTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-            Column::make('Status', 'stock_adjustment_status')
-                ->format(
-                    fn($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.delivery_status.{$value}.class") . '">' . config("status.delivery_status.{$value}.name") . '</span>' : ''
-                )->sortable()->html(),
+
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')

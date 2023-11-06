@@ -20,19 +20,30 @@
                         <x-input.text wire:model="code" label="Code" />
                     </div>
                     <div class="col-4">
-                        <x-input.text wire:model="ledger_account_id" label="Ledger Account" />
+                        <x-input.select wire:model="ledger_account_id" label="Ledger Account">
+                            @foreach ($ledger as $ledger)
+                                <option value="{{ $ledger->id }}">{{ $ledger->name }}</option>
+                            @endforeach
+                        </x-input.select>
                     </div>
                     <div class="col-4">
-                        <x-input.select wire:model="flow" label="Flow Type" />
+                        <x-input.select wire:model="flow_type" label="Flow Type">
+                            <option value="1">Debit</option>
+                            <option value="2">Credit</option>
+                        </x-input.select>
                     </div>
                     <div class="col-4">
-                        <x-input.select wire:model="name" label="Stuff/Supplier/Customer" />
+                        <x-input.select wire:model="contact_id" label="Stuff/Supplier/Customer">
+                            @foreach ($contact as $contact)
+                                <option value="{{ $contact->id }}">{{ $contact->name }}</option>
+                            @endforeach
+                        </x-input.select>
                     </div>
                     <div class="col-4">
-                        <x-input.select wire:model="receipt_type" label="Receipt Type">
-                            <option value="1">Payment</option>
-                            <option value="2">Receive</option>
-                            <option value="3">Expenses</option>
+                        <x-input.select wire:model="receipt_type_id" label="Receipt Type">
+                            @foreach ($receiptType as $receiptType)
+                                <option value="{{ $receiptType->id }}">{{ $receiptType->name }}</option>
+                            @endforeach
                         </x-input.select>
                     </div>
                 </div>
@@ -44,26 +55,30 @@
                 <x-slot:title>Payment Info</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
-                        <x-button.default wire:click="storeCategory" wire:target="storeCategory"
+                        <x-button.default wire:click="storeReceipt" wire:target="storeReceipt"
                             class="btn-success">{{ $accountingreceipt_id ? 'Update' : 'Create' }}</x-button.default>
-                        <x-button.default wire:click="storeCategory('new')" wire:target="storeCategory"
+                        <x-button.default wire:click="storeReceipt('new')" wire:target="storeReceipt"
                             class="btn-success">Save & New
                         </x-button.default>
                         <a href="{{ route('backend.accounting.accounting_receipt_list') }}"
                             wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>
-                <x-input.select wire:model="payment_method_id" label="Payment Method" />
-                <x-input.text-group wire:model="name" label="Amount">
+                <x-input.select wire:model="payment_method_id" label="Payment Method">
+                    @foreach ($payment as $payment)
+                    <option value="{{ $payment->id }}">{{ $payment->name }}</option>
+                @endforeach
+                </x-input.select>
+                <x-input.text-group wire:model="amount" label="Amount">
                     <x-slot:suffix>
-                                <span class="btn btn-default price">৳</span>
-                            </x-slot:suffix>
+                        <span class="btn btn-default price">৳</span>
+                    </x-slot:suffix>
                 </x-input.text-group>
 
             </x-layouts.backend.card>
             <x-layouts.backend.card>
                 <x-slot:title>Remarks</x-slot:title>
-                <x-input.textarea wire:model="remark" label="Remarks" />
+                <x-input.textarea wire:model="note" label="Remarks" />
             </x-layouts.backend.card>
 
         </div>

@@ -22,7 +22,10 @@ return new class extends Migration
             $table->foreignId('warehouse_id')->nullable();
             $table->foreignId('outlet_id')->nullable();
             $table->foreignId('receipt_type_id')->nullable();
+            $table->foreignId('ledger_account_id')->nullable();
+            $table->foreignId('payment_method_id')->nullable();
             $table->tinyInteger('type')->nullable();
+            $table->tinyInteger('flow_type')->nullable();
             $table->string('code', 100)->nullable();
             $table->string('ref')->nullable();
             $table->text('particulars')->nullable();

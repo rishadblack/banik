@@ -13,8 +13,6 @@ use Livewire\Attributes\Layout;
 #[Layout('layouts.backend')]
 class PurchaseList extends Component
 {
-    public $purchases;
-
 
     #[On('purchaseDelete')]
     public function destroy($data)

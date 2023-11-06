@@ -1,42 +1,6 @@
 @push('css')
     <style>
-        .gap {
-            margin-top: 20px;
-        }
 
-        .gap2 {
-            padding: 20px;
-        }
-
-        .tracking {
-            color: #706d6d;
-        }
-
-        .tracking:hover {
-            color: #989494;
-        }
-
-        .productSearch {
-            border-radius: 20px;
-            margin-left: 239px;
-            padding: 5px 13px;
-            width: 150px;
-            font-size: 10px;
-            color: #736d6d;
-
-        }
-
-        .btn-info {
-            border-radius: 10px !important;
-            margin-left: 147px;
-            width: 90px;
-            background-color: rgb(54, 129, 242);
-            color: #fff;
-        }
-
-        .p-detail {
-            padding: 0px 40px;
-        }
     </style>
 @endpush
 <div>
@@ -47,10 +11,14 @@
                 <x-slot:title>Ledger Account Information</x-slot:title>
                 <div class="row">
                     <div class="col-4">
-                        <x-input.text wire:model="code" label="Code" />
+                        <x-input.text wire:model="ledger_code" label="Code" />
                     </div>
                     <div class="col-4">
-                        <x-input.select wire:model="code" label="Chart Of account" />
+                        <x-input.select wire:model="chart_of_account_id" label="Chart Of account">
+                            @foreach ($chart as $chart)
+                                <option value="{{$chart->id}}">{{$chart->name}}</option>
+                            @endforeach
+                        </x-input.select>
                     </div>
                     <div class="col-4">
                         <x-input.text wire:model="name" label="Name" />

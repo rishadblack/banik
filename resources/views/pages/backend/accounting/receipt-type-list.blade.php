@@ -6,7 +6,7 @@
     </style>
 @endpush
 <div>
-    <div class="d-flex align-items-center mb-3">
+    <div class="d-flex align-items-center">
         <x-slot:title>Receipt Type</x-slot:title>
     <x-slot:button>
             <a href="{{ route('backend.accounting.receipt_type_details') }}" wire:navigate class="btn d-flex float-end btn-theme"><i
@@ -16,6 +16,6 @@
 
 
     <x-layouts.backend.card>
-        <livewire:backend.product.datatable.category-table/>
+        <livewire:backend.accounting.datatable.receipt-type-table/>
     </x-layouts.backend.card>
 </div>

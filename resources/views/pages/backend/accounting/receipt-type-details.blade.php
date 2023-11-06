@@ -20,10 +20,13 @@
                         <x-input.text wire:model="code" label="Code" />
                     </div>
                     <div class="col-4">
-                        <x-input.text wire:model="name" label="Catagory Name" />
+                        <x-input.text wire:model="name" label="Name" />
                     </div>
                     <div class="col-4">
-                        <x-input.text wire:model="name" label="Flow[DR/CR]" />
+                        <x-input.select wire:model="flow_type" label="Flow[DR/CR]">
+                            <option value="1">Debit</option>
+                            <option value="2">Credit</option>
+                        </x-input.select>
                     </div>
                 </div>
             </x-layouts.backend.card>
@@ -34,9 +37,9 @@
                 <x-slot:title>Note</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
-                        <x-button.default wire:click="storeCategory" wire:target="storeCategory"
+                        <x-button.default wire:click="storeReceiptType" wire:target="storeReceiptType"
                             class="btn-success">{{ $receiptType_id ? 'Update' : 'Create' }}</x-button.default>
-                        <x-button.default wire:click="storeCategory('new')" wire:target="storeCategory"
+                        <x-button.default wire:click="storeReceiptType('new')" wire:target="storeReceiptType"
                             class="btn-success">Save & New
                         </x-button.default>
                         <a href="{{ route('backend.accounting.receipt_type_list') }}"

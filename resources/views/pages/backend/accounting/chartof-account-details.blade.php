@@ -1,8 +1,5 @@
 @push('css')
     <style>
-        .form-check {
-            margin-top: 10px;
-        }
     </style>
 @endpush
 
@@ -31,9 +28,9 @@
                 <x-slot:title>Note</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
-                        <x-button.default wire:click="storeCategory" wire:target="storeCategory"
+                        <x-button.default wire:click="storeChartOfAccount" wire:target="storeChartOfAccount"
                             class="btn-success">{{ $chartaccount_id ? 'Update' : 'Create' }}</x-button.default>
-                        <x-button.default wire:click="storeCategory('new')" wire:target="storeCategory"
+                        <x-button.default wire:click="storeChartOfAccount('new')" wire:target="storeChartOfAccount"
                             class="btn-success">Save & New
                         </x-button.default>
                         <a href="{{ route('backend.accounting.chart_account_list') }}"

@@ -14,7 +14,6 @@
 
 
     <x-layouts.backend.card>
-
         <livewire:backend.setting.datatable.transaction-table />
     </x-layouts.backend.card>
 </div>

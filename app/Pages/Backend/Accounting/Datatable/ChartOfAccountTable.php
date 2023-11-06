@@ -4,39 +4,43 @@ namespace App\Pages\Backend\Accounting\Datatable;
 
 
 use App\Http\Common\DataTableComponent;
-use App\Models\Accounting\IncomeSingle;
 use App\Models\Accounting\LedgerAccount;
+use App\Models\Accounting\ChartOfAccount;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
 
-class IncomeSingleTable extends DataTableComponent
+class ChartOfAccountTable extends DataTableComponent
 {
     protected $index = 0;
 
     public function configure(): void
     {
         $this->setPrimaryKey('id');
-        $this->setSearchPlaceholder('Enter Search Income Single');
+        $this->setSearchPlaceholder('Enter Search Ledger Account');
         $this->setSearchDebounce(1000);
+        $this->setTheadAttributes([
+            'default' => true,
+            'class' => 'custom-dt-thead',
+          ]);
     }
 
     public function builder(): Builder
     {
-        return IncomeSingle::query();
+        return ChartOfAccount::query();
     }
     public function filters(): array
     {
         return [
             TextFilter::make('Code')
                 ->config([
-                    'placeholder' => 'Search Code',
+                    'placeholder' => 'Search code',
                     'maxlength' => '25',
                 ])
                 ->filter(function (Builder $builder, string $value) {
-                    $builder->where('income_singles.income_single_code', 'like', '%' . $value . '%');
+                    $builder->where('chart-of-accounts.ledger_code', 'like', '%' . $value . '%');
                 }),
         ];
     }
@@ -51,20 +55,14 @@ class IncomeSingleTable extends DataTableComponent
                 ->searchable()
                 ->excludeFromColumnSelect(),
 
-                Column::make('Code', 'income_single_code')
+                Column::make('Code', 'code')
                 ->sortable()
                 ->searchable(),
-                Column::make('Particular', 'particular')
+                Column::make('Name', 'name')
                 ->sortable()
                 ->searchable(),
-                Column::make('Amount', 'cost_price')
-                ->sortable()
-                ->searchable(),
-                Column::make('Outlet', 'outlet')
-                ->sortable()
-                ->searchable()
-                ->deselected(),
-            Column::make('Create BY', 'User.name')
+
+            Column::make('Create By', 'User.name')
                 ->format(
                     fn($value, $row, Column $column) => $value ? $value : '-'
                 )
@@ -72,15 +70,12 @@ class IncomeSingleTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-            Column::make('Status', 'stock_adjustment_status')
-                ->format(
-                    fn($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.delivery_status.{$value}.class") . '">' . config("status.delivery_status.{$value}.name") . '</span>' : ''
-                )->sortable()->html(),
+
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')
                         ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.accounting.income_single_details', ['income_single_id' => $row->id]))
+                        ->location(fn($row) => route('backend.accounting.chart_account_details', ['chartaccount_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
@@ -96,7 +91,7 @@ class IncomeSingleTable extends DataTableComponent
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
-                                'data-listener' => 'incomeSingleDelete',
+                                'data-listener' => 'chartOfAccountDelete',
                                 'class' => 'badge bg-danger me-1 p-2 ',
                                 'icon' => 'fa fa-trash',
                                 'title' => 'Delete',

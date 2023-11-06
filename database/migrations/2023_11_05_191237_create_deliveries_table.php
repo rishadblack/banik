@@ -23,6 +23,9 @@ return new class extends Migration
             $table->foreignId('outlet_id')->nullable();
             $table->string('code', 100)->nullable();
             $table->string('ref')->nullable();
+            $table->string('person_name')->nullable();
+            $table->string('mobile')->nullable();
+            $table->string('vehicle_type')->nullable();
             $table->foreignId('approved_id')->nullable();
             $table->timestamp('is_approved')->nullable();
             $table->foreignId('checked_id')->nullable();

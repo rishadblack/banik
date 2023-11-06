@@ -3,40 +3,45 @@
 namespace App\Pages\Backend\Accounting\Datatable;
 
 
-use App\Models\Accounting\Expense;
+use App\Models\Accounting\ReceiptType;
 use App\Http\Common\DataTableComponent;
 use App\Models\Accounting\LedgerAccount;
+use App\Models\Accounting\ChartOfAccount;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
 
-class ExpenseTable extends DataTableComponent
+class ReceiptTypeTable extends DataTableComponent
 {
     protected $index = 0;
 
     public function configure(): void
     {
         $this->setPrimaryKey('id');
-        $this->setSearchPlaceholder('Enter Search Expense');
+        $this->setSearchPlaceholder('Enter Search Ledger Account');
         $this->setSearchDebounce(1000);
+        $this->setTheadAttributes([
+            'default' => true,
+            'class' => 'custom-dt-thead',
+        ]);
     }
 
     public function builder(): Builder
     {
-        return Expense::query();
+        return ReceiptType::query();
     }
     public function filters(): array
     {
         return [
             TextFilter::make('Code')
                 ->config([
-                    'placeholder' => 'Search Code',
+                    'placeholder' => 'Search code',
                     'maxlength' => '25',
                 ])
                 ->filter(function (Builder $builder, string $value) {
-                    $builder->where('expenses.expense_code', 'like', '%' . $value . '%');
+                    $builder->where('receipt-types.code', 'like', '%' . $value . '%');
                 }),
         ];
     }
@@ -46,41 +51,39 @@ class ExpenseTable extends DataTableComponent
 
         return [
             Column::make('Id', 'id')
-                ->format(fn() => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
+                ->format(fn () => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
                 ->sortable()
                 ->searchable()
                 ->excludeFromColumnSelect(),
 
-                Column::make('Code', 'expense_code')
+            Column::make('Code', 'code')
                 ->sortable()
                 ->searchable(),
-                Column::make('Particular', 'particular')
+            Column::make('Name', 'name')
                 ->sortable()
                 ->searchable(),
-                Column::make('Amount', 'cost_price')
-                ->sortable()
-                ->searchable(),
-                Column::make('Outlet', 'outlet')
-                ->sortable()
-                ->searchable()
-                ->deselected(),
-            Column::make('Create BY', 'User.name')
+
+            Column::make('Flow', 'flow_type')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? $value : '-'
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
+                )
+                ->eagerLoadRelations()
+                ->sortable()
+                ->searchable(),
+            Column::make('Create By', 'User.name')
+                ->format(
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->eagerLoadRelations()
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-            Column::make('Status', 'stock_adjustment_status')
-                ->format(
-                    fn($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.delivery_status.{$value}.class") . '">' . config("status.delivery_status.{$value}.name") . '</span>' : ''
-                )->sortable()->html(),
+
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')
-                        ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.accounting.expense_details', ['expense_id' => $row->id]))
+                        ->title(fn ($row) => 'Edit')
+                        ->location(fn ($row) => route('backend.accounting.receipt_type_details', ['receiptType_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
@@ -91,12 +94,12 @@ class ExpenseTable extends DataTableComponent
                             ];
                         }),
                     LinkColumn::make(' Delete')
-                        ->title(fn($row) => 'Delete')
-                        ->location(fn($row) => 'javascript:void(0)')
+                        ->title(fn ($row) => 'Delete')
+                        ->location(fn ($row) => 'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
-                                'data-listener' => 'expenseDelete',
+                                'data-listener' => 'receiptTypeDelete',
                                 'class' => 'badge bg-danger me-1 p-2 ',
                                 'icon' => 'fa fa-trash',
                                 'title' => 'Delete',
@@ -105,7 +108,5 @@ class ExpenseTable extends DataTableComponent
                         }),
                 ]),
         ];
-
     }
-
 }

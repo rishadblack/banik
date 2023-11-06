@@ -33,18 +33,18 @@
                 <x-slot:title>Delivery Info</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
-                        <x-button.default wire:click="storeCategory" wire:target="storeCategory"
+                        <x-button.default wire:click="storeDelivery" wire:target="storeDelivery"
                             class="btn-success">{{ $challan_id ? 'Update' : 'Create' }}</x-button.default>
-                        <x-button.default wire:click="storeCategory('new')" wire:target="storeCategory"
+                        <x-button.default wire:click="storeDelivery('new')" wire:target="storeDelivery"
                             class="btn-success">Save & New
                         </x-button.default>
                         <a href="{{ route('backend.order.delivery_challan_list') }}"
                             wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>
-                <x-input.text wire:model="name" label="Delivery Man Name" placeholder="Name" />
-                <x-input.text wire:model="code" label="Delivery Man Mobile" placeholder="Mobile" />
-                <x-input.text wire:model="vehicle" label="Vehicle Type/No" />
+                <x-input.text wire:model="person_name" label="Delivery Man Name" placeholder="Name" />
+                <x-input.text wire:model="mobile" label="Mobile" placeholder="Mobile" />
+                <x-input.text wire:model="vehicle_type" label="Vehicle Type/No" />
 
             </x-layouts.backend.card>
             <x-layouts.backend.card>

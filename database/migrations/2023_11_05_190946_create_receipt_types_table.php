@@ -21,6 +21,7 @@ return new class extends Migration
             $table->tinyInteger('flow_type')->nullable();
             $table->tinyInteger('type')->nullable();
             $table->text('chart_of_section_id')->nullable();
+            $table->string('code', 100)->nullable();
             $table->text('name')->nullable();
             $table->string('receipt_prefix', 10)->nullable();
             $table->string('receipt_suffix', 10)->nullable();
