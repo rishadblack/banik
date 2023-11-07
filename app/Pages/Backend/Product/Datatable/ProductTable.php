@@ -69,10 +69,13 @@ class ProductTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-            Column::make('Purchase Price', 'net_purchase_price')
+            Column::make('Product Brand', 'Brand.name')
                 ->sortable()
                 ->searchable(),
-            Column::make('Sale Price', 'net_sale_price')
+            Column::make('Product Category', 'Category.name')
+                ->sortable()
+                ->searchable(),
+            Column::make('Product Unit', 'Unit.name')
                 ->sortable()
                 ->searchable(),
             Column::make('Profit Margin', 'profit_margin')

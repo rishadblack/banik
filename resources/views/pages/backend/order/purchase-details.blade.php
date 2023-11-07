@@ -106,6 +106,9 @@
         strong {
             font-weight: 700;
         }
+        .net-amount{
+            margin-top: 3px;
+        }
     </style>
 @endpush
 <div>
@@ -115,116 +118,200 @@
 
     <div class="row gx-4">
         <div class="col-xl-8">
-            <x-layouts.backend.card class="product-item">
-                <x-slot:title>Products (2)</x-slot:title>
-                <x-slot:search>
-                    <x-input.select class="productSearch" placeholder="Search Product Name">
+            <div class="row">
+                <div class="col-12">
+                    <x-layouts.backend.card class="product-item">
+                        <x-slot:title>Products (2)</x-slot:title>
+                        <x-slot:search>
+                            <x-input.select class="productSearch" placeholder="Search Product Name">
 
-                    </x-input.select>
-                </x-slot:search>
+                            </x-input.select>
+                        </x-slot:search>
 
-                <x-slot:button>
-                    <x-button.default type="button" class="btn btn-sm rounded btn-info"
-                       data-bs-toggle="modal" data-bs-target="#openProductAddModal">Add
-                        Product</x-button.default>
-                </x-slot:button>
+                        <x-slot:button>
+                            <x-button.default type="button" class="btn btn-sm rounded btn-info"
+                               data-bs-toggle="modal" data-bs-target="#openProductAddModal">Add
+                                Product</x-button.default>
+                        </x-slot:button>
 
 
-                <table class="table table-striped ">
-                    <thead class="text-center">
-                        <th class="sl">SL</th>
-                        <th class="text-center">Product Name</th>
-                        <th class="widthtd">Purchase Price</th>
-                        <th class="widthtd">Quantity</th>
-                        <th class="widthtd">Discount</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td class="d-flex">
-                                <div
-                                    class="h-65px w-65px d-flex align-items-center position-relative bg-body rounded p-2">
-                                    <img src="{{ asset('backend/assets/img/product/product-2.png') }}" alt
-                                        class="mw-100 mh-100">
-                                    <span
-                                        class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
-                                </div>
-                                <div class="ps-6 flex-1 ">
-                                    <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro Max</a>
-                                    </div>
-                                    <div class="text-body text-opacity-50 small ">
-                                        SKU: IP14PROMAX-512
-                                    </div>
-                                    <div class="text-body text-opacity-50 small">
-                                        Stock : 0 , Receive product : 0
-                                    </div>
-                                </div>
-                            </td>
-                            <td><x-input.text-order wide:model="amount" class="widthtd" placeholder="" /></td>
-                            <td><x-input.text-order wide:model="quantity" class="widthtd" placeholder="" /></td>
-                            <td class="text-center"><x-input.text-order wide:model="discount" class="widthtd"
-                                    placeholder="" />
-                                <div class="text-body text-opacity-50 small d-flex float-end subtotal">
-                                    Subtotal : 0
-                                </div>
-                            </td>
+                        <table class="table table-striped ">
+                            <thead class="text-center">
+                                <th class="sl">SL</th>
+                                <th class="text-center">Product Name</th>
+                                <th class="widthtd">Purchase Price</th>
+                                <th class="widthtd">Quantity</th>
+                                <th class="widthtd">Discount</th>
+                            </thead>
+                            <tbody>
+                                <tr class="shadow-none">
+                                    <td class="text-center">1</td>
+                                    <td class="d-flex">
+                                        <div
+                                            class="h-65px w-65px d-flex align-items-center position-relative bg-body rounded p-2">
+                                            <img src="{{ asset('backend/assets/img/product/product-2.png') }}" alt
+                                                class="mw-100 mh-100">
+                                            <span
+                                                class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
+                                        </div>
+                                        <div class="ps-6 flex-1 ">
+                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro Max</a>
+                                            </div>
+                                            <div class="text-body text-opacity-50 small ">
+                                                SKU: IP14PROMAX-512
+                                            </div>
+                                            <div class="text-body text-opacity-50 small">
+                                                Stock : 0 , Receive product : 0
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><x-input.text-order wide:model="amount" class="widthtd" placeholder="" /></td>
+                                    <td><x-input.text-order wide:model="quantity" class="widthtd" placeholder="" /></td>
+                                    <td class="text-center"><x-input.text-order wide:model="discount" class="widthtd"
+                                            placeholder="" />
+                                        <div class="text-body text-opacity-50 small d-flex float-end subtotal">
+                                            Subtotal : 0
+                                        </div>
+                                    </td>
 
-                        </tr>
+                                </tr>
+                                <tr class="shadow-none">
+                                    <td class="text-center">1</td>
+                                    <td class="d-flex">
+                                        <div
+                                            class="h-65px w-65px d-flex align-items-center position-relative bg-body rounded p-2">
+                                            <img src="{{ asset('backend/assets/img/product/product-2.png') }}" alt
+                                                class="mw-100 mh-100">
+                                            <span
+                                                class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
+                                        </div>
+                                        <div class="ps-6 flex-1 ">
+                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro Max</a>
+                                            </div>
+                                            <div class="text-body text-opacity-50 small ">
+                                                SKU: IP14PROMAX-512
+                                            </div>
+                                            <div class="text-body text-opacity-50 small">
+                                                Stock : 0 , Receive product : 0
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><x-input.text-order wide:model="amount" class="widthtd" placeholder="" /></td>
+                                    <td><x-input.text-order wide:model="quantity" class="widthtd" placeholder="" /></td>
+                                    <td class="text-center"><x-input.text-order wide:model="discount" class="widthtd"
+                                            placeholder="" />
+                                        <div class="text-body text-opacity-50 small d-flex float-end subtotal">
+                                            Subtotal : 0
+                                        </div>
+                                    </td>
 
-                    </tbody>
-                </table>
-            </x-layouts.backend.card>
-            <x-layouts.backend.card>
-                <x-slot:title>Payment Records</x-slot:title>
-                <x-slot:button>
-                    <a href="#" class="ms-auto text-decoration-none fs-13px text-body text-opacity-50"><i
-                            class="fab fa-paypal me-1 fa-lg"></i> View paypal records</a>
-                </x-slot:button>
-                <table class="table table-borderless table-sm m-0">
-                    <tbody>
-                        <tr class="mb-1">
-                            <td class="w-150px">Subtotal</td>
-                            <td>3 items</td>
-                            <td class="text-end">$3,496.00</td>
-                        </tr>
-                        <tr class="mb-1">
-                            <td class="w-150px">Discount</td>
-                            <td><x-input.text wide:model="discount" class="width" placeholder="" /></td>
-                            <td class="text-end">$3,496.00</td>
-                        </tr>
-                        <tr class="mb-1">
-                            <td>Tax</td>
-                            <td>GST 5%</td>
-                            <td class="text-end">$174.80</td>
-                        </tr>
-                        <tr class="mb-1">
-                            <td class="w-150px">Additional Charge</td>
-                            <td><x-input.text wide:model="additional_charge" class="width" placeholder="" /></td>
-                            <td class="text-end">$3,496.00</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <hr class="mt-2 mb-2">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><b>Total</b></td>
-                            <td class="text-end text-decoration-underline"><b>$3670.80</b></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><b>Total Payment</b></td>
-                            <td class="text-end  text-decoration-underline"><b>$3670.80</b></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><b>Due</b></td>
-                            <td class="text-end  text-decoration-underline"><b>$00.80</b></td>
-                        </tr>
+                                </tr>
+                                <tr class="shadow-none">
+                                    <td class="text-center">1</td>
+                                    <td class="d-flex">
+                                        <div
+                                            class="h-65px w-65px d-flex align-items-center position-relative bg-body rounded p-2">
+                                            <img src="{{ asset('backend/assets/img/product/product-2.png') }}" alt
+                                                class="mw-100 mh-100">
+                                            <span
+                                                class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
+                                        </div>
+                                        <div class="ps-6 flex-1 ">
+                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro Max</a>
+                                            </div>
+                                            <div class="text-body text-opacity-50 small ">
+                                                SKU: IP14PROMAX-512
+                                            </div>
+                                            <div class="text-body text-opacity-50 small">
+                                                Stock : 0 , Receive product : 0
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><x-input.text-order wide:model="amount" class="widthtd" placeholder="" /></td>
+                                    <td><x-input.text-order wide:model="quantity" class="widthtd" placeholder="" /></td>
+                                    <td class="text-center"><x-input.text-order wide:model="discount" class="widthtd"
+                                            placeholder="" />
+                                        <div class="text-body text-opacity-50 small d-flex float-end subtotal">
+                                            Subtotal : 0
+                                        </div>
+                                    </td>
 
-                    </tbody>
-                </table>
-            </x-layouts.backend.card>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </x-layouts.backend.card>
+                </div>
+                {{-- <div class="col-7">
+                    <x-layouts.backend.card>
+                        <x-slot:title>Supplier</x-slot:title>
+                        <x-input.text wire:model="contact_id" class="form-control-sm" label="Discount"/>
+                        <x-input.text wire:model="contact_id" class="form-control-sm" label="Additional Charge"/>
+                    </x-layouts.backend.card>
+                </div> --}}
+                <div class="col-lg-5 offset-lg-7">
+                    <x-layouts.backend.card>
+                        {{-- <x-slot:title>Payment Records</x-slot:title> --}}
+                        <x-slot:button>
+                            <a href="#" class="ms-auto text-decoration-none fs-13px text-body text-opacity-50"><i
+                                    class="fab fa-paypal me-1 fa-lg"></i> View paypal records</a>
+                        </x-slot:button>
+                        <table class="table table-borderless table-sm m-0">
+                            <tbody>
+                                <tr class="mb-1">
+                                    <td class="w-150px">Subtotal</td>
+                                    <td>3 items</td>
+                                    <td class="text-end">$3,496.00</td>
+                                </tr>
+                                <tr class="mb-1">
+                                    <td class="w-150px">Discount</td>
+                                    {{--<td><x-input.text wide:model="discount" class="width" placeholder="" /></td>--}}
+                                    <td></td>
+                                    <td class="text-end">$3,496.00</td>
+                                </tr>
+                                <tr class="mb-1">
+                                    <td>Tax</td>
+                                    <td>GST 5%</td>
+                                    <td class="text-end">$174.80</td>
+                                </tr>
+                                <tr class="mb-1">
+                                    <td class="w-150px">Additional Charge</td>
+                                    <td></td>
+                                    {{-- <td><x-input.text wide:model="additional_charge" class="width" placeholder="" /></td> --}}
+                                    <td class="text-end">$3,496.00</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <hr class="mt-2 mb-2">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><b>Total</b></td>
+                                    <td class="text-end text-decoration-underline"><b>$3670.80</b></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><b>Total Payment</b></td>
+                                    <td class="text-end  text-decoration-underline"><b>$3670.80</b></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><b>Due</b></td>
+                                    <td class="text-end  text-decoration-underline"><b>$00.80</b></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </x-layouts.backend.card>
+                </div>
+            </div>
+
             <x-layouts.backend.card class="payment-info">
                 <x-slot:title>Payment Info</x-slot:title>
+                <x-slot:button>
+                    <a href="#" wire:click="addPayment" wire:navigate
+                    class="btn btn-sm btn-theme"> Add Payment</a>
+                    <a href="#" wire:click="addPayment" wire:navigate
+                    class="btn btn-sm btn-danger"> Reset</a>
+                </x-slot:button>
                 <div class="row ">
                     <div class="col-sm-12 col-md-4 col-lg-4">
                         <x-input.select wire:model="payment_method_id" label="Payment Method">
@@ -234,8 +321,15 @@
                             <option value="4">Nagad</option>
                         </x-input.select>
                     </div>
+
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.text-group wire:model="amount" label="Amount">
+                        <x-input.text wire:model="ref" label="Reference" />
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-lg-4">
+                        <x-input.date wire:model="txn_date" label="Date" />
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-lg-4">
+                        <x-input.text-group wire:model="net_amount" label="Amount">
                             <x-slot:suffix>
                                 <span class="btn btn-default price">৳</span>
                             </x-slot:suffix>
@@ -245,17 +339,11 @@
                         <x-input.text wire:model="charge" label="Charge" />
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.text wire:model="ref" label="Reference" />
-                    </div>
-                    <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.date wire:model="txn_date" label="Date" />
+                        <label class="mt-3 mt-4 float-end fs-4">Net Amount : $0.00</label>
                     </div>
                 </div>
 
-                <a href="#" wire:click="addPayment" wire:navigate
-                    class="btn d-flex float-end btn-theme add-payment"> Add Payment</a>
-
-                <table class="table table-striped payment-table">
+                <table class="table table-striped payment-table shadow">
                     <thead>
                         <th>SL</th>
                         <th>Payment Method</th>
@@ -290,10 +378,10 @@
                                     @endif
 
                                 </td>
-                                <td>{{ $transaction->amount }}</td>
+                                <td>{{ $transaction->net_amount }}</td>
                                 <td>{{ $transaction->charge }}</td>
-                                <td>{{ $transaction->tnx_date }}</td>
-                                <td> <a href="#" wire:navigate="true"class="btn btn-danger btn-sm rounded"><i
+                                <td>{{ $transaction->txn_date }}</td>
+                                <td> <a wire:click="delete({{ $transaction->id }})" wire:navigate="true"class="btn btn-danger btn-sm rounded"><i
                                             class="fa fa-close"></i></a></td>
 
                             </tr>

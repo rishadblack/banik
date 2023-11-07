@@ -2,8 +2,10 @@
 
 namespace App\Pages\Backend\Contact;
 
-use Livewire\Component;
+
 use Livewire\Attributes\On;
+use App\Http\Common\Component;
+use App\Models\Contact\Contact;
 use Livewire\Attributes\Layout;
 use App\Models\Contact\Customer;
 
@@ -17,10 +19,9 @@ class CustomerList extends Component
     #[On('customerDelete')]
     public function destroy($data)
     {
-        // $data = $this->alertConfirm($data, 'Are you sure to delete Customer?');
 
         if(isset($data['id'])) {
-            $Customer = Customer::find($data['id']);
+            $Customer = Contact::find($data['id']);
 
             if(!$Customer) {
                 $this->alert('error', 'Customer Not Found!!');

@@ -38,7 +38,7 @@ class PurchaseDetails extends Component
     public $discount;
     public $subtotal;
     public $payment_status;
-    public $amount;
+    public $net_amount;
     public $received_quantity;
     public $discount_amount;
     public $additional_charge;
@@ -103,7 +103,7 @@ class PurchaseDetails extends Component
         $Payment = Transaction::findOrNew($this->purchase_id);
         $Payment->user_id = Auth::id();
         $Payment->payment_method_id = $this->payment_method_id;
-        $Payment->amount = $this->amount;
+        $Payment->net_amount = $this->net_amount;
         $Payment->charge = $this->charge;
         $Payment->ref = $this->ref;
         $Payment->txn_date = $this->txn_date;
@@ -141,9 +141,9 @@ class PurchaseDetails extends Component
             $this->discount = $Purchase->discount;
             $this->paid_amount = $Purchase->paid_amount;
 
-            $Purchase = Order::find($this->purchase_id);
+            $Purchase = Transaction::find($this->purchase_id);
             $this->payment_method_id = $Purchase->payment_method_id;
-            $this->amount = $Purchase->amount;
+            $this->net_amount = $Purchase->net_amount;
             $this->charge = $Purchase->charge;
             $this->ref = $Purchase->ref;
             $this->txn_date = $Purchase->txn_date;
@@ -157,6 +157,11 @@ class PurchaseDetails extends Component
             $this->subtotal = $PurchaseInfo->subtotal;
             $this->discount_amount = $PurchaseInfo->discount_amount;*/
         }
+    }
+
+    public function delete($id){
+        Transaction::find($id)->delete();
+        $this->dispatch('refreshDatatable');
     }
 
     public function render()

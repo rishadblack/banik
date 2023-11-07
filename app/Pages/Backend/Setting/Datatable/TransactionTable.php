@@ -94,7 +94,7 @@ class TransactionTable extends DataTableComponent
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
-                                'data-listener' => 'paymentMethodDelete',
+                                'data-listener' => 'transactionDelete',
                                 'class' => 'badge bg-danger me-1 p-2 ',
                                 'icon' => 'fa fa-trash',
                                 'title' => 'Delete',

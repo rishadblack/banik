@@ -13,6 +13,7 @@ use App\Models\Product\Product;
 use Livewire\Attributes\Layout;
 use App\Models\Contact\ContactInfo;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Accounting\Transaction;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -34,14 +35,16 @@ class SaleDetails extends Component
     public $subtotal;
     public $payment_status;
     public $payment_date;
+    public $net_amount;
     public $amount;
-    public $paid_amount;
     public $delivery_quantity;
     public $discount_amount;
     public $code;
     public $payment_method_id;
     public $sales_person;
     public $delivery_charge;
+    public $txn_date;
+    public $charge;
 
     public function storeSale($storeType = null)
     {
@@ -60,32 +63,23 @@ class SaleDetails extends Component
         $Sale->type = 1;
         $Sale->contact_id = $this->contact_id;
         $Sale->payment_status = $this->payment_status;
-        $Sale->payment_date = $this->payment_date;
-        $Sale->delivery_status = $this->delivery_status;
-        $Sale->discount = $this->discount;
-        $Sale->paid_amount = $this->paid_amount;
-        $Sale->delivery_charge = $this->delivery_charge;
         $Sale->sales_person = $this->sales_person;
-        $Sale->payment_method_id = $this->payment_method_id;
         $Sale->save();
 
-       /* $SaleInfo = OrderItem::findOrNew($this->sale_id);
+        $SaleInfo = OrderItem::findOrNew($this->sale_id);
         $SaleInfo->order_id = $Sale->id;
-        $SaleInfo->product_id = $this->product_id;
-        $SaleInfo->name = $this->name;
         $SaleInfo->amount = $this->amount;
         $SaleInfo->quantity = $this->quantity;
+        $SaleInfo->discount = $this->discount;
         $SaleInfo->discount_amount = $this->discount_amount;
-        $SaleInfo->subtotal = $this->subtotal;
-        $SaleInfo->delivery_quantity = $this->delivery_quantity;
-        $SaleInfo->save();*/
+        $SaleInfo->save();
 
-        if($storeType == 'new'){
+        if ($storeType == 'new') {
             $this->reset();
-        }else{
-            $this->sale_id = $Sale-> id;
+        } else {
+            $this->sale_id = $Sale->id;
         }
-        if($this->sale_id) {
+        if ($this->sale_id) {
             $message = 'Sale Updated Successfully!';
         } else {
             $message = 'Sale Added Successfully!';
@@ -94,9 +88,44 @@ class SaleDetails extends Component
         $this->alert('success', $message);
     }
 
+    public function addPayment($storeType = null)
+    {
+        $this->validate([
+            'payment_method_id' => 'required',
+        ]);
+
+        $Payment = Transaction::findOrNew($this->sale_id);
+        $Payment->user_id = Auth::id();
+        $Payment->payment_method_id = $this->payment_method_id;
+        $Payment->net_amount = $this->net_amount;
+        $Payment->charge = $this->charge;
+        $Payment->ref = $this->ref;
+        $Payment->txn_date = $this->txn_date;
+        $Payment->save();
+
+        if ($storeType == 'new') {
+            $this->reset();
+        } else {
+            $this->sale_id = $Payment->id;
+        }
+        if ($this->sale_id) {
+            $message = 'Payment Updated Successfully!';
+        } else {
+            $message = 'Payment Added Successfully!';
+        }
+
+
+        $this->alert('success', $message);
+    }
+    public function delete($id)
+    {
+        Transaction::find($id)->delete();
+        $this->dispatch('refreshDatatable');
+    }
+
     public function mount()
     {
-        if($this->sale_id) {
+        if ($this->sale_id) {
             $Sale = Order::find($this->sale_id);
             $this->code = $Sale->code;
             $this->ref = $Sale->ref;
@@ -104,15 +133,19 @@ class SaleDetails extends Component
             $this->outlet_id = $Sale->outlet_id;
             $this->contact_id = $Sale->contact_id;
             $this->payment_status = $Sale->payment_status;
-            $this->payment_date = $Sale->payment_date;
             $this->delivery_status = $Sale->delivery_status;
             $this->discount = $Sale->discount;
             $this->sales_person = $Sale->sales_person;
             $this->delivery_charge = $Sale->delivery_charge;
-            $this->payment_method_id = $Sale->payment_method_id;
-            $this->paid_amount = $Sale->paid_amount;
 
-           /* $SaleInfo = OrderItem::findOrNew($this->sale_id);
+            $Sale = Transaction::find($this->sale_id);
+            $this->payment_method_id = $Sale->payment_method_id;
+            $this->net_amount = $Sale->net_amount;
+            $this->charge = $Sale->charge;
+            $this->ref = $Sale->ref;
+            $this->txn_date = $Sale->txn_date;
+
+            /* $SaleInfo = OrderItem::findOrNew($this->sale_id);
             $this->product_id = $SaleInfo->product_id;
             $this->name = $SaleInfo->name;
             $this->amount = $SaleInfo->amount;
@@ -126,9 +159,10 @@ class SaleDetails extends Component
     public function render()
     {
         $customer = Contact::where('type', 1)->get();
-        $order = Order::Where('type',1);
+        $order = Order::Where('type', 1);
         $payment = OrderItem::all();
-        $product=Product::all();
-        return view('pages.backend.order.sale-details',compact('customer','payment','order','product'));
+        $product = Product::all();
+        $transaction = Transaction::all();
+        return view('pages.backend.order.sale-details', compact('customer', 'payment', 'order', 'product', 'transaction'));
     }
 }

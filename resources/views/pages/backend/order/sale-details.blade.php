@@ -89,8 +89,11 @@
             margin-top: 5px;
             font-size: 12px;
         }
-        .add-payment{
+        .add-payment {
+            margin-bottom: 20px;
             border-radius: 7px;
+            margin-right: 22px;
+            margin-top: -12px;
         }
         b,
         strong {
@@ -115,7 +118,7 @@
 
                 <x-slot:button>
                     <x-button.default type="button" class="btn btn-sm rounded btn-info"
-                        wire:click="openProductAddModal">Add
+                    data-bs-toggle="modal" data-bs-target="#openProductAddModal">Add
                         Product</x-button.default>
                 </x-slot:button>
 
@@ -150,15 +153,14 @@
                                     </div>
                                 </div>
                             </td>
-                            <td><x-input.text-order wide:model="amount" class="widthtd" placeholder="" /></td>
-                            <td><x-input.text-order wide:model="quantity" class="widthtd" placeholder="" /></td>
+                            <td><x-input.text-order wide:model="amount" class="widthtd" placeholder="Amount" /></td>
+                            <td><x-input.text-order wide:model="quantity" class="widthtd" placeholder="Quantity" /></td>
                             <td class="text-center"><x-input.text-order wide:model="discount" class="widthtd"
-                                    placeholder="" />
+                                    placeholder="Discount" />
                                 <div class="text-body text-opacity-50 small d-flex float-end subtotal">
                                     Subtotal : 0
                                 </div>
                             </td>
-
                         </tr>
 
                     </tbody>
@@ -179,7 +181,7 @@
                         </tr>
                         <tr class="mb-1">
                             <td class="w-150px">Discount</td>
-                            <td><x-input.text wide:model="discount" class="width" placeholder="" /></td>
+                            <td><x-input.text wide:model="discount_amount" class="width" placeholder="" /></td>
                             <td class="text-end">$3,496.00</td>
                         </tr>
                         <tr class="mb-1">
@@ -189,7 +191,7 @@
                         </tr>
                         <tr class="mb-1">
                             <td class="w-150px">Additional Charge</td>
-                            <td><x-input.text wide:model="additional_charge" class="width" placeholder="" /></td>
+                            <td><x-input.text wide:model="delivery_charge" class="width" placeholder="" /></td>
                             <td class="text-end">$3,496.00</td>
                         </tr>
                         <tr>
@@ -210,6 +212,7 @@
                             <td class="text-end  text-decoration-underline"><b>$00.80</b></td>
                         </tr>
 
+
                     </tbody>
                 </table>
             </x-layouts.backend.card>
@@ -225,20 +228,20 @@
                         </x-input.select>
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.text-group wire:model="paid_amount" label="Amount">
+                        <x-input.text-group wire:model="net_amount" label="Amount">
                             <x-slot:suffix>
                                 <span class="btn btn-default price">৳</span>
                             </x-slot:suffix>
                         </x-input.text-group>
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.text wire:model="additional_charge" label="Charge" />
+                        <x-input.text wire:model="charge" label="Charge" />
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
                         <x-input.text wire:model="ref" label="Reference" />
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.date wire:model="payment_date" label="Date" />
+                        <x-input.date wire:model="txn_date" label="Date" />
                     </div>
                 </div>
 
@@ -256,61 +259,43 @@
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        @foreach ($order as $order)
+                        @foreach ($transaction as $transaction)
                             <tr>
-                                <td>{{ $order->id }}</td>
+                                <td>{{ $transaction->id }}</td>
                                 <td class="py-1 align-middle">
-                                    @if ($order->payment_method_id == 1)
+                                    @if ($transaction->payment_method_id == 1)
                                         <span
                                             class="badge bg-teal text-teal-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
                                                 class="fa fa-circle text-teal fs-9px fa-fw me-5px"></i>BKash</span>
-                                    @elseif ($order->payment_method_id == 2)
+                                    @elseif ($transaction->payment_method_id == 2)
                                         <span
                                             class="badge bg-orange text-orange-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
                                                 class="fa fa-circle text-orange fs-9px fa-fw me-5px"></i>Rocket</span>
-                                    @elseif ($order->payment_method_id == 3)
+                                    @elseif ($transaction->payment_method_id == 3)
                                         <span
                                             class="badge bg-primary text-primary-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
-                                                class="fa fa-circle text-primary fs-9px fa-fw me-5px"></i> Bank</span>
-                                    @elseif ($order->payment_method_id == 4)
-                                        <span
-                                            class="badge bg-success text-success-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
-                                                class="fa fa-circle text-success fs-9px fa-fw me-5px"></i> Nagad</span>
+                                                class="fa fa-circle text-primary fs-9px fa-fw me-5px"></i> Bank</i>
+                                        @elseif ($transaction->payment_method_id == 4)
+                                            <span
+                                                class="badge bg-success text-success-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
+                                                    class="fa fa-circle text-success fs-9px fa-fw me-5px"></i>
+                                                Nagad</span>
                                     @endif
 
                                 </td>
-                                <td>{{ $order->paid_amount }}</td>
-                                <td>{{ $order->additional_charge }}</td>
-                                <td>{{ $order->payment_date }}</td>
-                                <td> <a href="#" wire:navigate="true"class="btn btn-danger btn-sm rounded"><i
+                                <td>{{ $transaction->net_amount }}</td>
+                                <td>{{ $transaction->charge }}</td>
+                                <td>{{ $transaction->txn_date }}</td>
+                                <td> <a wire:click="delete({{ $transaction->id }})" wire:navigate="true"class="btn btn-danger btn-sm rounded"><i
                                             class="fa fa-close"></i></a></td>
+
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </x-layouts.backend.card>
 
-            {{-- <x-layouts.backend.card>
 
-                <x-slot:title>Delivery Info</x-slot:title>
-                <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-6">
-                        <x-input.select wire:model="delivery_status" label="Delivery Status">
-                            <option value="1">Receipt</option>
-                            <option value="2">Pending</option>
-                            <option value="3">Hold</option>
-                            <option value="4">Cancle</option>
-                        </x-input.select>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-6">
-                        <x-input.text-group wire:model="delivery_charge" label="Additional/Delivery Charge">
-                            <x-slot:suffix>
-                                <span class="btn btn-default price">৳</span>
-                            </x-slot:suffix>
-                        </x-input.text-group>
-                    </div>
-                </div>
-            </x-layouts.backend.card> --}}
         </div>
         <div class="col-xl-4">
             <x-layouts.backend.card>
@@ -332,16 +317,6 @@
 
                 <x-input.text wire:model="sales_person" label="Sales Person" />
 
-                <x-input.text-group wire:model="delivery_charge" label="Additional/Delivery Charge">
-                    <x-slot:suffix>
-                        <span class="btn btn-default price">৳</span>
-                    </x-slot:suffix>
-                </x-input.text-group>
-                <x-input.text-group wire:model="discount" label="Discount">
-                    <x-slot:suffix>
-                        <span class="btn btn-default price">৳</span>
-                    </x-slot:suffix>
-                </x-input.text-group>
             </x-layouts.backend.card>
 
             <x-layouts.backend.card>
@@ -382,5 +357,9 @@
 
         </div>
     </div>
+
+    <x-modal id="openProductAddModal">
+
+    </x-modal>
 
 </div>

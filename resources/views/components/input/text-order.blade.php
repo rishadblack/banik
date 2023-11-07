@@ -10,11 +10,7 @@
 
 <div class="form-group widthtd">
     @isset($attributes['label'])
-        <label for="{{ $attributes->wire('model')->value }}" class="form-label">{{ $attributes['label'] }}
-            @isset($attributes['require'])
-                <span class="text-red">*</span>
-            @endisset
-        </label>
+
     @endisset
     <input @if ($attributes['read-only']) readonly @endif type="text"
         list="{{ $attributes->wire('model')->value }}_list" {{ $attributes->wire('model') }}

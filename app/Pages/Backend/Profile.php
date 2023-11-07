@@ -26,37 +26,6 @@ class Profile extends Component
     public $state;
     public $country;
 
-    // password
-    public $current_password;
-    public $password;
-    public $password_confirmation;
-
-    public function storePasswordChange()
-    {
-        $this->validate([
-            'current_password' => ['required'],
-            'password' => ['required', 'confirmed'],
-        ]);
-
-
-        if (Hash::check($this->current_password, Auth::User()->password)) {
-            $user = Auth::User();
-            $user->password = Hash::make($this->password);
-            $user->save();
-        } else {
-            $this->addError('current_password', 'Current password is wrong please try again..');
-
-            return true;
-        }
-
-        $this->reset([
-            'current_password',
-            'password',
-            'password_confirmation',
-        ]);
-
-        $this->alert('success', 'Your new password updated successfully');
-    }
 
     public function storeProfileUpdate()
     {

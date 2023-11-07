@@ -167,16 +167,19 @@
                 <div class="menu-item dropdown" x-data="{ open: false }">
                     <a class="menu-link" x-bind:class="open ? 'show' : ''" x-on:click="open = ! open">
                         <div class="menu-img online">
-
                             <img src="{{ auth()->user()->profile_image }}" alt class="ms-100 mh-100 rounded-circle">
-
                         </div>
                         <div class="menu-text">{{ auth()->user()->email }}</span>
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end me-lg-3" x-bind:class="open ? 'show' : ''">
-                        <a class="dropdown-item d-flex align-items-center" href="{{ route('backend.profile') }}">Edit
-                            Profile <i class="fa fa-user-circle fa-fw ms-auto text-body text-opacity-50"></i></a>
+                        <a class="dropdown-item d-flex align-items-center"
+                            href="{{ route('backend.profile') }}">Profile <i
+                                class="fa fa-user-circle fa-fw ms-auto text-body text-opacity-50"></i></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item d-flex align-items-center"
+                            href="{{ route('backend.change_password') }}">Password <i
+                                class="fa fa-key fa-fw ms-auto text-body text-opacity-50"></i></a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}">Log Out <i
                                 class="fa fa-toggle-off fa-fw ms-auto text-body text-opacity-50"></i></a>

@@ -22,8 +22,8 @@
                     </div>
                     <div class="col-4">
                         <x-input.select wire:model="payment_method_id" label="Payment Method">
-                            @foreach ($payment as $method)
-                                <option value="{{ $method->id }}">{{ $method->name }}</option>
+                            @foreach ($payment as $payment)
+                                <option value="{{ $payment->id }}">{{ $payment->name }}</option>
                             @endforeach
                         </x-input.select>
                     </div>

@@ -6,6 +6,7 @@ use App\Pages\Backend\Pos;
 use App\Pages\Backend\Profile;
 use App\Pages\Backend\Dashboard;
 use App\Pages\Backend\FileManager;
+use App\Pages\Backend\ChangePassword;
 use App\Pages\Backend\Order\SaleList;
 use Illuminate\Support\Facades\Route;
 use App\Pages\Backend\Product\UnitList;
@@ -80,6 +81,7 @@ Route::permanentRedirect('/', 'admin');
 Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth']], function () {
     Route::get('/', Dashboard::class)->name('dashboard');
     Route::get('profile', Profile::class)->name('profile');
+    Route::get('change-password', ChangePassword::class)->name('change_password');
 
     Route::group(['prefix' => 'settings', 'as' => 'setting.'], function () {
         Route::get('outlet-list', OutletList::class)->name('outlet_list');

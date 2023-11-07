@@ -31,7 +31,8 @@ class CustomerTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        return Contact::query();
+        return Contact::query()
+        ->where('type',1);
     }
     public function filters(): array
     {
@@ -63,10 +64,10 @@ class CustomerTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-            Column::make('Opening Balance', 'opening_balance')
+            Column::make('Company Name', 'company_name')
                 ->sortable()
                 ->searchable(),
-            Column::make('Credit Limit', 'credit_limit')
+            Column::make('Group Name', 'ContactGroup.name')
                 ->sortable()
                 ->searchable(),
             Column::make('Create BY', 'User.name')
@@ -97,7 +98,7 @@ class CustomerTable extends DataTableComponent
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
-                                'data-listener' => 'CustomerDelete',
+                                'data-listener' => 'customerDelete',
                                 'class' => 'badge bg-danger me-1 p-2 ',
                                 'icon' => 'fa fa-trash',
                                 'title' => 'Delete',

@@ -30,7 +30,8 @@ class SupplierTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        return Contact::query();
+        return Contact::query()
+        ->where('type',2);
     }
     public function filters(): array
     {
@@ -65,7 +66,7 @@ class SupplierTable extends DataTableComponent
             Column::make('Opening Balance', 'opening_balance')
                 ->sortable()
                 ->searchable(),
-            Column::make('Credit Limit', 'credit_limit')
+                Column::make('Group Name', 'ContactGroup.name')
                 ->sortable()
                 ->searchable(),
             Column::make('Create BY', 'User.name')
