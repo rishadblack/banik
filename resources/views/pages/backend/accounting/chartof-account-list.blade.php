@@ -6,7 +6,7 @@
     </style>
 @endpush
 <div>
-    <div class="d-flex align-items-center mb-3">
+    <div class="d-flex align-items-center">
         <x-slot:title>Chart of Account</x-slot:title>
     <x-slot:button>
             <a href="{{ route('backend.accounting.chart_account_details') }}" wire:navigate class="btn d-flex float-end btn-theme"><i

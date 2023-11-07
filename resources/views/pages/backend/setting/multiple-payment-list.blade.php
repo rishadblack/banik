@@ -3,7 +3,7 @@
     </style>
 @endpush
 <div>
-    <div class="d-flex align-items-center mb-3">
+    <div class="d-flex align-items-center">
         <x-slot:title>Multiple Payment List</x-slot:title>
         <x-slot:button>
             <a href="{{ route('backend.setting.multiple_payment_details') }}" wire:navigate

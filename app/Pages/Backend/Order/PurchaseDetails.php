@@ -14,6 +14,7 @@ use App\Models\Product\Product;
 use Livewire\Attributes\Layout;
 use App\Models\Contact\ContactInfo;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Accounting\Transaction;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -43,6 +44,8 @@ class PurchaseDetails extends Component
     public $additional_charge;
     public $paid_amount;
     public $code;
+    public $txn_date;
+    public $charge;
 
     public function storePurchase($storeType = null)
     {
@@ -61,7 +64,6 @@ class PurchaseDetails extends Component
         $Purchase->type = 3;
         $Purchase->contact_id = $this->contact_id;
         $Purchase->payment_status = $this->payment_status;
-        $Purchase->payment_method_id = $this->payment_method_id;
         $Purchase->payment_date = $this->payment_date;
         $Purchase->delivery_status = $this->delivery_status;
         $Purchase->discount = $this->discount;
@@ -92,6 +94,37 @@ class PurchaseDetails extends Component
         $this->alert('success', $message);
     }
 
+
+    public function addPayment($storeType = null){
+        $this->validate([
+            'payment_method_id' => 'required',
+        ]);
+
+        $Payment = Transaction::findOrNew($this->purchase_id);
+        $Payment->user_id = Auth::id();
+        $Payment->payment_method_id = $this->payment_method_id;
+        $Payment->amount = $this->amount;
+        $Payment->charge = $this->charge;
+        $Payment->ref = $this->ref;
+        $Payment->txn_date = $this->txn_date;
+        $Payment->save();
+
+        if($storeType == 'new'){
+            $this->reset();
+        }else{
+            $this->purchase_id = $Payment-> id;
+        }
+        if($this->purchase_id) {
+            $message = 'Payment Updated Successfully!';
+        } else {
+            $message = 'Payment Added Successfully!';
+        }
+
+
+        $this->alert('success', $message);
+
+    }
+
     public function mount()
     {
         if($this->purchase_id) {
@@ -107,6 +140,13 @@ class PurchaseDetails extends Component
             $this->delivery_status = $Purchase->delivery_status;
             $this->discount = $Purchase->discount;
             $this->paid_amount = $Purchase->paid_amount;
+
+            $Purchase = Order::find($this->purchase_id);
+            $this->payment_method_id = $Purchase->payment_method_id;
+            $this->amount = $Purchase->amount;
+            $this->charge = $Purchase->charge;
+            $this->ref = $Purchase->ref;
+            $this->txn_date = $Purchase->txn_date;
 
             /*$PurchaseInfo = OrderItem::findOrNew($this->purchase_id);
             $this->product_id = $PurchaseInfo->product_id;
@@ -125,6 +165,7 @@ class PurchaseDetails extends Component
         $order = Order::where('type',3)->get();
         $payment = OrderItem::all();
         $product=Product::all();
-        return view('pages.backend.order.purchase-details', compact('supplier','payment','order','product'));
+        $transaction=Transaction::all();
+        return view('pages.backend.order.purchase-details', compact('supplier','payment','order','product','transaction'));
     }
 }

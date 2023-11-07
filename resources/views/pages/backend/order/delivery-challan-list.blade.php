@@ -4,7 +4,7 @@
     </style>
 @endpush
 <div>
-    <div class="d-flex align-items-center mb-1">
+    <div class="d-flex align-items-center">
         <x-slot:title>Delivery Challan List</x-slot:title>
         <x-slot:button>
             <a href="{{ route('backend.order.delivery_challan_details') }}" wire:navigate

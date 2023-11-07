@@ -1,6 +1,5 @@
 @push('css')
     <style>
-
         .productSearch {
             border-radius: 18px;
             margin-left: 239px;
@@ -15,10 +14,6 @@
             width: 90px;
             background-color: rgb(54, 129, 242);
             color: #fff;
-        }
-
-        .table {
-            margin-top: 5px;
         }
 
         .table>thead {
@@ -40,6 +35,7 @@
             color: #fff;
             margin-top: -55px;
         }
+
         .payment-info {
             padding-bottom: 40px;
         }
@@ -49,19 +45,56 @@
         }
 
         .width {
-            width: 150px;
-        }
-
-        .widthtd {
-            width: 80px;
+            width: 54px;
+            height: 21px;
         }
 
         .sl {
-            width: 8px;
+            width: 5px;
         }
 
         .ps-6 {
             padding-left: 3rem !important;
+        }
+
+        .product-item .card-body {
+            padding: 0px;
+        }
+
+        .small {
+            font-size: 10px;
+        }
+
+        .h-65px,
+        .w-65px {
+            height: 55px !important;
+        }
+
+        .product-item .table> :not(caption)>*>td {
+            padding: .5rem .5rem 0 .5rem;
+        }
+
+        .table-sm> :not(caption)>*>* {
+            padding: .1rem .25rem;
+
+        }
+
+        .mb-1 {
+            margin-bottom: 2px;
+        }
+
+        .subtotal {
+            font-weight: 700;
+            color: #000 !important;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+        .add-payment{
+            border-radius: 7px;
+        }
+        b,
+        strong {
+            font-weight: 700;
         }
     </style>
 @endpush
@@ -72,7 +105,7 @@
 
     <div class="row gx-4">
         <div class="col-xl-8">
-            <x-layouts.backend.card>
+            <x-layouts.backend.card class="product-item">
                 <x-slot:title>Products (2)</x-slot:title>
                 <x-slot:search>
                     <x-input.select class="productSearch" placeholder="Search Product Name">
@@ -87,17 +120,17 @@
                 </x-slot:button>
 
 
-                <table class="table table-striped">
-                    <thead>
+                <table class="table table-striped ">
+                    <thead class="text-center">
                         <th class="sl">SL</th>
                         <th class="text-center">Product Name</th>
-                        <th>Sale Price</th>
-                        <th>Quantity</th>
-                        <th>Discount</th>
+                        <th class="widthtd">Purchase Price</th>
+                        <th class="widthtd">Quantity</th>
+                        <th class="widthtd">Discount</th>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>1</td>
+                            <td class="text-center">1</td>
                             <td class="d-flex">
                                 <div
                                     class="h-65px w-65px d-flex align-items-center position-relative bg-body rounded p-2">
@@ -106,61 +139,28 @@
                                     <span
                                         class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
                                 </div>
-                                <div class="ps-6 flex-1">
+                                <div class="ps-6 flex-1 ">
                                     <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro Max</a>
                                     </div>
-                                    <div class="text-body text-opacity-50 small">
+                                    <div class="text-body text-opacity-50 small ">
                                         SKU: IP14PROMAX-512
                                     </div>
                                     <div class="text-body text-opacity-50 small">
-                                        Stock : 0
-                                    </div>
-                                    <div class="text-body text-opacity-50 small">
-                                        Receive product : 0
+                                        Stock : 0 , Delivery product : 0
                                     </div>
                                 </div>
                             </td>
-                            <td><x-input.text wide:model="amount" class="widthtd" placeholder="" /></td>
-                            <td><x-input.text wide:model="quantity" class="widthtd" placeholder="" /></td>
-                            <td><x-input.text wide:model="discount" class="widthtd" placeholder="" />
-                                <div class="text-body text-opacity-50 small d-flex float-end mt-20px">
+                            <td><x-input.text-order wide:model="amount" class="widthtd" placeholder="" /></td>
+                            <td><x-input.text-order wide:model="quantity" class="widthtd" placeholder="" /></td>
+                            <td class="text-center"><x-input.text-order wide:model="discount" class="widthtd"
+                                    placeholder="" />
+                                <div class="text-body text-opacity-50 small d-flex float-end subtotal">
                                     Subtotal : 0
                                 </div>
                             </td>
 
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td class="d-flex">
-                                <div
-                                    class="h-65px w-65px d-flex align-items-center justify-content-center position-relative bg-body rounded p-2">
-                                    <img src="{{ asset('backend/assets/img/product/product-1-thumb.png') }}" alt
-                                        class="mw-100 mh-100">
-                                    <span
-                                        class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
-                                </div>
-                                <div class="ps-6 flex-1">
-                                    <div><a href="#" class="text-decoration-none text-body">iPhone 12 Pro Max</a>
-                                    </div>
-                                    <div class="text-body text-opacity-50 small">
-                                        SKU: IPYTFHJAX-656
-                                    </div>
-                                    <div class="text-body text-opacity-50 small">
-                                        Stock : 0
-                                    </div>
-                                    <div class="text-body text-opacity-50 small">
-                                        Receive product : 0
-                                    </div>
-                                </div>
-                            </td>
-                            <td><x-input.text wide:model="amount" class="widthtd" placeholder="" /></td>
-                            <td><x-input.text wide:model="quantity" class="widthtd" placeholder="" /></td>
-                            <td><x-input.text wide:model="discount" class="widthtd" placeholder="" />
-                                <div class="text-body text-opacity-50 small d-flex float-end mt-20px">
-                                    Subtotal : 0
-                                </div>
-                            </td>
-                        </tr>
+
                     </tbody>
                 </table>
             </x-layouts.backend.card>
@@ -172,42 +172,42 @@
                 </x-slot:button>
                 <table class="table table-borderless table-sm m-0">
                     <tbody>
-                        <tr>
+                        <tr class="mb-1">
                             <td class="w-150px">Subtotal</td>
                             <td>3 items</td>
                             <td class="text-end">$3,496.00</td>
                         </tr>
-                        <tr>
+                        <tr class="mb-1">
                             <td class="w-150px">Discount</td>
                             <td><x-input.text wide:model="discount" class="width" placeholder="" /></td>
                             <td class="text-end">$3,496.00</td>
                         </tr>
-                        <tr>
+                        <tr class="mb-1">
                             <td>Tax</td>
                             <td>GST 5%</td>
                             <td class="text-end">$174.80</td>
                         </tr>
-                        <tr>
+                        <tr class="mb-1">
                             <td class="w-150px">Additional Charge</td>
                             <td><x-input.text wide:model="additional_charge" class="width" placeholder="" /></td>
                             <td class="text-end">$3,496.00</td>
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <hr class="m-0">
+                                <hr class="mt-2 mb-2">
                             </td>
                         </tr>
                         <tr>
-                            <td class="pb-2" colspan="2"><b>Total</b></td>
-                            <td class="text-end pb-2 text-decoration-underline"><b>$3670.80</b></td>
+                            <td colspan="2"><b>Total</b></td>
+                            <td class="text-end text-decoration-underline"><b>$3670.80</b></td>
                         </tr>
                         <tr>
-                            <td class="pb-2" colspan="2"><b>Total Payment</b></td>
-                            <td class="text-end pb-2 text-decoration-underline"><b>$3670.80</b></td>
+                            <td colspan="2"><b>Total Payment</b></td>
+                            <td class="text-end  text-decoration-underline"><b>$3670.80</b></td>
                         </tr>
                         <tr>
-                            <td class="pb-2" colspan="2"><b>Due</b></td>
-                            <td class="text-end pb-2 text-decoration-underline"><b>$00.80</b></td>
+                            <td colspan="2"><b>Due</b></td>
+                            <td class="text-end  text-decoration-underline"><b>$00.80</b></td>
                         </tr>
 
                     </tbody>
@@ -241,6 +241,9 @@
                         <x-input.date wire:model="payment_date" label="Date" />
                     </div>
                 </div>
+
+                <a href="#" wire:click="addPayment" wire:navigate
+                    class="btn d-flex float-end btn-theme add-payment"> Add Payment</a>
 
                 <table class="table table-striped payment-table">
                     <thead>
@@ -325,19 +328,6 @@
                     </div>
                 </x-slot:button>
                 <x-input.text wire:model="code" label="Code" />
-                <x-input.select wire:model="contact_id" label="Search Customer">
-                    @foreach ($customer as $customer)
-                        <option value="{{ $customer->id }}">{{ $customer->code }}</option>
-                    @endforeach
-                </x-input.select>
-                <x-input.select wire:model="outlet_id" label="Outlets">
-                    <option value="1">Sonargau</option>
-                    <option value="2">Paltan</option>
-                </x-input.select>
-                <x-input.select wire:model="warehouse_id" label="Warehouse">
-                    <option value="1">Sonargau</option>
-                    <option value="2">Paltan</option>
-                </x-input.select>
                 <x-input.text wire:model="ref" label="Reference" />
 
                 <x-input.text wire:model="sales_person" label="Sales Person" />
@@ -352,10 +342,28 @@
                         <span class="btn btn-default price">৳</span>
                     </x-slot:suffix>
                 </x-input.text-group>
-                <x-input.text wire:model="delivery_quantity" label="Delivery Quantity" />
-
-
             </x-layouts.backend.card>
+
+            <x-layouts.backend.card>
+                <x-slot:title>Customer</x-slot:title>
+                <x-input.select wire:model="contact_id" label="Search Customer">
+                    @foreach ($customer as $customer)
+                        <option value="{{ $customer->id }}">{{ $customer->code }}</option>
+                    @endforeach
+                </x-input.select>
+            </x-layouts.backend.card>
+            <x-layouts.backend.card>
+                <x-slot:title>Outlet & Warehouse</x-slot:title>
+                <x-input.select wire:model="outlet_id" label="Outlets">
+                    <option value="1">Sonargau</option>
+                    <option value="2">Paltan</option>
+                </x-input.select>
+                <x-input.select wire:model="warehouse_id" label="Warehouse">
+                    <option value="1">Sonargau</option>
+                    <option value="2">Paltan</option>
+                </x-input.select>
+            </x-layouts.backend.card>
+
             <x-layouts.backend.card>
                 <x-slot:title>Status</x-slot:title>
                 <x-input.select wire:model="payment_status" label="Payment Status">

@@ -6,7 +6,7 @@
     </style>
 @endpush
 <div>
-    <div class="d-flex align-items-center m-3">
+    <div class="d-flex align-items-center">
         <x-slot:title>Warehouse List</x-slot:title>
     <x-slot:button>
             <a href="{{ route('backend.setting.warehouse_details') }}" wire:navigate class="btn d-flex float-end btn-theme"><i

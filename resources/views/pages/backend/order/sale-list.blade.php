@@ -1,5 +1,5 @@
 <div>
-    <div class="d-flex align-items-center mb-3">
+    <div class="d-flex align-items-center">
         <x-slot:title>Sale list
         </x-slot:title>
     <x-slot:button>

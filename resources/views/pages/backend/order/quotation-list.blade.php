@@ -1,5 +1,5 @@
 <div>
-    <div class="d-flex align-items-center mb-3">
+    <div class="d-flex align-items-center">
         <x-slot:title>Quotation List</x-slot:title>
     <x-slot:button>
             <a href="{{ route('backend.order.quotation_details') }}" wire:navigate class="btn d-flex float-end btn-theme"><i
