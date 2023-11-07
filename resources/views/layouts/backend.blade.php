@@ -192,82 +192,26 @@
             <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
                 <div class="menu">
                     <div class="menu-header">Navigation</div>
-                    <div class="menu-item active">
+                    <div class="menu-item">
                         <a href="{{ route('backend.dashboard') }}" wire:navigate class="menu-link">
                             <span class="menu-icon"><i class="fa fa-laptop"></i></span>
                             <span class="menu-text">Dashboard</span>
                         </a>
                     </div>
-                    <div class="menu-item has-sub">
-                        <a href="#" class="menu-link">
-                            <span class="menu-icon">
-                                <i class="fa fa-sliders"></i>
-                            </span>
-                            <span class="menu-text">Settings</span>
-                            <span class="menu-caret"><b class="caret"></b></span>
-                        </a>
-                        <div class="menu-submenu">
-                            <div class="menu-item">
-                                <a href="{{ route('backend.setting.outlet_list') }}" wire:navigate class="menu-link">
-                                    <span class="menu-text">Outlet</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.setting.warehouse_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Warehouse</span>
-                                </a>
-                            </div>
+                    <x-menu label="Setting" sub="setting" icon="fa fa-sliders">
+                        <x-menu label="Outlet" route="backend.setting.outlet_list" />
+                        <x-menu label="Warehouse" route="backend.setting.warehouse_list" />
+                        <x-menu label="Mutliple Payment" route="backend.setting.multiple_payment_list" />
+                        <x-menu label="Payment Method" route="backend.setting.payment_list" />
+                    </x-menu>
+                    <x-menu label="Product Manage" sub="product" icon="fa fa-shopping-cart">
+                        <x-menu label="Products" route="backend.product.product_list" />
+                        <x-menu label="Brands" route="backend.product.vendor_list" />
+                        <x-menu label="Categories" route="backend.product.categorie_list" />
+                        <x-menu label="Units" route="backend.product.unit_list" />
+                    </x-menu>
 
-                            <div class="menu-item">
-                                <a href="{{ route('backend.setting.multiple_payment_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Mutliple Payment</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.setting.payment_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Payment Method</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="menu-item has-sub">
-                        <a href="#" class="menu-link">
-                            <span class="menu-icon">
-                                <i class="fa fa-shopping-cart"></i>
-                            </span>
-                            <span class="menu-text">Product Manage</span>
-                            <span class="menu-caret"><b class="caret"></b></span>
-                        </a>
-                        <div class="menu-submenu">
-                            <div class="menu-item">
-                                <a href="{{ route('backend.product.product_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Products</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.product.vendor_list') }}" wire:navigate class="menu-link">
-                                    <span class="menu-text">Brands</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.product.categorie_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Categories</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.product.unit_list') }}" wire:navigate class="menu-link">
-                                    <span class="menu-text">Units</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="menu-item has-sub">
+                   <div class="menu-item has-sub">
                         <a href="#" class="menu-link">
                             <span class="menu-icon">
                                 <i class="fa fa-users"></i>
@@ -422,6 +366,8 @@
                 <h1 class="page-header">
                     @isset($title)
                         {{ $title }}
+                    @else
+                        <div id="headertitle"></div>
                     @endisset
                     @isset($button)
                         <span {{ $button->attributes->merge(['class' => 'float-end']) }}>{{ $button }}</span>

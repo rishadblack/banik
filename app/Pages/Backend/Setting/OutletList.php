@@ -2,12 +2,10 @@
 
 namespace App\Pages\Backend\Setting;
 
-
 use Livewire\Attributes\On;
 use App\Http\Common\Component;
 use App\Models\Setting\Outlet;
 use Livewire\Attributes\Layout;
-
 
 #[Layout('layouts.backend')]
 class OutletList extends Component
