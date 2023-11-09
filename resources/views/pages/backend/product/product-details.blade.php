@@ -19,7 +19,7 @@
     <div class="container">
         <div class="d-flex align-items-center mb-3">
             <div>
-                <x-slot:title>Create/Update Product</x-slot:title>
+                <x-slot:title>{{ $product_id ? 'Update' : 'Create' }} Product</x-slot:title>
             </div>
         </div>
         <div class="row gx-4">
@@ -28,10 +28,10 @@
                     <x-slot:title>Product Information</x-slot:title>
                     <div class="row">
                         <div class="mb-3 col-sm-12 col-lg-6">
-                            <x-input.text wire:model="name" label="Name"/>
+                            <x-input.text wire:model="name" label="Name" />
                         </div>
                         <div class="mb-3 col-sm-12 col-lg-6">
-                            <x-input.text wire:model="code" label="Code"/>
+                            <x-input.text wire:model="code" label="Code" />
                         </div>
 
                         <div class="mb-3">
@@ -73,17 +73,24 @@
             </div>
             <div class="col-xl-4">
                 <x-layouts.backend.card>
-                    <x-slot:title>Collection</x-slot:title>
+                    <x-slot:title>Note</x-slot:title>
                     <x-slot:button>
                         <div class="dropdown">
-                            <x-button.default wire:click="storeProduct"
-                                class="btn-success">{{ $product_id ? 'Update' : 'Create' }}</x-button.default>
+                            <x-button.default wire:click="storeProduct" class="btn-success">Save</x-button.default>
                             <x-button.default wire:click="storeProduct('new')" class="btn-success">Save &
                                 New</x-button.default>
                             <a href="{{ route('backend.product.product_list') }}"
                                 wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                         </div>
                     </x-slot:button>
+                    <p>Easily manage your product catalog with our admin panel. <br><br> Add, edit, or remove products,
+                        update
+                        prices, and keep your inventory up to date. <br><br> Effortlessly showcase your products to your
+                        customers.</p>
+
+                </x-layouts.backend.card>
+                <x-layouts.backend.card>
+                    <x-slot:title>Collection</x-slot:title>
                     <x-input.select wire:model="brand_id" label="Product Brand">
                         @foreach ($vendor as $vendor)
                             <option value="{{ $vendor->id }}">{{ $vendor->name }}</option>
@@ -101,6 +108,10 @@
                             <option value="{{ $categories->id }}">{{ $categories->name }}</option>
                         @endforeach
                     </x-input.select>
+                </x-layouts.backend.card>
+                <x-layouts.backend.card>
+                    <x-slot:title>Status</x-slot:title>
+                    <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
                 </x-layouts.backend.card>
             </div>
         </div>

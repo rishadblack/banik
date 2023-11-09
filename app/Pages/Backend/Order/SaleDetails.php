@@ -63,16 +63,17 @@ class SaleDetails extends Component
         $Sale->type = 1;
         $Sale->contact_id = $this->contact_id;
         $Sale->payment_status = $this->payment_status;
+        $Sale->delivery_status = $this->delivery_status;
         $Sale->sales_person = $this->sales_person;
         $Sale->save();
 
-        $SaleInfo = OrderItem::findOrNew($this->sale_id);
-        $SaleInfo->order_id = $Sale->id;
-        $SaleInfo->amount = $this->amount;
-        $SaleInfo->quantity = $this->quantity;
-        $SaleInfo->discount = $this->discount;
-        $SaleInfo->discount_amount = $this->discount_amount;
-        $SaleInfo->save();
+        // $SaleInfo = OrderItem::findOrNew($this->sale_id);
+        // $SaleInfo->order_id = $Sale->id;
+        // $SaleInfo->amount = $this->amount;
+        // $SaleInfo->quantity = $this->quantity;
+        // $SaleInfo->discount = $this->discount;
+        // $SaleInfo->discount_amount = $this->discount_amount;
+        // $SaleInfo->save();
 
         if ($storeType == 'new') {
             $this->reset();
@@ -88,8 +89,7 @@ class SaleDetails extends Component
         $this->alert('success', $message);
     }
 
-    public function addPayment($storeType = null)
-    {
+    public function addPayment($storeType = null){
         $this->validate([
             'payment_method_id' => 'required',
         ]);
@@ -103,12 +103,12 @@ class SaleDetails extends Component
         $Payment->txn_date = $this->txn_date;
         $Payment->save();
 
-        if ($storeType == 'new') {
+        if($storeType == 'new'){
             $this->reset();
-        } else {
-            $this->sale_id = $Payment->id;
+        }else{
+            $this->sale_id = $Payment-> id;
         }
-        if ($this->sale_id) {
+        if($this->sale_id) {
             $message = 'Payment Updated Successfully!';
         } else {
             $message = 'Payment Added Successfully!';
@@ -116,6 +116,7 @@ class SaleDetails extends Component
 
 
         $this->alert('success', $message);
+
     }
     public function delete($id)
     {
@@ -138,12 +139,12 @@ class SaleDetails extends Component
             $this->sales_person = $Sale->sales_person;
             $this->delivery_charge = $Sale->delivery_charge;
 
-            $Sale = Transaction::find($this->sale_id);
-            $this->payment_method_id = $Sale->payment_method_id;
-            $this->net_amount = $Sale->net_amount;
-            $this->charge = $Sale->charge;
-            $this->ref = $Sale->ref;
-            $this->txn_date = $Sale->txn_date;
+            // $Sale = Transaction::find($this->sale_id);
+            // $this->payment_method_id = $Sale->payment_method_id;
+            // $this->net_amount = $Sale->net_amount;
+            // $this->charge = $Sale->charge;
+            // $this->ref = $Sale->ref;
+            // $this->txn_date = $Sale->txn_date;
 
             /* $SaleInfo = OrderItem::findOrNew($this->sale_id);
             $this->product_id = $SaleInfo->product_id;

@@ -4,14 +4,7 @@
         <div class="col-sm-12 col-lg-8 col-xl-8">
             <x-layouts.backend.card>
                 <x-slot:title>Personal Details</x-slot:title>
-                <x-slot:button>
-                    <div class="dropdown">
 
-                        <x-button.default wire:click="storeProfileUpdate" wire:target="storeProfileUpdate"
-                            class="btn-success">Update</x-button.default>
-                        <a href="{{ route('backend.dashboard') }}" wire:navigate="true"class="btn btn-sm btn-danger rounded">Close</a>
-                    </div>
-                </x-slot:button>
                 <div class="row">
                     <div class="col-sm-12 col-lg-3">
                         <x-input.text wire:model="name" label="Name" />
@@ -52,7 +45,10 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="col-sm-12 col-lg-6 mt-5">
+                        <x-button.default wire:click="storeProfileUpdate" wire:target="storeProfileUpdate"
+                            class="btn btn-lg btn-theme float-end">Update</x-button.default>
+                    </div>
                 </div>
 
             </x-layouts.backend.card>
@@ -62,10 +58,11 @@
                 <x-slot:title>Note</x-slot:title>
                 <p>Personal Information: Update your name, contact details, and other personal information. <br><br>
                     Profile Image: Change your profile picture to personalize your account.<br><br>
-                    By using the Admin Profile Edit, you can maintain an organized and secure admin account, making it easier to oversee your software's operations.</p>
+                    By using the Admin Profile Edit, you can maintain an organized and secure admin account, making it
+                    easier to oversee your software's operations.</p>
             </x-layouts.backend.card>
         </div>
-        {{--<div class="col-lg-12 col-xl-12">
+        {{-- <div class="col-lg-12 col-xl-12">
             <x-layouts.backend.card>
                 <x-slot:title>Password Change</x-slot:title>
                 <x-slot:button>
@@ -88,6 +85,6 @@
                     </div>
                 </div>
             </x-layouts.backend.card>
-        </div>--}}
+        </div> --}}
     </div>
 </div>

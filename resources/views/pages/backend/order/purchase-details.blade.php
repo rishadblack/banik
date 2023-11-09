@@ -113,7 +113,7 @@
 @endpush
 <div>
     <div class="d-flex align-items-center mb-3">
-        <x-slot:title>Purchase Details</x-slot:title>
+        <x-slot:title>{{ $purchase_id ? 'Update' : 'Create' }} Purchase</x-slot:title>
     </div>
 
     <div class="row gx-4">
@@ -399,7 +399,7 @@
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storePurchase" wire:target="storePurchase"
-                            class="btn-success">{{ $purchase_id ? 'Update' : 'Create' }}</x-button.default>
+                            class="btn-success">Save</x-button.default>
                         <x-button.default wire:click="storePurchase('new')" wire:target="storePurchase"
                             class="btn-success">Save
                             & New

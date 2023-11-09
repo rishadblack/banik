@@ -4,6 +4,8 @@ namespace App\Pages\Backend\Contact;
 
 
 use App\Models\Country;
+use App\Models\Upazila;
+use App\Models\District;
 use App\Models\Division;
 use Illuminate\Http\Request;
 use Livewire\Attributes\Url;
@@ -23,13 +25,13 @@ class CustomerDetails extends Component
 {
     use WithFileUploads;
     #[Url]
+    public $customer_id;
     public $image_url_preview;
     public $image_url;
     public $name;
     public $code;
     public $company_name;
     public $mobile;
-    public $customer_id;
     public $country_id;
     public $postcode;
     public $state_id;
@@ -38,6 +40,7 @@ class CustomerDetails extends Component
     public $address;
     public $credit_limit;
     public $opening_balance;
+    public $status;
 
     public function storeCustomer($storeType = null)
     {
@@ -62,6 +65,7 @@ class CustomerDetails extends Component
         $Customer->address = $this->address;
         $Customer->opening_balance = $this->opening_balance;
         $Customer->credit_limit = $this->credit_limit;
+        $Customer->status = $this->status;
         $Customer->save();
 
         $CustomerInfo = new ContactInfo();
@@ -113,8 +117,11 @@ class CustomerDetails extends Component
     }
     public function render()
     {
-        $group = ContactGroup::all();
+        $group= ContactGroup::all();
         $country = Country::all();
-        return view('pages.backend.contact.customer-details', compact('group','country'));
+        $division = Division::where('country_id', 19)->get();
+        $district = District::where('division_id', 5)->get();
+        $thana = Upazila::where('district_id', 1)->get();
+        return view('pages.backend.contact.customer-details', compact('group','country','division','district','thana'));
     }
 }

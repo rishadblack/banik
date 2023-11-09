@@ -1,8 +1,5 @@
 @push('css')
     <style>
-        .caret{
-            display: none;
-        }
     </style>
 @endpush
 <div>

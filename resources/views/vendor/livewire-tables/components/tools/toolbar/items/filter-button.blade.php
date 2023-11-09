@@ -1,7 +1,7 @@
 @aware(['component', 'tableName'])
 @props(['filterGenericData'])
 
-<div x-cloak x-show="!currentlyReorderingStatus" 
+<div x-cloak x-show="!currentlyReorderingStatus"
                 @class([
                     'ml-0 ml-md-2 mb-3 mb-md-0' => $component->isBootstrap4(),
                     'ms-0 ms-md-2 mb-3 mb-md-0' => $component->isBootstrap5() && $component->searchIsEnabled(),
@@ -47,9 +47,7 @@
                 @if($component->isTailwind())
                     <x-heroicon-o-funnel class="-mr-1 ml-2 h-5 w-5" />
                 @else
-                <span @class([
-                    'caret' => $component->isBootstrap(),
-                ])></span>
+
                 @endif
 
             </button>

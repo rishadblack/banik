@@ -21,10 +21,7 @@
                         <x-input.text wire:model="name" label="Group Name" />
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-6">
-                        <x-input.select wire:model="status" label="Status">
-                            <option value="1">Active</option>
-                            <option value="2">Inactive</option>
-                        </x-input.select>
+                        <x-input.select wire:model="status" label="Status" :options="config('status.common')" />
                     </div>
                 </div>
             </x-layouts.backend.card>

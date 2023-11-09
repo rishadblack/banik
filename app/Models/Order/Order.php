@@ -3,7 +3,9 @@
 namespace App\Models\Order;
 
 use App\Models\User;
+use App\Models\Setting\Outlet;
 use App\Models\Contact\Contact;
+use App\Models\Setting\Warehouse;
 use App\Models\Contact\ContactInfo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,13 +22,23 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function Contact(): BelongsToMany
+    public function Contact(): BelongsTo
     {
-        return $this->BelongsToMany(Contact::class);
+        return $this->belongsTo(Contact::class);
     }
-    public function ContactInfo(): BelongsToMany
+    public function ContactInfo(): BelongsTo
     {
-        return $this->BelongsToMany(ContactInfo::class);
+        return $this->belongsTo(ContactInfo::class);
     }
+    public function Outlet(): BelongsTo
+    {
+        return $this->belongsTo(Outlet::class);
+    }
+    public function Warehouse(): BelongsTo
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
+
+
 
 }

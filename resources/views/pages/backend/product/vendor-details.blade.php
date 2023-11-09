@@ -10,7 +10,7 @@
 <div class="container">
     <div class="d-flex align-items-center mb-3">
         <div>
-            <x-slot:title>Create/Update Brand</x-slot:title>
+            <x-slot:title>{{ $vendor_id ? 'Update' : 'Create' }} Brand</x-slot:title>
         </div>
     </div>
     <div class="row gx-4">
@@ -39,7 +39,7 @@
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeVendor" wire:target="storeVendor"
-                            class="btn-success">{{ $vendor_id ? 'Update' : 'Create' }}</x-button.default>
+                            class="btn-success">Save</x-button.default>
                         <x-button.default wire:click="storeVendor('new')" wire:target="storeVendor"
                             class="btn-success">Save & New
                         </x-button.default>
@@ -53,7 +53,10 @@
                     When you create and manage brands in your SaaS platform, you can associate products with their
                     respective brands, which helps customers make purchasing decisions and builds brand recognition.</p>
             </x-layouts.backend.card>
-
+            <x-layouts.backend.card>
+                <x-slot:title>Status</x-slot:title>
+                <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
+            </x-layouts.backend.card>
         </div>
     </div>
 </div>

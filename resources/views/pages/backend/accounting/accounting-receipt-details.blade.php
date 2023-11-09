@@ -9,7 +9,7 @@
 
 <div>
     <div class="d-flex align-items-center mb-3">
-        <x-slot:title>Create/Update Accounting Receipt</x-slot:title>
+        <x-slot:title>{{ $accountingreceipt_id ? 'Update' : 'Create' }} Accounting Receipt</x-slot:title>
     </div>
     <div class="row gx-4">
         <div class="col-xl-8">
@@ -56,7 +56,7 @@
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeReceipt" wire:target="storeReceipt"
-                            class="btn-success">{{ $accountingreceipt_id ? 'Update' : 'Create' }}</x-button.default>
+                            class="btn-success">Save</x-button.default>
                         <x-button.default wire:click="storeReceipt('new')" wire:target="storeReceipt"
                             class="btn-success">Save & New
                         </x-button.default>

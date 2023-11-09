@@ -9,7 +9,8 @@
 
 <div>
     <div class="d-flex align-items-center mb-3">
-        <x-slot:title>Create/Update Categories</x-slot:title>
+
+        <x-slot:title>{{$category_id ? 'Update' : 'Create'}} Category</x-slot:title>
     </div>
     <div class="row gx-4">
         <div class="col-xl-8">
@@ -33,7 +34,7 @@
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeCategory" wire:target="storeCategory"
-                            class="btn-success">{{ $category_id ? 'Update' : 'Create' }}</x-button.default>
+                            class="btn-success">Save</x-button.default>
                         <x-button.default wire:click="storeCategory('new')" wire:target="storeCategory"
                             class="btn-success">Save & New
                         </x-button.default>
@@ -47,6 +48,11 @@
                     together. <br><br> For instance, in an e-commerce platform, you might have categories like
                     "Electronics,"
                     "Clothing," and "Home Decor."</p>
+            </x-layouts.backend.card>
+
+            <x-layouts.backend.card>
+                <x-slot:title>Status</x-slot:title>
+                <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
             </x-layouts.backend.card>
 
         </div>

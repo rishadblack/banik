@@ -4,6 +4,8 @@ namespace App\Pages\Backend\Contact;
 
 
 use App\Models\Country;
+use App\Models\Upazila;
+use App\Models\District;
 use App\Models\Division;
 use Livewire\Attributes\Url;
 use App\Http\Common\Component;
@@ -32,6 +34,7 @@ class StuffDetails extends Component
     public $group_id;
     public $credit_limit;
     public $opening_balance;
+    public $status;
 
     public function storeStuff($storeType = null)
     {
@@ -53,6 +56,7 @@ class StuffDetails extends Component
         $Stuff->state_id = $this->state_id;
         $Stuff->postcode = $this->postcode;
         $Stuff->address = $this->address;
+        $Stuff->status = $this->status;
         $Stuff->save();
 
         $StuffInfo = new ContactInfo();
@@ -99,8 +103,11 @@ class StuffDetails extends Component
 
     public function render()
     {
-        $group = ContactGroup::all();
+        $group= ContactGroup::all();
         $country = Country::all();
-        return view('pages.backend.contact.stuff-details',compact('country','group'));
+        $division = Division::where('country_id', 19)->get();
+        $district = District::where('division_id', 5)->get();
+        $thana = Upazila::where('district_id', 1)->get();
+        return view('pages.backend.contact.stuff-details',compact('country','group','district','thana','division'));
     }
 }

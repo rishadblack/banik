@@ -19,6 +19,7 @@ return new class () extends Migration {
             $table->string('image_url')->nullable();
             $table->string('code')->nullable();
             $table->text('name')->nullable();
+            $table->tinyInteger('status')->nullable();
             $table->integer('sort')->nullable();
             $table->foreignId('demo_id')->nullable();
             $table->softDeletes();

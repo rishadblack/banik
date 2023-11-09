@@ -53,13 +53,13 @@ class QuotationTable extends DataTableComponent
             ->sortable()
             ->searchable(),
 
-            Column::make('Warehouse', 'warehouse_id')
+            Column::make('Warehouse', 'Warehouse.name')
             ->format(
                 fn($value, $row, Column $column) => $value ? $value : '-'
             )
             ->sortable()
             ->searchable(),
-            Column::make('outlet', 'outlet_id')
+            Column::make('outlet','Outlet.name')
             ->format(
                 fn($value, $row, Column $column) => $value ? $value : '-'
             )

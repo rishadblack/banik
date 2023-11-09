@@ -19,7 +19,7 @@ class SalesreturnDetails extends Component
 {
 
     #[Url]
-    public $sale_id;
+    public $salereturn_id;
     public $contact_id;
     public $product_id;
     public $ref;
@@ -49,7 +49,7 @@ class SalesreturnDetails extends Component
 
         ]);
 
-        $Sale = Order::findOrNew($this->sale_id);
+        $Sale = Order::findOrNew($this->salereturn_id);
         $Sale->user_id = Auth::id();
         $Sale->code = $this->code;
         $Sale->ref = $this->ref;
@@ -65,7 +65,7 @@ class SalesreturnDetails extends Component
         $Sale->payment_method_id = $this->payment_method_id;
         $Sale->save();
 
-       /* $SaleInfo = OrderItem::findOrNew($this->sale_id);
+       /* $SaleInfo = OrderItem::findOrNew($this->salereturn_id);
         $SaleInfo->order_id = $Sale->id;
         $SaleInfo->product_id = $this->product_id;
         $SaleInfo->name = $this->name;
@@ -79,9 +79,9 @@ class SalesreturnDetails extends Component
         if($storeType == 'new'){
             $this->reset();
         }else{
-            $this->sale_id = $Sale-> id;
+            $this->salereturn_id = $Sale-> id;
         }
-        if($this->sale_id) {
+        if($this->salereturn_id) {
             $message = 'Sale Return Updated Successfully!';
         } else {
             $message = 'Sale Return Added Successfully!';
@@ -92,8 +92,8 @@ class SalesreturnDetails extends Component
 
     public function mount()
     {
-        if($this->sale_id) {
-            $Sale = Order::find($this->sale_id);
+        if($this->salereturn_id) {
+            $Sale = Order::find($this->salereturn_id);
             $this->code = $Sale->code;
             $this->ref = $Sale->ref;
             $this->warehouse_id = $Sale->warehouse_id;
@@ -106,7 +106,7 @@ class SalesreturnDetails extends Component
             $this->sales_person = $Sale->sales_person;
             $this->payment_method_id = $Sale->payment_method_id;
 
-           /* $SaleInfo = OrderItem::findOrNew($this->sale_id);
+           /* $SaleInfo = OrderItem::findOrNew($this->salereturn_id);
             $this->product_id = $SaleInfo->product_id;
             $this->name = $SaleInfo->name;
             $this->amount = $SaleInfo->amount;

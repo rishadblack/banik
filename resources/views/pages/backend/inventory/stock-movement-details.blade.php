@@ -128,7 +128,7 @@
 @endpush
 <div>
     <div class="d-flex align-items-center mb-3">
-        <x-slot:title>Stock Movement Details</x-slot:title>
+        <x-slot:title>{{ $stocktransfer_id ? 'Update' : 'Create' }} Stock Movement</x-slot:title>
     </div>
     <div class="row gx-4">
         <div class="col-xl-8">
@@ -170,7 +170,7 @@
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeStockTransfer"
-                            class="btn-success">{{ $stocktransfer_id ? 'Update' : 'Create' }}</x-button.default>
+                            class="btn-success">Save</x-button.default>
                         <x-button.default wire:click="storeStockTransfer('new')" class="btn-success">Save &
                             New</x-button.default>
                         <a href="{{ route('backend.inventory.stock_movement_list') }}"

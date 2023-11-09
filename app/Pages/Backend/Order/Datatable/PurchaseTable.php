@@ -25,13 +25,13 @@ class PurchaseTable extends DataTableComponent
         $this->setTheadAttributes([
             'default' => true,
             'class' => 'custom-dt-thead',
-          ]);
+        ]);
     }
 
     public function builder(): Builder
     {
         return Order::query()
-        ->where('type',3);
+            ->where('type', 3);
     }
     public function filters(): array
     {
@@ -52,55 +52,55 @@ class PurchaseTable extends DataTableComponent
 
         return [
             Column::make('Id', 'id')
-                ->format(fn() => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
+                ->format(fn () => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
                 ->sortable()
                 ->searchable()
                 ->excludeFromColumnSelect(),
-                Column::make('Purchase Code', 'code')
+            Column::make('Purchase Code', 'code')
                 ->sortable()
                 ->searchable(),
 
-                Column::make('Warehouse', 'warehouse_id')
+            Column::make('Warehouse', 'Warehouse.name')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? $value : '-'
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->sortable()
                 ->searchable(),
-                Column::make('outlet', 'outlet_id')
+            Column::make('outlet', 'Outlet.name')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? $value : '-'
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->eagerLoadRelations()
                 ->sortable()
                 ->searchable(),
-                Column::make('Discount', 'discount_amount')
+            Column::make('Discount', 'discount_amount')
 
                 ->sortable()
                 ->searchable()
                 ->deselected(),
             Column::make('Create BY', 'User.name')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? $value : '-'
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->eagerLoadRelations()
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-           Column::make('Payment Status', 'payment_status')
+            Column::make('Payment Status', 'payment_status')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? '<span class="badge bg-primary text-primary-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
+                    fn ($value, $row, Column $column) => $value ? '<span class="badge bg-primary text-primary-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
                     class="fa fa-circle text-primary fs-9px fa-fw me-5px"></i>' . config("status.delivery_status.{$value}.name") . '</span>' : ''
                 )->sortable()->html(),
-           Column::make('Delivery Status', 'delivery_status')
+            Column::make('Delivery Status', 'delivery_status')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? '<span class="badge bg-danger text-danger-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
+                    fn ($value, $row, Column $column) => $value ? '<span class="badge bg-danger text-danger-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
                     class="fa fa-circle text-danger fs-9px fa-fw me-5px"></i>' . config("status.delivery_status.{$value}.name") . '</span>' : ''
                 )->sortable()->html(),
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')
-                        ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.order.purchase_details', ['purchase_id' => $row->id]))
+                        ->title(fn ($row) => 'Edit')
+                        ->location(fn ($row) => route('backend.order.purchase_details', ['purchase_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
@@ -111,8 +111,8 @@ class PurchaseTable extends DataTableComponent
                             ];
                         }),
                     LinkColumn::make(' Delete')
-                        ->title(fn($row) => 'Delete')
-                        ->location(fn($row) => 'javascript:void(0)')
+                        ->title(fn ($row) => 'Delete')
+                        ->location(fn ($row) => 'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
@@ -124,8 +124,6 @@ class PurchaseTable extends DataTableComponent
                             ];
                         }),
                 ]),
-            ];
-
+        ];
     }
-
 }

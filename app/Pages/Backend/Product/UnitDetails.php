@@ -16,6 +16,7 @@ class UnitDetails extends Component
 
     public $name;
     public $code;
+    public $status;
 
     public function storeUnit($storeType = null)
     {
@@ -27,6 +28,7 @@ class UnitDetails extends Component
         $Unit = Unit::findOrNew($this->unit_id);
         $Unit->name = $this->name;
         $Unit->code = $this->code;
+        $Unit->status = $this->status;
         $Unit->save();
 
         if($storeType == 'new') {

@@ -19,6 +19,12 @@ class DatabaseSeeder extends Seeder
             DivisionSeeder::class,
             DistrictSeeder::class,
             UpazilaSeeder::class,
+            BrandSeeder::class,
+            UnitSeeder::class,
+            CategorySeeder::class,
+            ProductSeeder::class,
+            ContactGroupSeeder::class,
+            PaymentMethodSeeder::class,
         ]);
     }
 }

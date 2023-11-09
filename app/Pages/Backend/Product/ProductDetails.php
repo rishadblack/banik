@@ -33,6 +33,7 @@ class ProductDetails extends Component
     public $category_id;
     public $unit;
     public $vendor;
+    public $status;
 
     public function storeProduct($storeType = null)
     {
@@ -59,6 +60,7 @@ class ProductDetails extends Component
         $Product->brand_id = $this->brand_id;
         $Product->category_id = $this->category_id;
         $Product->unit_id = $this->unit_id;
+        $Product->status = $this->status;
 
 
         $Product->save();

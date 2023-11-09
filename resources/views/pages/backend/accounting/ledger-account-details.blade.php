@@ -4,7 +4,7 @@
     </style>
 @endpush
 <div>
-    <x-slot:title>Ledger Account Details</x-slot:title>
+    <x-slot:title>{{ $ledger_account_id ? 'Update' : 'Create' }} Ledger Account</x-slot:title>
     <div class="row gx-4">
         <div class="col-xl-8">
             <x-layouts.backend.card>
@@ -33,7 +33,7 @@
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeLedgerAccount" wire:target="storeLedgerAccount"
-                            class="btn-success">{{ $ledger_account_id ? 'Update' : 'Create' }}</x-button.default>
+                            class="btn-success">Save</x-button.default>
                         <x-button.default wire:click="storeLedgerAccount('new')" wire:target="storeLedgerAccount"
                             class="btn-success">Save & New
                         </x-button.default>

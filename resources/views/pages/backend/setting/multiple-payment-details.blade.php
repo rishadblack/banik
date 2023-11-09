@@ -9,7 +9,7 @@
 
 <div>
     <div class="d-flex align-items-center mb-3">
-        <x-slot:title>Create/Update Multiple Payment</x-slot:title>
+        <x-slot:title>{{$multi_payment_id ? 'Update' : 'Create'}} Multiple Payment</x-slot:title>
     </div>
     <div class="row gx-4">
         <div class="col-xl-8">
@@ -57,7 +57,7 @@
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeMultiplePayment" wire:target="storeMultiplePayment"
-                            class="btn-success">{{ $multi_payment_id ? 'Update' : 'Create' }}</x-button.default>
+                            class="btn-success">Save</x-button.default>
                         <x-button.default wire:click="storeMultiplePayment('new')" wire:target="storeMultiplePayment"
                             class="btn-success">Save & New
                         </x-button.default>
@@ -73,6 +73,10 @@
                     cards, bank transfers, and more.
                 </p>
                 <x-input.textarea wire:model="note" label="Remark" />
+            </x-layouts.backend.card>
+            <x-layouts.backend.card>
+                <x-slot:title>Status</x-slot:title>
+                <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
             </x-layouts.backend.card>
 
 

@@ -6,7 +6,7 @@
 
 <div>
     <div class="d-flex align-items-center mb-3">
-        <x-slot:title>Create/Update Chart Of Account</x-slot:title>
+        <x-slot:title>{{ $chartaccount_id ? 'Update' : 'Create' }} Chart Of Account</x-slot:title>
     </div>
     <div class="row gx-4">
         <div class="col-xl-8">
@@ -29,7 +29,7 @@
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeChartOfAccount" wire:target="storeChartOfAccount"
-                            class="btn-success">{{ $chartaccount_id ? 'Update' : 'Create' }}</x-button.default>
+                            class="btn-success">Save</x-button.default>
                         <x-button.default wire:click="storeChartOfAccount('new')" wire:target="storeChartOfAccount"
                             class="btn-success">Save & New
                         </x-button.default>

@@ -21,6 +21,7 @@ class MultiplePaymentDetails extends Component
     public $charge;
     public $net_amount;
     public $note;
+    public $status;
     public function storeMultiplePayment($storeType = null){
         $this->validate([
             'code' => 'required|string',
@@ -33,6 +34,7 @@ class MultiplePaymentDetails extends Component
         $Payment->code = $this->code;
         $Payment->payment_method_id = $this->payment_method_id;
         $Payment->charge = $this->charge;
+        $Payment->status = $this->status;
         $Payment->net_amount = $this->net_amount;
         $Payment->note = $this->note;
         $Payment->save();

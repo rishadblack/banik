@@ -60,13 +60,13 @@ class SalesReturnTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
 
-                Column::make('Warehouse', 'warehouse_id')
+                Column::make('Warehouse', 'Warehouse.name')
                 ->format(
                     fn($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->sortable()
                 ->searchable(),
-                Column::make('outlet', 'outlet_id')
+                Column::make('outlet', 'Outlet.name')
                 ->format(
                     fn($value, $row, Column $column) => $value ? $value : '-'
                 )
@@ -97,7 +97,7 @@ class SalesReturnTable extends DataTableComponent
                 ->buttons([
                     LinkColumn::make('Edit')
                         ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.order.salesreturn_details', ['sale_id' => $row->id]))
+                        ->location(fn($row) => route('backend.order.salesreturn_details', ['salereturn_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,

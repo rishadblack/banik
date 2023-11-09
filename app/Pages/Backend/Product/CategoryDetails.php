@@ -18,6 +18,7 @@ class CategoryDetails extends Component
 
     public $name;
     public $code;
+    public $status;
 
     public function storeCategory($storeType = null)
     {
@@ -31,6 +32,7 @@ class CategoryDetails extends Component
 
         $Category->name = $this->name;
         $Category->code = $this->code;
+        $Category->status = $this->status;
         $Category->save();
 
         if($storeType == 'new'){

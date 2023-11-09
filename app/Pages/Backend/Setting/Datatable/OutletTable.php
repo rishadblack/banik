@@ -76,7 +76,10 @@ class OutletTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-
+                Column::make('Status', 'status')
+                ->format(
+                    fn($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.common.{$value}.class") . '">' . config("status.common.{$value}.name") . '</span>' : ''
+                )->sortable()->html(),
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')

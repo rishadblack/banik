@@ -6,7 +6,7 @@
 
 <div>
     <div class="d-flex align-items-center mb-3">
-        <x-slot:title>Create/Update Payment Method</x-slot:title>
+        <x-slot:title>{{$payment_id ? 'Update' : 'Create'}} Payment Method</x-slot:title>
     </div>
     <div class="row gx-4">
         <div class="col-xl-8">
@@ -51,7 +51,7 @@
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeMethod" wire:target="storeMethod"
-                            class="btn-success">{{ $payment_id ? 'Update' : 'Create' }}</x-button.default>
+                            class="btn-success">Save</x-button.default>
                         <x-button.default wire:click="storeMethod('new')" wire:target="storeMethod"
                             class="btn-success">Save & New
                         </x-button.default>
@@ -63,12 +63,13 @@
                     transactions as convenient as possible for you. <br><br> We understand that flexibility is crucial
                     when it
                     comes to managing your business's finances. <br><br>
-
-                    Payment Gateways: Seamlessly integrate with popular payment gateways, allowing you to accept
-                    payments from your customers with ease. <br><br>
                     Multiple Payment Methods: Provide your customers with various payment methods, including credit
                     cards, bank transfers, and more.
                 </p>
+            </x-layouts.backend.card>
+            <x-layouts.backend.card>
+                <x-slot:title>Status</x-slot:title>
+                <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
             </x-layouts.backend.card>
 
         </div>

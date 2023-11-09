@@ -4,15 +4,6 @@
         <div class="col-sm-12 col-lg-8 col-xl-8">
             <x-layouts.backend.card>
                 <x-slot:title>Password Change</x-slot:title>
-                <x-slot:button>
-                    <div class="dropdown">
-
-                        <x-button.default wire:click="storePasswordChange" wire:target="storePasswordChange"
-                            class="btn-success">Update</x-button.default>
-                        <a href="{{ route('backend.dashboard') }}"
-                            wire:navigate="true"class="btn-sm btn btn-danger rounded">Close</a>
-                    </div>
-                </x-slot:button>
                 <div class="row">
                     <div class="col-sm-12 col-lg-6">
                         <x-input.password wire:model.lazy="current_password" label="Current Password" />
@@ -25,7 +16,10 @@
                     <div class="col-sm-12 col-lg-6">
                         <x-input.password wire:model.lazy="password_confirmation" label="Confirm New Password" />
                     </div>
+
                 </div>
+                <x-button.default wire:click="storePasswordChange" wire:target="storePasswordChange"
+                class="btn btn-lg btn-theme float-end mt-3">Update</x-button.default>
             </x-layouts.backend.card>
         </div>
         <div class="col-sm-12 col-lg-4 col-xl-4">

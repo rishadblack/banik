@@ -19,6 +19,7 @@ class VendorDetails extends Component
 
     public $name;
     public $code;
+    public $status;
 
 
     public function storeVendor($storeType = null)
@@ -33,6 +34,7 @@ class VendorDetails extends Component
         $Vendor = Brand::findOrNew($this->vendor_id);
         $Vendor->name = $this->name;
         $Vendor->code = $this->code;
+        $Vendor->status = $this->status;
         $Vendor->save();
 
 

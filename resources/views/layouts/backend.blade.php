@@ -59,7 +59,15 @@
         }
 
         .app-sidebar .menu .menu-item.active:not(.has-sub)>.menu-link {
-            color: #5555c3;
+            color: #fff;
+        }
+
+        .app-sidebar .menu .menu-item .menu-link {
+            line-height: var(--bs-app-sidebar-menu-link-line-height);
+            color: #a3aed1;
+        }
+        .app-sidebar .menu .menu-item .menu-link:hover {
+            color: #ffffff;
         }
 
         .btn-success {
@@ -92,12 +100,29 @@
             min-height: 100%;
             margin-left: 15rem;
         }
-    </style>
-    <style>
+
         .custom-dt-thead {
             vertical-align: bottom;
             background-color: #acacde;
         }
+
+        .app-sidebar .menu .menu-item {
+            padding: 4px 18px;
+            font-size: 17px !important;
+        }
+
+        .app-sidebar-content {
+            background-color: #111c43;
+        }
+
+        /* .app-sidebar .menu .menu-item .menu-icon, */
+        /* .app-sidebar .menu .menu-item .menu-text {
+            margin-left: .625rem;
+            color: #a3aed1;
+        } */
+        /* .app-sidebar .menu .menu-item .menu-text:hover {
+            color: #ffffff;
+        } */
 
         /* a {
             text-decoration: none;
@@ -189,7 +214,7 @@
         </div>
 
         <div id="sidebar" class="app-sidebar">
-            <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
+            <div class="app-sidebar-content shadow" data-scrollbar="true" data-height="100%">
                 <div class="menu">
                     <div class="menu-header">Navigation</div>
                     <div class="menu-item">
@@ -210,150 +235,31 @@
                         <x-menu label="Categories" route="backend.product.categorie_list" />
                         <x-menu label="Units" route="backend.product.unit_list" />
                     </x-menu>
-
-                   <div class="menu-item has-sub">
-                        <a href="#" class="menu-link">
-                            <span class="menu-icon">
-                                <i class="fa fa-users"></i>
-                            </span>
-                            <span class="menu-text">Contact Manage</span>
-                            <span class="menu-caret"><b class="caret"></b></span>
-                        </a>
-                        <div class="menu-submenu">
-                            <div class="menu-item">
-                                <a href="{{ route('backend.contact.customer_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Customers</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.contact.supplier_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Suppliers</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.contact.biller_list') }}" wire:navigate class="menu-link">
-                                    <span class="menu-text">Billers</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.contact.stuff_list') }}" wire:navigate class="menu-link">
-                                    <span class="menu-text">Stuffs</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.contact.group_list') }}" wire:navigate class="menu-link">
-                                    <span class="menu-text">Groups</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="menu-item has-sub">
-                        <a href="#" class="menu-link">
-                            <span class="menu-icon">
-                                <i class="fa fa-file-text"></i>
-                            </span>
-                            <span class="menu-text">Order Manage</span>
-                            <span class="menu-caret"><b class="caret"></b></span>
-                        </a>
-                        <div class="menu-submenu">
-                            <div class="menu-item">
-                                <a href="{{ route('backend.order.purchase_list') }}" wire:navigate class="menu-link">
-                                    <span class="menu-text">Purchases</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.order.purchase_return_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Purchase Returns</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.order.sale_list') }}" wire:navigate class="menu-link">
-                                    <span class="menu-text">Sales</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.order.sales_return_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Sales Return</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.order.quotation_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Quotation</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.order.delivery_challan_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Delivery Challan</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="menu-item has-sub">
-                        <a href="#" class="menu-link">
-                            <span class="menu-icon">
-                                <i class="fa fa-database"></i>
-                            </span>
-                            <span class="menu-text">Invetory</span>
-                            <span class="menu-caret"><b class="caret"></b></span>
-                        </a>
-                        <div class="menu-submenu">
-                            <div class="menu-item">
-                                <a href="{{ route('backend.inventory.stock_adjustment_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Stock Adjustment</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.inventory.stock_movement_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Stock Movement</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="menu-item has-sub">
-                        <a href="#" class="menu-link">
-                            <span class="menu-icon">
-                                <i class="fa fa-dollar"></i>
-                            </span>
-                            <span class="menu-text">Accounting</span>
-                            <span class="menu-caret"><b class="caret"></b></span>
-                        </a>
-                        <div class="menu-submenu">
-                            <div class="menu-item">
-                                <a href="{{ route('backend.accounting.chart_account_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Chart Of Account</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.accounting.accounting_receipt_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Accounting Receipt</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.accounting.receipt_type_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Receipt Type</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="{{ route('backend.accounting.ledger_account_list') }}" wire:navigate
-                                    class="menu-link">
-                                    <span class="menu-text">Ledger Account</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    <x-menu label="Contact Manage" sub="contact" icon="fa fa-users">
+                        <x-menu label="Customers" route="backend.contact.customer_list" />
+                        <x-menu label="Suppliers" route="backend.contact.supplier_list" />
+                        <x-menu label="Billers" route="backend.contact.biller_list" />
+                        <x-menu label="Stuffs" route="backend.contact.stuff_list" />
+                        <x-menu label="Groups" route="backend.contact.group_list" />
+                    </x-menu>
+                    <x-menu label="Order Manage" sub="order" icon="fa fa-file-text">
+                        <x-menu label="Purchases" route="backend.order.purchase_list" />
+                        <x-menu label="Purchase Returns" route="backend.order.purchase_return_list" />
+                        <x-menu label="Sales" route="backend.order.sale_list" />
+                        <x-menu label="Sales Return" route="backend.order.sales_return_list" />
+                        <x-menu label="Quotation" route="backend.order.quotation_list" />
+                        <x-menu label="Delivery Challan" route="backend.order.delivery_challan_list" />
+                    </x-menu>
+                    <x-menu label="Invetory" sub="inventory" icon="fa fa-database">
+                        <x-menu label="Stock Adjustment" route="backend.inventory.stock_adjustment_list" />
+                        <x-menu label="Stock Movement" route="backend.inventory.stock_movement_list" />
+                    </x-menu>
+                    <x-menu label="Accounting" sub="accounting" icon="fa fa-dollar">
+                        <x-menu label="Chart Of Account" route="backend.accounting.chart_account_list" />
+                        <x-menu label="Accounting Receipt" route="backend.accounting.accounting_receipt_list" />
+                        <x-menu label="Receipt Type" route="backend.accounting.receipt_type_list" />
+                        <x-menu label="Ledger Account" route="backend.accounting.ledger_account_list" />
+                    </x-menu>
                 </div>
             </div>
 

@@ -25,6 +25,7 @@ class OutletDetails extends Component
     public $address;
     public $upazila_id;
     public $district_id;
+    public $status;
     public function storeOutlet($storeType = null)
     {
         $this->validate([
@@ -37,6 +38,7 @@ class OutletDetails extends Component
         $Outlet->code = $this->code;
         $Outlet->name = $this->name;
         $Outlet->address = $this->address;
+        $Outlet->status = $this->status;
         $Outlet->country_id = $this->country_id;
         $Outlet->division_id = $this->division_id;
         $Outlet->district_id = $this->district_id;

@@ -72,7 +72,10 @@ class BillerTable extends DataTableComponent
                 ->eagerLoadRelations()
                 ->sortable()
                 ->searchable(),
-
+                Column::make('Status', 'status')
+                ->format(
+                    fn($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.common.{$value}.class") . '">' . config("status.common.{$value}.name") . '</span>' : ''
+                )->sortable()->html(),
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')
@@ -93,7 +96,7 @@ class BillerTable extends DataTableComponent
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
-                                'data-listener' => 'CustomerDelete',
+                                'data-listener' => 'billerDelete',
                                 'class' => 'badge bg-danger me-1 p-2 ',
                                 'icon' => 'fa fa-trash',
                                 'title' => 'Delete',

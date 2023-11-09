@@ -25,6 +25,7 @@ return new class () extends Migration {
             $table->text('description')->nullable();
             $table->string('product_image')->nullable();
             $table->double('opening_stock', 20, 2)->nullable();
+            $table->tinyInteger('status')->nullable();
             $table->tinyInteger('is_single')->nullable();
             $table->string('low_stock_alert', 100)->nullable();
             $table->tinyInteger('is_out_of_stock_sell')->nullable();
