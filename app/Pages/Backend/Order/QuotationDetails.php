@@ -55,12 +55,10 @@ class QuotationDetails extends Component
         $Quotation->warehouse_id = $this->warehouse_id;
         $Quotation->outlet_id = $this->outlet_id;
         $Quotation->type = 5;
+        $Quotation->payment_status = $this->payment_status;
+        $Quotation->delivery_status = $this->delivery_status;
         $Quotation->contact_id = $this->contact_id;
-        $Quotation->discount = $this->discount;
-        $Quotation->delivery_charge = $this->delivery_charge;
-        $Quotation->payment_date = $this->payment_date;
         $Quotation->sales_person = $this->sales_person;
-        $Quotation->payment_method_id = $this->payment_method_id;
         $Quotation->save();
 
         /*$SaleInfo = OrderItem::findOrNew($this->quotation_id);

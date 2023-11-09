@@ -51,8 +51,8 @@
                 <x-slot:title>Note</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
-                        <x-button.default wire:click="storeStuff" class="btn-success">Save</x-button.default>
-                        <x-button.default wire:click="storeStuff('new')" class="btn-success">Save &
+                        <x-button.default wire:click="storeStuff" wire:target="storeStuff" class="btn-success">Save</x-button.default>
+                        <x-button.default wire:click="storeStuff('new')" wire:target="storeStuff" class="btn-success">Save &
                             New</x-button.default>
                         <a href="{{ route('backend.contact.stuff_list') }}"
                             wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>

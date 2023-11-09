@@ -63,9 +63,9 @@
                 <x-slot:title>Supplier Address</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
-                        <x-button.default wire:click="storeSupplier"
+                        <x-button.default wire:click="storeSupplier" wire:target="storeSupplier"
                             class="btn-success">Save</x-button.default>
-                        <x-button.default wire:click="storeSupplier('new')" class="btn-success">Save &
+                        <x-button.default wire:click="storeSupplier('new')" wire:target="storeSupplier" class="btn-success">Save &
                             New</x-button.default>
                         <a href="{{ route('backend.contact.supplier_list') }}"
                             wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>

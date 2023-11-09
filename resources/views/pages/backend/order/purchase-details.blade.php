@@ -106,8 +106,28 @@
         strong {
             font-weight: 700;
         }
-        .net-amount{
-            margin-top: 3px;
+
+        .net-amount {
+            background-color: #cbccdb;
+            padding: 10px;
+            border-radius: 15px;
+            padding: 0px 34px;
+            margin-right: 50px;
+            padding-bottom: 9px;
+        }
+
+        .net-amount .sm {
+            font-size: 14px;
+        }
+
+        .net-amount .value {
+            background-color: #91caf4;
+            padding: 0px 10px;
+            font-weight: 700;
+            font-size: 20px;
+            display: inline;
+            border-radius: 15px;
+            margin-top: 20px;
         }
     </style>
 @endpush
@@ -129,8 +149,8 @@
                         </x-slot:search>
 
                         <x-slot:button>
-                            <x-button.default type="button" class="btn btn-sm rounded btn-info"
-                               data-bs-toggle="modal" data-bs-target="#openProductAddModal">Add
+                            <x-button.default type="button" class="btn btn-sm rounded btn-info" data-bs-toggle="modal"
+                                data-bs-target="#openProductAddModal">Add
                                 Product</x-button.default>
                         </x-slot:button>
 
@@ -155,7 +175,8 @@
                                                 class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
                                         </div>
                                         <div class="ps-6 flex-1 ">
-                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro Max</a>
+                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro
+                                                    Max</a>
                                             </div>
                                             <div class="text-body text-opacity-50 small ">
                                                 SKU: IP14PROMAX-512
@@ -186,7 +207,8 @@
                                                 class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
                                         </div>
                                         <div class="ps-6 flex-1 ">
-                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro Max</a>
+                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro
+                                                    Max</a>
                                             </div>
                                             <div class="text-body text-opacity-50 small ">
                                                 SKU: IP14PROMAX-512
@@ -217,7 +239,8 @@
                                                 class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
                                         </div>
                                         <div class="ps-6 flex-1 ">
-                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro Max</a>
+                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro
+                                                    Max</a>
                                             </div>
                                             <div class="text-body text-opacity-50 small ">
                                                 SKU: IP14PROMAX-512
@@ -260,18 +283,18 @@
                             <tbody>
                                 <tr class="mb-1">
                                     <td class="w-150px">Subtotal</td>
-                                    <td>3 items</td>
+                                    <td></td>
                                     <td class="text-end">$3,496.00</td>
                                 </tr>
                                 <tr class="mb-1">
                                     <td class="w-150px">Discount</td>
-                                    {{--<td><x-input.text wide:model="discount" class="width" placeholder="" /></td>--}}
+                                    {{-- <td><x-input.text wide:model="discount" class="width" placeholder="" /></td> --}}
                                     <td></td>
                                     <td class="text-end">$3,496.00</td>
                                 </tr>
                                 <tr class="mb-1">
                                     <td>Tax</td>
-                                    <td>GST 5%</td>
+                                    <td></td>
                                     <td class="text-end">$174.80</td>
                                 </tr>
                                 <tr class="mb-1">
@@ -307,10 +330,9 @@
             <x-layouts.backend.card class="payment-info">
                 <x-slot:title>Payment Info</x-slot:title>
                 <x-slot:button>
-                    <a href="#" wire:click="addPayment" wire:navigate
-                    class="btn btn-sm btn-theme"> Add Payment</a>
-                    <a href="#" wire:click="addPayment" wire:navigate
-                    class="btn btn-sm btn-danger"> Reset</a>
+                    <x-button.default type="button" href="#" wire:click="addPayment" wire:navigate class="btn btn-sm btn-theme"> Add
+                        Payment</x-button.default>
+                    <x-button.default type="button" href="#" wire:click="addPayment" wire:navigate class="btn btn-sm btn-danger"> Reset</x-button.default>
                 </x-slot:button>
                 <div class="row ">
                     <div class="col-sm-12 col-md-4 col-lg-4">
@@ -326,7 +348,7 @@
                         <x-input.text wire:model="ref" label="Reference" />
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.date wire:model="txn_date" label="Date" />
+                        <x-input.date wire:model="txn_date" label="Date" placeholder="Enter Date"/>
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
                         <x-input.text-group wire:model="net_amount" label="Amount">
@@ -339,7 +361,8 @@
                         <x-input.text wire:model="charge" label="Charge" />
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <label class="mt-3 mt-4 float-end fs-4">Net Amount : $0.00</label>
+                        <div class="mt-3 mt-4 float-end fs-4 net-amount text-center"><span class="sm">Net
+                                Amount</span> <br><span class="value"> $0.00</span></div>
                     </div>
                 </div>
 
@@ -381,7 +404,8 @@
                                 <td>{{ $transaction->net_amount }}</td>
                                 <td>{{ $transaction->charge }}</td>
                                 <td>{{ $transaction->txn_date }}</td>
-                                <td> <a wire:click="delete({{ $transaction->id }})" wire:navigate="true"class="btn btn-danger btn-sm rounded"><i
+                                <td> <a wire:click="delete({{ $transaction->id }})"
+                                        wire:navigate="true"class="btn btn-danger btn-sm rounded"><i
                                             class="fa fa-close"></i></a></td>
 
                             </tr>
