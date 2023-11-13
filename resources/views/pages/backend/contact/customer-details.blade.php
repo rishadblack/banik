@@ -22,15 +22,16 @@
                     <div class="col-sm-6 col-md-4 col-md-4">
                         <x-input.text wire:model="company_name" label="Company name" />
                     </div>
-                    <div class="col-sm-6 col-md-8 col-md-8">
-                        <x-input.text wire:model="address" label="Address" />
-                    </div>
+
                     <div class="col-sm-6 col-md-4 col-md-4">
                         <x-input.text wire:model="opening_balance" label="Opening Balance" />
                     </div>
 
                     <div class="col-sm-6 col-md-4 col-md-4">
                         <x-input.text wire:model="credit_limit" label="Credit Limit" />
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-md-6">
+                        <x-input.text wire:model="address" label="Address" />
                     </div>
                 </div>
             </x-layouts.backend.card>

@@ -17,13 +17,16 @@
                     <div class="col-sm-6 col-md-4 col-md-4">
                         <x-input.text wire:model="mobile" label="Mobile" />
                     </div>
+                    <div class="col-sm-6 col-md-6 col-md-6">
+                        <x-input.text wire:model="address" label="Address" />
+                    </div>
                 </div>
 
             </x-layouts.backend.card>
             <x-layouts.backend.card>
                 <x-slot:title>Stuff Address</x-slot:title>
                 <div class="row">
-                    <div class="col-sm-6 col-md-4 col-md-4"><x-input.text wire:model="address" label="Address" /></div>
+
                     <div class="col-sm-6 col-md-4 col-md-4"><x-input.select wire:model="country_id" label="Country">
                             @foreach ($country as $country)
                                 <option value="{{ $country->id }}">{{ $country->name }}</option>
