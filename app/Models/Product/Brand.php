@@ -14,6 +14,11 @@ class Brand extends Model
     protected $guarded = [];
     public $timestamps = true;
 
+    public function scopeActive($query)
+    {
+        return $query->whereStatus(1);
+    }
+
     public function User(): BelongsTo
     {
         return $this->belongsTo(User::class);

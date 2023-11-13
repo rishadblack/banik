@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
-
 trait WithSweetAlert
 {
     use LivewireAlert;
@@ -15,7 +14,8 @@ trait WithSweetAlert
             $title = __('default.are_you_sure');
         }
 
-        if (!isset($data['isConfirmed'])) {
+        if (!isset($data['isConfirmed']) && isset($data['listener'])) {
+
             $this->alert('warning', $title, array_merge(
                 [
                     'position' => 'center',
@@ -29,8 +29,8 @@ trait WithSweetAlert
                 $options,
             ));
             return false;
-        } elseif ($data['data']['inputAttributes']) {
-            return $data['data']['inputAttributes'];
+        } elseif ($data['inputAttributes']) {
+            return $data['inputAttributes'];
         }
     }
 }

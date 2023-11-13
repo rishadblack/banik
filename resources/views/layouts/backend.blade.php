@@ -289,6 +289,7 @@
     <script src="{{ asset('backend/assets/js/vendor.min.js') }}?v={{ now() }}" type="text/javascript"></script>
     <script src="{{ asset('backend/assets/js/app.min.js') }}?v={{ now() }}" type="text/javascript"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js" type="text/javascript"></script>
     @livewireScripts
     <x-livewire-alert::scripts />
     <script>

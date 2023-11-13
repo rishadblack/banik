@@ -7,7 +7,6 @@ use App\Http\Common\Component;
 use App\Models\Product\Product;
 use Livewire\Attributes\Layout;
 
-
 #[Layout('layouts.backend')]
 class ProductList extends Component
 {

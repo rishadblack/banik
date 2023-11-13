@@ -6,3 +6,6 @@ window.bootstrap = bootstrap;
 
 import { livewire_hot_reload } from "virtual:livewire-hot-reload";
 livewire_hot_reload();
+
+import TomSelect from "tom-select";
+window.TomSelect = TomSelect;

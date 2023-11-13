@@ -52,7 +52,7 @@ class CategoryTable extends DataTableComponent
     {
         return [
             Column::make('SN', 'id')
-                ->format(fn () => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
+                ->format(fn() => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
                 ->sortable()
                 ->searchable()
                 ->excludeFromColumnSelect(),
@@ -65,7 +65,7 @@ class CategoryTable extends DataTableComponent
 
             Column::make('Create BY', 'User.name')
                 ->format(
-                    fn ($value, $row, Column $column) => $value ? $value : '-'
+                    fn($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->eagerLoadRelations()
                 ->sortable()
@@ -78,21 +78,20 @@ class CategoryTable extends DataTableComponent
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')
-                        ->title(fn ($row) => 'Edit')
-                        ->location(fn ($row) => 'javascript:void(0)')
+                        ->title(fn($row) => 'Edit')
+                        ->location(fn($row) => 'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
+                                'data-listener' => 'openCategoryModal',
                                 'class' => 'badge bg-success me-1 p-2 ',
                                 'icon' => 'fa fa-edit',
                                 'title' => 'Edit',
-                                'data-bs-toggle'=> 'modal',
-                                'data-bs-target'=>'#addNew',
                             ];
                         }),
                     LinkColumn::make(' Delete')
-                        ->title(fn ($row) => 'Delete')
-                        ->location(fn ($row) => 'javascript:void(0)')
+                        ->title(fn($row) => 'Delete')
+                        ->location(fn($row) => 'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,

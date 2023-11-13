@@ -57,6 +57,7 @@ use App\Pages\Backend\Accounting\ChartofAccountDetails;
 use App\Pages\Backend\Inventory\StockAdjustmentDetails;
 use App\Pages\Backend\Accounting\AccountingReceiptDetails;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\SearchController;
 
 Route::get('login', Login::class)->name('login');
 Route::get('register', Register::class)->name('register');
@@ -159,6 +160,8 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth']]
 
 
     });*/
+
+    Route::get('search/{type}', [SearchController::class, 'index'])->name('search');
 });
 
 require __DIR__ . '/auth.php';

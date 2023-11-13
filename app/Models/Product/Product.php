@@ -15,6 +15,11 @@ class Product extends Model
     protected $guarded = [];
     public $timestamps = true;
 
+    public function scopeActive($query)
+    {
+        return $query->whereStatus(1);
+    }
+
     public function User(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -30,5 +35,10 @@ class Product extends Model
     public function Unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    public function scopeSearch($query, $term)
+    {
+        return $query->whereLike(['code','name'], $term);
     }
 }

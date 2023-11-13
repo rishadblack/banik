@@ -88,11 +88,7 @@
                 </x-layouts.backend.card>
                 <x-layouts.backend.card>
                     <x-slot:title>Collection</x-slot:title>
-                    <x-input.select wire:model="brand_id" label="Product Brand">
-                        @foreach ($vendor as $vendor)
-                            <option value="{{ $vendor->id }}">{{ $vendor->name }}</option>
-                        @endforeach
-                    </x-input.select>
+                    <x-search.brands wire:model="brand_id" label="Product Brand" />
 
                     <x-input.select wire:model="unit_id" label="Product Unit">
                         @foreach ($unit as $unit)

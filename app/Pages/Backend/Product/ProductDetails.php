@@ -32,20 +32,19 @@ class ProductDetails extends Component
     public $unit_id;
     public $category_id;
     public $unit;
-    public $vendor;
     public $status;
 
     public function storeProduct($storeType = null)
     {
-        $this->validate([
+        $data = $this->validate([
             'name' => 'required',
             'code' => 'required|string',
             'category_id' => 'required',
             'brand_id' => 'required',
             'unit_id' => 'required',
-            'net_sale_price' => 'required',
-            'net_purchase_price' => 'required',
-            'profit_margin' => 'required',
+            'net_sale_price' => 'nullable',
+            'net_purchase_price' => 'nullable',
+            'profit_margin' => 'nullable',
         ]);
 
         $Product = Product::findOrNew($this->product_id);
@@ -82,6 +81,13 @@ class ProductDetails extends Component
 
     }
 
+    public function productReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+        $this->code = str_pad((Category::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
+    }
+
     public function mount()
     {
         if($this->product_id) {
@@ -95,6 +101,8 @@ class ProductDetails extends Component
             $this->brand_id = $Product->brand_id;
             $this->category_id = $Product->category_id;
             $this->unit_id = $Product->unit_id;
+        }else{
+            $this->productReset();
         }
     }
 
@@ -102,7 +110,6 @@ class ProductDetails extends Component
     {
         $this->categories = Category::all();
         $this->unit = Unit::all();
-        $this->vendor = Brand::all();
         return view('pages.backend.product.product-details');
     }
 }
