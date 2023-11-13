@@ -12,7 +12,7 @@ use App\Models\Accounting\ChartOfAccount;
 #[Layout('layouts.backend')]
 class ChartofAccountDetails extends Component
 {
-    #[Url]
+
     public $chartaccount_id;
     public $country_id;
     public $division_id;

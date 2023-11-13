@@ -61,6 +61,10 @@ class ChartOfAccountTable extends DataTableComponent
                 Column::make('Name', 'name')
                 ->sortable()
                 ->searchable(),
+                Column::make('Status', 'status')
+                ->format(
+                    fn($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.common.{$value}.class") . '">' . config("status.common.{$value}.name") . '</span>' : ''
+                )->sortable()->html(),
 
             Column::make('Create By', 'User.name')
                 ->format(
@@ -75,15 +79,14 @@ class ChartOfAccountTable extends DataTableComponent
                 ->buttons([
                     LinkColumn::make('Edit')
                         ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.accounting.chart_account_list', ['chartaccount_id' => $row->id]))
+                        ->location(fn($row) =>  'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
+                                'data-listener' => 'openChartOfAccountModal',
                                 'class' => 'badge bg-success me-1 p-2 ',
                                 'icon' => 'fa fa-edit',
                                 'title' => 'Edit',
-                                'data-bs-toggle'=> 'modal',
-                                'data-bs-target'=>'#addNew',
                             ];
                         }),
                     LinkColumn::make(' Delete')

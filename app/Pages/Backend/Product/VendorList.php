@@ -7,36 +7,66 @@ use Livewire\Attributes\Url;
 use App\Models\Product\Brand;
 use App\Http\Common\Component;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
 
 
 #[Layout('layouts.backend')]
 class VendorList extends Component
 
 {
-    #[Url]
+
     public $vendor_id;
 
     public $name;
     public $code;
-    public $status;
+    public $status = 1;
     public $vendors;
 
-    #[On('brandDelete')]
-    public function destroy($data)
+    #[On('openBrandModal')]
+    public function openBrandModal($data = [])
     {
-        // $data = $this->alertConfirm($data, 'Are you sure to delete Vendor?');
+        $this->brandReset();
 
         if(isset($data['id'])) {
             $Vendor = Brand::find($data['id']);
 
             if(!$Vendor) {
-                $this->alert('error', 'Vendor Not Found!!');
+                $this->alert('error', 'Brand Not Found!!');
+                return;
+            }
+
+            $this->vendor_id = $Vendor->id;
+            $this->name = $Vendor->name;
+            $this->code = $Vendor->code;
+            $this->status = $Vendor->status;
+        }
+
+        $this->dispatch('modalOpen', 'brandModal');
+    }
+
+    public function brandReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+        $this->code = str_pad((Brand::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
+    }
+
+    #[On('brandDelete')]
+    public function destroy($data)
+    {
+        $data = $this->alertConfirm($data, 'Are you sure to delete Brand?');
+
+        if(isset($data['id'])) {
+            $Vendor = Brand::find($data['id']);
+
+            if(!$Vendor) {
+                $this->alert('error', 'Brand Not Found!!');
                 return;
             }
 
             $Vendor->delete();
 
-            $this->alert('success', 'Vendor Deleted Successfully!!');
+            $this->alert('success', 'Brand Deleted Successfully!!');
             $this->dispatch('refreshDatatable');
         }
 
@@ -51,6 +81,13 @@ class VendorList extends Component
 
 
         $Vendor = Brand::findOrNew($this->vendor_id);
+
+        if ($this->vendor_id) {
+            $message = 'Brand Updated Successfully!';
+        } else {
+            $message = 'Brand Added Successfully!';
+            $Vendor->user_id = Auth::id();
+        }
         $Vendor->name = $this->name;
         $Vendor->code = $this->code;
         $Vendor->status = $this->status;
@@ -58,27 +95,12 @@ class VendorList extends Component
 
 
         if ($storeType == 'new') {
-            $this->reset();
+            $this->brandReset();
         } else {
             $this->vendor_id = $Vendor->id;
         }
-
-        if ($this->vendor_id) {
-            $message = 'Brand Updated Successfully!';
-        } else {
-            $message = 'Brand Added Successfully!';
-        }
-
         $this->alert('success', $message);
-    }
-
-    public function mount()
-    {
-        if ($this->vendor_id) {
-            $Vendor = Brand::find($this->vendor_id);
-            $this->name = $Vendor->name;
-            $this->code = $Vendor->code;
-        }
+        $this->dispatch('refreshDatatable');
     }
 
 

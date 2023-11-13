@@ -75,15 +75,14 @@ class UnitTable extends DataTableComponent
                 ->buttons([
                     LinkColumn::make('Edit')
                         ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.product.unit_list', ['unit_id' => $row->id]))
+                        ->location(fn($row) => 'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
+                                'data-listener' => 'openUnitModal',
                                 'class' => 'badge bg-success me-1 p-2 ',
                                 'icon' => 'fa fa-edit',
                                 'title' => 'Edit',
-                                'data-bs-toggle'=> 'modal',
-                                'data-bs-target'=>'#addNew',
                             ];
                         }),
                     LinkColumn::make(' Delete')

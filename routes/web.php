@@ -84,11 +84,8 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth']]
         Route::get('product-list', ProductList::class)->name('product_list');
         Route::get('product-details', ProductDetails::class)->name('product_details');
         Route::get('verdor-list', VendorList::class)->name('vendor_list');
-        Route::get('vendor-details', VendorDetails::class)->name('vendor_details');
         Route::get('categorie-list', CategoryList::class)->name('categorie_list');
-        Route::get('category-details', CategoryDetails::class)->name('category_details');
         Route::get('unit-list', UnitList::class)->name('unit_list');
-        Route::get('unit-details', UnitDetails::class)->name('unit_details');
     });
     Route::group(['prefix' => 'contact', 'as' => 'contact.'], function () {
         Route::get('customer-list', CustomerList::class)->name('customer_list');

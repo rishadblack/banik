@@ -7,12 +7,14 @@ use App\Models\Setting\PaymentMethod;
 use App\Models\Accounting\ReceiptType;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Accounting\LedgerAccount;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Receipt extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $guarded = [];
     public $timestamps = true;
 
@@ -28,4 +30,9 @@ class Receipt extends Model
     {
         return $this->belongsTo(PaymentMethod::class);
     }
+    public function scopeActive($query)
+    {
+        return $query->whereStatus(1);
+    }
+
 }

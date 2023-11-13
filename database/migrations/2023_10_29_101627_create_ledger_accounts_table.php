@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('date')->nullable();
             $table->string('customer_supplier')->nullable();
             $table->string('stock_adjustment_status')->nullable();
+            $table->tinyInteger('status')->nullable();
             $table->string('note')->nullable();
             $table->string('item_name')->nullable();
             $table->string('cost_price')->nullable('0.00');

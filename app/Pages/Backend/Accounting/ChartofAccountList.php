@@ -13,16 +13,41 @@ use App\Models\Accounting\ChartOfAccount;
 #[Layout('layouts.backend')]
 class ChartofAccountList extends Component
 {
-
-    #[Url]
     public $chartaccount_id;
-    public $country_id;
-    public $division_id;
     public $code;
     public $name;
-    public $address;
-    public $upazila_id;
-    public $district_id;
+    public $status = 1;
+
+    #[On('openChartOfAccountModal')]
+    public function openChartOfAccountModal($data = [])
+    {
+        $this->chartReset();
+
+        if(isset($data['id'])) {
+            $ChartOfAccount = ChartOfAccount::find($data['id']);
+
+            if(!$ChartOfAccount) {
+                $this->alert('error', 'Chart Of Account Not Found!!');
+                return;
+            }
+
+            $this->chartaccount_id = $ChartOfAccount->id;
+            $this->name = $ChartOfAccount->name;
+            $this->code = $ChartOfAccount->code;
+            $this->status = $ChartOfAccount->status;
+        }
+
+        $this->dispatch('modalOpen', 'chartModal');
+    }
+
+    public function chartReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+        $this->code = str_pad((ChartOfAccount::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
+    }
+
+
     public function storeChartOfAccount($storeType = null)
     {
         $this->validate([
@@ -31,34 +56,28 @@ class ChartofAccountList extends Component
         ]);
 
         $ChartOfAccount = ChartOfAccount::findOrNew($this->chartaccount_id);
-        $ChartOfAccount->user_id = Auth::id();
-        $ChartOfAccount->code = $this->code;
-        $ChartOfAccount->name = $this->name;
-        $ChartOfAccount->save();
-
-        if ($storeType == 'new') {
-            $this->reset();
-        } else {
-            $this->chartaccount_id = $ChartOfAccount->id;
-        }
         if ($this->chartaccount_id) {
             $message = 'ChartOfAccount Updated Successfully!';
         } else {
             $message = 'ChartOfAccount Added Successfully!';
+            $ChartOfAccount->user_id = Auth::id();
         }
+
+        $ChartOfAccount->code = $this->code;
+        $ChartOfAccount->name = $this->name;
+        $ChartOfAccount->status = $this->status;
+        $ChartOfAccount->save();
+
+        if ($storeType == 'new') {
+            $this->chartReset();
+        } else {
+            $this->chartaccount_id = $ChartOfAccount->id;
+        }
+
 
         $this->alert('success', $message);
+        $this->dispatch('refreshDatatable');
     }
-
-    public function mount()
-    {
-        if($this->chartaccount_id) {
-            $ChartOfAccount = ChartOfAccount::find($this->chartaccount_id);
-            $this->code = $ChartOfAccount->code;
-            $this->name = $ChartOfAccount->name;
-        }
-    }
-
 
     #[On('chartOfAccountDelete')]
     public function destroy($data)

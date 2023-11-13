@@ -60,6 +60,10 @@ class LedgerAccountTable extends DataTableComponent
                 Column::make('name', 'name')
                 ->sortable()
                 ->searchable(),
+                Column::make('Status', 'status')
+                ->format(
+                    fn($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.common.{$value}.class") . '">' . config("status.common.{$value}.name") . '</span>' : ''
+                )->sortable()->html(),
 
             Column::make('Create By', 'User.name')
                 ->format(
@@ -74,15 +78,14 @@ class LedgerAccountTable extends DataTableComponent
                 ->buttons([
                     LinkColumn::make('Edit')
                         ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.accounting.ledger_account_list', ['ledger_account_id' => $row->id]))
+                        ->location(fn($row) =>'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
+                                'data-listener' => 'openLedgerAccountModal',
                                 'class' => 'badge bg-success me-1 p-2 ',
                                 'icon' => 'fa fa-edit',
                                 'title' => 'Edit',
-                                'data-bs-toggle'=> 'modal',
-                                'data-bs-target'=>'#addNew',
                             ];
                         }),
                     LinkColumn::make(' Delete')

@@ -14,11 +14,41 @@ use App\Models\Accounting\ReceiptType;
 class ReceiptTypeList extends Component
 {
 
-    #[Url]
     public $receiptType_id;
     public $name;
     public $flow_type;
     public $code;
+    public $status = 1;
+
+    #[On('openReceiptTypeModal')]
+    public function openReceiptTypeModal($data = [])
+    {
+        $this->receiptTypeReset();
+
+        if(isset($data['id'])) {
+            $ReceiptType = ReceiptType::find($data['id']);
+
+            if(!$ReceiptType) {
+                $this->alert('error', 'Receipt Type Not Found!!');
+                return;
+            }
+
+            $this->name = $ReceiptType->name;
+            $this->code = $ReceiptType->code;
+            $this->flow_type = $ReceiptType->flow_type;
+            $this->status = $ReceiptType->status;
+        }
+
+        $this->dispatch('modalOpen', 'receiptTypeModal');
+    }
+
+    public function receiptTypeReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+        $this->code = str_pad((ReceiptType::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
+    }
+
 
     public function storeReceiptType($storeType = null)
     {
@@ -28,40 +58,34 @@ class ReceiptTypeList extends Component
     ]);
 
     $ReceiptType = ReceiptType::findOrNew($this->receiptType_id);
-    $ReceiptType->user_id = Auth::id();
-    $ReceiptType->code = $this->code;
-    $ReceiptType->flow_type = $this->flow_type;
-    $ReceiptType->name = $this->name;
-    $ReceiptType->save();
-
-    if($storeType == 'new'){
-        $this->reset();
-    }else{
-        $this->receiptType_id = $ReceiptType-> id;
-    }
     if($this->receiptType_id) {
         $message = 'Stock Receipt Type Updated Successfully!';
     } else {
         $message = 'Stock Receipt Type Added Successfully!';
+        $ReceiptType->user_id = Auth::id();
+    }
+
+    $ReceiptType->code = $this->code;
+    $ReceiptType->flow_type = $this->flow_type;
+    $ReceiptType->name = $this->name;
+    $ReceiptType->status = $this->status;
+    $ReceiptType->save();
+
+    if($storeType == 'new'){
+        $this->receiptTypeReset();
+    }else{
+        $this->receiptType_id = $ReceiptType-> id;
     }
 
     $this->alert('success', $message);
-}
-
-public function mount()
-{
-    if($this->receiptType_id) {
-        $ReceiptType = ReceiptType::find($this->receiptType_id);
-        $this->code = $ReceiptType->code;
-        $this->flow_type = $ReceiptType->flow_type;
-        $this->name = $ReceiptType->name;
-    }
+    $this->dispatch('refreshDatatable');
 }
 
 
     #[On('receiptTypeDelete')]
     public function destroy($data)
     {
+        $data = $this->alertConfirm($data, 'Are you sure to delete Receipt Type?');
 
         if(isset($data['id'])) {
             $ReceiptType = ReceiptType::find($data['id']);

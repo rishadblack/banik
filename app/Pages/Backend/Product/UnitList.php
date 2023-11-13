@@ -7,6 +7,7 @@ use App\Models\Product\Unit;
 use Livewire\Attributes\Url;
 use App\Http\Common\Component;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
 
 #[Layout('layouts.backend')]
 class UnitList extends Component
@@ -15,14 +16,42 @@ class UnitList extends Component
     public $unit_id;
     public $name;
     public $code;
-    public $status;
+    public $status = 1;
     public $units;
 
+    #[On('openUnitModal')]
+    public function openUnitModal($data = [])
+    {
+        $this->unitReset();
+
+        if(isset($data['id'])) {
+            $Unit = Unit::find($data['id']);
+
+            if(!$Unit) {
+                $this->alert('error', 'Unit Not Found!!');
+                return;
+            }
+
+            $this->unit_id = $Unit->id;
+            $this->name = $Unit->name;
+            $this->code = $Unit->code;
+            $this->status = $Unit->status;
+        }
+
+        $this->dispatch('modalOpen', 'unitModal');
+    }
+
+    public function unitReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+        $this->code = str_pad((Unit::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
+    }
 
     #[On('unitDelete')]
     public function destroy($data)
     {
-        // $data = $this->alertConfirm($data, 'Are you sure to delete unit?');
+         $data = $this->alertConfirm($data, 'Are you sure to delete unit?');
 
         if(isset($data['id'])) {
             $Unit = Unit::find($data['id']);
@@ -48,34 +77,27 @@ class UnitList extends Component
         ]);
 
         $Unit = Unit::findOrNew($this->unit_id);
+
+        if($this->unit_id) {
+            $message = 'Unit Updated Successfully!';
+        } else {
+            $message = 'Unit Added Successfully!';
+            $Unit->user_id = Auth::id();
+        }
+
         $Unit->name = $this->name;
         $Unit->code = $this->code;
         $Unit->status = $this->status;
         $Unit->save();
 
         if($storeType == 'new') {
-            $this->reset();
+            $this->unitreset();
         } else {
             $this->unit_id = $Unit->id;
         }
-
-        if($this->unit_id) {
-            $message = 'Unit Updated Successfully!';
-        } else {
-            $message = 'Unit Added Successfully!';
-        }
-
         $this->alert('success', $message);
+        $this->dispatch('refreshDatatable');
 
-    }
-
-    public function mount()
-    {
-        if($this->unit_id) {
-            $Unit = Unit::find($this->unit_id);
-            $this->name = $Unit->name;
-            $this->code = $Unit->code;
-        }
     }
 
 
