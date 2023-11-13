@@ -4,6 +4,7 @@ namespace App\Pages\Backend\Inventory\Datatable;
 
 use App\Models\Order\Coupon;
 use App\Models\Couponact\Supplier;
+use App\Models\Inventory\StockReceipt;
 use App\Http\Common\DataTableComponent;
 use App\Models\Inventory\StockTransfer;
 use App\Models\Inventory\StockAdjustment;
@@ -26,7 +27,7 @@ class StockTransferTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        return StockTransfer::query();
+        return StockReceipt::query();
     }
     public function filters(): array
     {
@@ -52,23 +53,15 @@ class StockTransferTable extends DataTableComponent
                 ->searchable()
                 ->excludeFromColumnSelect(),
 
-                Column::make('Code', 'stock_transfer_code')
+                Column::make('Code', 'code')
                 ->sortable()
                 ->searchable(),
-                Column::make('Particular', 'particular')
+                Column::make('From Warehouse', 'warehouse_id')
                 ->sortable()
                 ->searchable(),
-                Column::make('Amount', 'cost_price')
+                Column::make('To Warehouse', 'to_warehouse_id')
                 ->sortable()
                 ->searchable(),
-                Column::make('From Outlet', 'from_outlet')
-                ->sortable()
-                ->searchable()
-                ->deselected(),
-                Column::make('To Outlet', 'to_outlet')
-                ->sortable()
-                ->searchable()
-                ->deselected(),
             Column::make('Create BY', 'User.name')
                 ->format(
                     fn($value, $row, Column $column) => $value ? $value : '-'
@@ -77,15 +70,12 @@ class StockTransferTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-            Column::make('Status', 'stock_transfer_status')
-                ->format(
-                    fn($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.stock_status.{$value}.class") . '">' . config("status.stock_status.{$value}.name") . '</span>' : ''
-                )->sortable()->html(),
+
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')
                         ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.inventory.new_stock_transfer', ['stocktransfer_id' => $row->id]))
+                        ->location(fn($row) => route('backend.inventory.stock_movement_details', ['stocktransfer_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,

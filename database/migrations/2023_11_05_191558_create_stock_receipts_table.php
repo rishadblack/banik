@@ -23,12 +23,13 @@ return new class extends Migration
             $table->foreignId('to_warehouse_id')->nullable();
             $table->foreignId('to_outlet_id')->nullable();
             $table->foreignId('stock_receipt_type_id')->nullable();
-            $table->tinyInteger('type')->nullable();
+            $table->tinyInteger('type')->nullable()->comment('1=Stock Adjustment, 2=Stock Transfer');
             $table->tinyInteger('flow')->nullable();
             $table->string('code', 100)->nullable();
             $table->string('ref', 100)->nullable();
             $table->text('particulars')->nullable();
             $table->double('quantity', 20, 2)->default(0);
+            $table->double('damage_quantity', 20, 2)->default(0);
             $table->foreignId('approved_id')->nullable();
             $table->timestamp('is_approved')->nullable();
             $table->foreignId('checked_id')->nullable();

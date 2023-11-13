@@ -73,7 +73,7 @@
             </div>
             <div class="col-xl-4">
                 <x-layouts.backend.card>
-                    <x-slot:title>Note</x-slot:title>
+                    <x-slot:title>Status</x-slot:title>
                     <x-slot:button>
                         <div class="dropdown">
                             <x-button.default wire:click="storeProduct" class="btn-success">Save</x-button.default>
@@ -83,10 +83,7 @@
                                 wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                         </div>
                     </x-slot:button>
-                    <p>Easily manage your product catalog with our admin panel. <br><br> Add, edit, or remove products,
-                        update
-                        prices, and keep your inventory up to date. <br><br> Effortlessly showcase your products to your
-                        customers.</p>
+                    <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
 
                 </x-layouts.backend.card>
                 <x-layouts.backend.card>
@@ -109,9 +106,14 @@
                         @endforeach
                     </x-input.select>
                 </x-layouts.backend.card>
+
                 <x-layouts.backend.card>
-                    <x-slot:title>Status</x-slot:title>
-                    <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
+                    <x-slot:title>Note</x-slot:title>
+                    <p>Easily manage your product catalog with our admin panel. <br><br> Add, edit, or remove products,
+                        update
+                        prices, and keep your inventory up to date. <br><br> Effortlessly showcase your products to your
+                        customers.</p>
+
                 </x-layouts.backend.card>
             </div>
         </div>

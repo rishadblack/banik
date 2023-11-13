@@ -3,6 +3,7 @@
 namespace App\Pages\Backend\Product;
 
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use App\Models\Product\Brand;
 use App\Http\Common\Component;
 use Livewire\Attributes\Layout;
@@ -12,6 +13,12 @@ use Livewire\Attributes\Layout;
 class VendorList extends Component
 
 {
+    #[Url]
+    public $vendor_id;
+
+    public $name;
+    public $code;
+    public $status;
     public $vendors;
 
     #[On('brandDelete')]
@@ -34,6 +41,46 @@ class VendorList extends Component
         }
 
     }
+    public function storeVendor($storeType = null)
+    {
+
+        $this->validate([
+            'name' => 'required|string',
+            'code' => 'required|string',
+        ]);
+
+
+        $Vendor = Brand::findOrNew($this->vendor_id);
+        $Vendor->name = $this->name;
+        $Vendor->code = $this->code;
+        $Vendor->status = $this->status;
+        $Vendor->save();
+
+
+        if ($storeType == 'new') {
+            $this->reset();
+        } else {
+            $this->vendor_id = $Vendor->id;
+        }
+
+        if ($this->vendor_id) {
+            $message = 'Brand Updated Successfully!';
+        } else {
+            $message = 'Brand Added Successfully!';
+        }
+
+        $this->alert('success', $message);
+    }
+
+    public function mount()
+    {
+        if ($this->vendor_id) {
+            $Vendor = Brand::find($this->vendor_id);
+            $this->name = $Vendor->name;
+            $this->code = $Vendor->code;
+        }
+    }
+
 
     public function render()
     {

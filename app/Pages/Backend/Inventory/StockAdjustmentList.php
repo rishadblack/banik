@@ -5,6 +5,7 @@ namespace App\Pages\Backend\Inventory;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Layout;
+use App\Models\Inventory\StockReceipt;
 use App\Models\Inventory\StockAdjustment;
 
 
@@ -17,7 +18,7 @@ class StockAdjustmentList extends Component
         // $data = $this->alertConfirm($data, 'Are you sure to delete Adjustment?');
 
         if(isset($data['id'])) {
-            $Adjustment = StockAdjustment::find($data['id']);
+            $Adjustment = StockReceipt::find($data['id']);
 
             if(!$Adjustment) {
                 $this->alert('error', 'Adjustment Not Found!!');

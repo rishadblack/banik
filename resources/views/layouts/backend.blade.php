@@ -252,7 +252,7 @@
                     </x-menu>
                     <x-menu label="Invetory" sub="inventory" icon="fa fa-database">
                         <x-menu label="Stock Adjustment" route="backend.inventory.stock_adjustment_list" />
-                        <x-menu label="Stock Movement" route="backend.inventory.stock_movement_list" />
+                        <x-menu label="Stock Transfer" route="backend.inventory.stock_movement_list" />
                     </x-menu>
                     <x-menu label="Accounting" sub="accounting" icon="fa fa-dollar">
                         <x-menu label="Chart Of Account" route="backend.accounting.chart_account_list" />

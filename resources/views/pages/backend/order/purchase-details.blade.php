@@ -265,13 +265,7 @@
                         </table>
                     </x-layouts.backend.card>
                 </div>
-                {{-- <div class="col-7">
-                    <x-layouts.backend.card>
-                        <x-slot:title>Supplier</x-slot:title>
-                        <x-input.text wire:model="contact_id" class="form-control-sm" label="Discount"/>
-                        <x-input.text wire:model="contact_id" class="form-control-sm" label="Additional Charge"/>
-                    </x-layouts.backend.card>
-                </div> --}}
+
                 <div class="col-lg-5 offset-lg-7">
                     <x-layouts.backend.card>
                         {{-- <x-slot:title>Payment Records</x-slot:title> --}}

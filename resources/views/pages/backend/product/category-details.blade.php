@@ -30,7 +30,7 @@
         </div>
         <div class="col-xl-4">
             <x-layouts.backend.card>
-                <x-slot:title>Note</x-slot:title>
+                <x-slot:title>Status</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeCategory" wire:target="storeCategory"
@@ -42,17 +42,18 @@
                             wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>
+                <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
+
+            </x-layouts.backend.card>
+
+            <x-layouts.backend.card>
+                <x-slot:title>Note</x-slot:title>
                 <p>Categories help in structuring your products or services, making it easier for users to navigate and
                     find what they need. <br><br> They create a hierarchical organization, allowing you to group similar
                     items
                     together. <br><br> For instance, in an e-commerce platform, you might have categories like
                     "Electronics,"
                     "Clothing," and "Home Decor."</p>
-            </x-layouts.backend.card>
-
-            <x-layouts.backend.card>
-                <x-slot:title>Status</x-slot:title>
-                <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
             </x-layouts.backend.card>
 
         </div>

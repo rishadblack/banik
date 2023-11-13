@@ -51,7 +51,7 @@
         </div>
         <div class="col-xl-4">
             <x-layouts.backend.card>
-                <x-slot:title>Note</x-slot:title>
+                <x-slot:title>Status</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeDelivery" wire:target="storeDelivery"
@@ -63,21 +63,16 @@
                             wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>
+                <x-input.select wire:model="status" label="Status" :options="config('status.common')" />
+            </x-layouts.backend.card>
+
+            <x-layouts.backend.card>
+                <x-slot:title>Note</x-slot:title>
                 <p>Create delivery challans in an easy way. <br><br> Verify delivery man information, order details, and
                     schedule
                     deliveries efficiently with records of every delivery. <br><br> Stay in control of your supply
                     chain, ensuring
                     accurate and on-time deliveries to enhance customer satisfaction and streamline operations.</p>
-
-            </x-layouts.backend.card>
-
-            <x-layouts.backend.card>
-                <x-slot:title>Status</x-slot:title>
-                <div class="row">
-                    <div class="col-12">
-                        <x-input.select wire:model="status" label="Status" :options="config('status.common')" />
-                    </div>
-                </div>
             </x-layouts.backend.card>
 
 

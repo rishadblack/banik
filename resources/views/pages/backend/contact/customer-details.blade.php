@@ -22,6 +22,9 @@
                     <div class="col-sm-6 col-md-4 col-md-4">
                         <x-input.text wire:model="company_name" label="Company name" />
                     </div>
+                    <div class="col-sm-6 col-md-8 col-md-8">
+                        <x-input.text wire:model="address" label="Address" />
+                    </div>
                     <div class="col-sm-6 col-md-4 col-md-4">
                         <x-input.text wire:model="opening_balance" label="Opening Balance" />
                     </div>
@@ -34,7 +37,7 @@
             <x-layouts.backend.card>
                 <x-slot:title>Customer Address</x-slot:title>
                 <div class="row">
-                    <div class="col-sm-6 col-md-4 col-md-4"><x-input.text wire:model="address" label="Address" /></div>
+
                     <div class="col-sm-6 col-md-4 col-md-4"><x-input.select wire:model="country_id" label="Country">
                             @foreach ($country as $country)
                                 <option value="{{ $country->id }}">{{ $country->name }}</option>
@@ -59,7 +62,7 @@
         </div>
         <div class="col-xl-4">
             <x-layouts.backend.card>
-                <x-slot:title>Note</x-slot:title>
+                <x-slot:title>Status</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeCustomer" wire:target="storeCustomer" class="btn-success">Save</x-button.default>
@@ -69,11 +72,7 @@
                             wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>
-                <p>Empower your customer relationship management with our admin panel. <br><br> Maintain updated
-                    customer
-                    profiles, monitor their order history. <br><br> Offer tailored services to build loyalty and drive
-                    repeat
-                    business.</p>
+                <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
             </x-layouts.backend.card>
             <x-layouts.backend.card>
                 <x-slot:title>Collection</x-slot:title>
@@ -84,8 +83,12 @@
                 </x-input.select>
             </x-layouts.backend.card>
             <x-layouts.backend.card>
-                <x-slot:title>Status</x-slot:title>
-                <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
+                <x-slot:title>Note</x-slot:title>
+                <p>Empower your customer relationship management with our admin panel. <br><br> Maintain updated
+                    customer
+                    profiles, monitor their order history. <br><br> Offer tailored services to build loyalty and drive
+                    repeat
+                    business.</p>
             </x-layouts.backend.card>
         </div>
     </div>

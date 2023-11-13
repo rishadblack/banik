@@ -6,7 +6,10 @@ namespace App\Pages\Backend\Inventory;
 use Livewire\Attributes\Url;
 use App\Http\Common\Component;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Inventory\StockReceipt;
 use App\Models\Inventory\StockTransfer;
+use App\Models\Inventory\StockReceiptItem;
 
 
 #[Layout('layouts.backend')]
@@ -14,40 +17,33 @@ class StockMovementDetails extends Component
 {
     #[Url]
     public $stocktransfer_id;
-    public $stock_transfer_code;
-    public $particular;
-    public $reference;
-    public $from_outlet;
-    public $to_outlet;
-    public $date;
-    public $type;
-    public $stock_transfer_status;
-    public $note;
+    public $code;
+    public $warehouse_id;
+    public $to_warehouse_id;
+    public $ref;
     public $quantity;
-    public $transfer_amount;
-    public $cost_price;
-    public $discount;
 
     public function storeStockTransfer($storeType = null)
     {
     $this->validate([
 
-        'from_outlet' => 'required|string',
-        'to_outlet' => 'required|string',
-        'stock_transfer_code' => 'required|string',
+        'code' => 'required|string',
     ]);
 
-    $Transfer = StockTransfer::findOrNew($this->stocktransfer_id);
-    $Transfer->stock_transfer_code = $this->stock_transfer_code;
-    $Transfer->particular = $this->particular;
-    $Transfer->reference = $this->reference;
-    $Transfer->from_outlet = $this->from_outlet;
-    $Transfer->to_outlet = $this->to_outlet;
-    $Transfer->note = $this->note;
-    $Transfer->date = $this->date;
-    $Transfer->type = $this->type;
-    $Transfer->stock_transfer_status = $this->stock_transfer_status;
+    $Transfer = StockReceipt::findOrNew($this->stocktransfer_id);
+    $Transfer->user_id = Auth::id();
+    $Transfer->code = $this->code;
+    $Transfer->warehouse_id = $this->warehouse_id;
+    $Transfer->to_warehouse_id = $this->to_warehouse_id;
+    $Transfer->ref = $this->ref;
     $Transfer->save();
+
+    // $TransferItem = StockReceiptItem::findOrNew($this->stocktransfer_id);
+    // $TransferItem->user_id = Auth::id();
+    // $TransferItem->stock_receipt_id = $Transfer->id;
+    // $TransferItem->quantity = $this->quantity;
+    // $TransferItem->save();
+
 
     if($storeType == 'new'){
         $this->reset();
@@ -66,16 +62,14 @@ class StockMovementDetails extends Component
 public function mount()
 {
     if($this->stocktransfer_id) {
-        $Transfer = StockTransfer::find($this->stocktransfer_id);
-        $this->stock_transfer_code = $Transfer->stock_transfer_code;
-        $this->particular = $Transfer->particular;
-        $this->reference = $Transfer->reference;
-        $this->from_outlet = $Transfer->from_outlet;
-        $this->to_outlet = $Transfer->to_outlet;
-        $this->note = $Transfer->note;
-        $this->date = $Transfer->date;
-        $this->type = $Transfer->type;
-        $this->stock_transfer_status = $Transfer->stock_transfer_status;
+        $Transfer = StockReceipt::find($this->stocktransfer_id);
+        $this->code = $Transfer->code;
+        $this->warehouse_id = $Transfer->warehouse_id;
+        $this->to_warehouse_id = $Transfer->to_warehouse_id;
+        $this->ref = $Transfer->ref;
+
+        // $Transfer = StockReceiptItem::find($this->stocktransfer_id);
+        // $this->quantity = $Transfer->quantity;
     }
 }
     public function render()

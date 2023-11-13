@@ -4,10 +4,10 @@ namespace App\Pages\Backend\Inventory\Datatable;
 
 use App\Models\Order\Coupon;
 use App\Models\Couponact\Supplier;
+use App\Models\Inventory\StockReceipt;
 use App\Http\Common\DataTableComponent;
 use App\Models\Inventory\StockAdjustment;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Inventory\StockAdjustments;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
@@ -26,7 +26,7 @@ class StockAdjustmentTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        return StockAdjustment::query();
+        return StockReceipt::query();
     }
     public function filters(): array
     {
@@ -60,16 +60,17 @@ class StockAdjustmentTable extends DataTableComponent
                 ->searchable()
                 ->excludeFromColumnSelect(),
 
-                Column::make('Code', 'stock_adjustment_code')
+                Column::make('Code', 'code')
                 ->sortable()
                 ->searchable(),
-                Column::make('Particular', 'particular')
+
+                Column::make('Warehouse', 'warehouse_id')
+                ->format(
+                    fn($value, $row, Column $column) => $value ? $value : '-'
+                )
                 ->sortable()
                 ->searchable(),
-                Column::make('Amount', 'cost_price')
-                ->sortable()
-                ->searchable(),
-                Column::make('Outlet', 'outlet')
+                Column::make('Quantity', 'quantity')
                 ->sortable()
                 ->searchable()
                 ->deselected(),
@@ -81,15 +82,12 @@ class StockAdjustmentTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-            Column::make('Status', 'stock_adjustment_status')
-                ->format(
-                    fn($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.delivery_status.{$value}.class") . '">' . config("status.delivery_status.{$value}.name") . '</span>' : ''
-                )->sortable()->html(),
+
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')
                         ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.inventory.new_stock_adjustment', ['stockadjustment_id' => $row->id]))
+                        ->location(fn($row) => route('backend.inventory.stock_adjustment_details', ['stockadjustment_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,

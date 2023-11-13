@@ -65,7 +65,7 @@
         </div>
         <div class="col-xl-4">
             <x-layouts.backend.card>
-                <x-slot:title>Note</x-slot:title>
+                <x-slot:title>Status</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeOutlet" wire:target="storeOutlet"
@@ -77,16 +77,17 @@
                             class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>
+                <x-input.select wire:model="status" label="Status" :options="config('status.common')" />
+            </x-layouts.backend.card>
+
+            <x-layouts.backend.card>
+                <x-slot:title>Note</x-slot:title>
                 <p>Multi-Location Configuration: Configure settings for multiple outlets, ensuring each location
                     operates according to its unique requirements. <br><br>
                     Access Control: Define user access permissions for each outlet to enhance security and manage roles
                     effectively. <br><br>
                     Outlet Information: Input and edit vital information, such as address, contact details, and
                     operating hours.</p>
-            </x-layouts.backend.card>
-            <x-layouts.backend.card>
-                <x-slot:title>Status</x-slot:title>
-                <x-input.select wire:model="status" label="Status" :options="config('status.common')" />
             </x-layouts.backend.card>
 
         </div>

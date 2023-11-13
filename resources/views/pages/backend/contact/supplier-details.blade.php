@@ -60,7 +60,7 @@
 
         <div class="col-xl-4">
             <x-layouts.backend.card>
-                <x-slot:title>Supplier Address</x-slot:title>
+                <x-slot:title>Status</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeSupplier" wire:target="storeSupplier"
@@ -71,9 +71,8 @@
                             wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>
-                <p>Simplify your supply chain management. <br><br> Manage supplier details, track order history, and ensure
-                    consistent and reliable product sourcing. <br><br> Strengthen your supplier relationships and
-                    enhance product availability. <br> Add Product to supply</p>
+                <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
+
 
             </x-layouts.backend.card>
             <x-layouts.backend.card>
@@ -85,8 +84,10 @@
                 </x-input.select>
             </x-layouts.backend.card>
             <x-layouts.backend.card>
-                <x-slot:title>Status</x-slot:title>
-                <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
+                <x-slot:title>Note</x-slot:title>
+                <p>Simplify your supply chain management. <br><br> Manage supplier details, track order history, and ensure
+                    consistent and reliable product sourcing. <br><br> Strengthen your supplier relationships and
+                    enhance product availability. <br> Add Product to supply</p>
             </x-layouts.backend.card>
 
         </div>

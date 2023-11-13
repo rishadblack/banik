@@ -75,14 +75,15 @@ class ChartOfAccountTable extends DataTableComponent
                 ->buttons([
                     LinkColumn::make('Edit')
                         ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.accounting.chart_account_details', ['chartaccount_id' => $row->id]))
+                        ->location(fn($row) => route('backend.accounting.chart_account_list', ['chartaccount_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
                                 'class' => 'badge bg-success me-1 p-2 ',
                                 'icon' => 'fa fa-edit',
                                 'title' => 'Edit',
-
+                                'data-bs-toggle'=> 'modal',
+                                'data-bs-target'=>'#addNew',
                             ];
                         }),
                     LinkColumn::make(' Delete')

@@ -6,8 +6,9 @@ namespace App\Pages\Backend\Inventory;
 use Livewire\Attributes\Url;
 use App\Http\Common\Component;
 use Livewire\Attributes\Layout;
-use App\Models\Inventory\StockAdjustment;
-use App\Models\Inventory\StockAdjustments;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Inventory\StockReceipt;
+use App\Models\Inventory\StockReceiptItem;
 
 
 #[Layout('layouts.backend')]
@@ -15,37 +16,31 @@ class StockAdjustmentDetails extends Component
 {
     #[Url]
     public $stockadjustment_id;
-    public $stock_adjustment_code;
-    public $particular;
-    public $reference;
-    public $outlet;
-    public $date;
-    public $type;
-    public $stock_adjustment_status;
-    public $note;
+    public $code;
+    public $ref;
+    public $warehouse_id;
     public $quantity;
-    public $adjustment_amount;
-    public $cost_price;
-    public $discount;
 
     public function storeStockAdjustment($storeType = null)
     {
     $this->validate([
-        'type' => 'required|string',
-        'outlet' => 'required|string',
-        'stock_adjustment_code' => 'required|string',
+        'code' => 'required|string',
     ]);
 
-    $Adjustment = StockAdjustment::findOrNew($this->stockadjustment_id);
-    $Adjustment->stock_adjustment_code = $this->stock_adjustment_code;
-    $Adjustment->particular = $this->particular;
-    $Adjustment->reference = $this->reference;
-    $Adjustment->outlet = $this->outlet;
-    $Adjustment->note = $this->note;
-    $Adjustment->date = $this->date;
-    $Adjustment->type = $this->type;
-    $Adjustment->stock_adjustment_status = $this->stock_adjustment_status;
+    $Adjustment = StockReceipt::findOrNew($this->stockadjustment_id);
+    $Adjustment->user_id = Auth::id();
+    $Adjustment->type = 1;
+    $Adjustment->code = $this->code;
+    $Adjustment->ref = $this->ref;
+    $Adjustment->warehouse_id = $this->warehouse_id;
+    $Adjustment->quantity = $this->quantity;
     $Adjustment->save();
+
+    $AdjustmentItem = StockReceiptItem::findOrNew($this->stockadjustment_id);
+    $AdjustmentItem->user_id = Auth::id();
+    $AdjustmentItem->stock_receipt_id = $Adjustment->id;
+    $AdjustmentItem->quantity = $this->quantity;
+    $AdjustmentItem->save();
 
     if($storeType == 'new'){
         $this->reset();
@@ -64,15 +59,14 @@ class StockAdjustmentDetails extends Component
 public function mount()
 {
     if($this->stockadjustment_id) {
-        $Adjustment = StockAdjustment::find($this->stockadjustment_id);
-        $this->stock_adjustment_code = $Adjustment->stock_adjustment_code;
-        $this->particular = $Adjustment->particular;
-        $this->reference = $Adjustment->reference;
-        $this->outlet = $Adjustment->outlet;
-        $this->note = $Adjustment->note;
-        $this->date = $Adjustment->date;
-        $this->type = $Adjustment->type;
-        $this->stock_adjustment_status = $Adjustment->stock_adjustment_status;
+        $Adjustment = StockReceipt::find($this->stockadjustment_id);
+        $this->code = $Adjustment->code;
+        $this->ref = $Adjustment->ref;
+        $this->warehouse_id = $Adjustment->warehouse_id;
+        $this->quantity = $Adjustment->quantity;
+
+        $AdjustmentItem = StockReceiptItem::find($this->stockadjustment_id);
+        $this->quantity = $AdjustmentItem->quantity;
     }
 }
 

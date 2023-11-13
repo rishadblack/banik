@@ -2,31 +2,33 @@
 
 namespace App\Pages\Backend\Inventory;
 
-use Livewire\Component;
+
 use Livewire\Attributes\On;
+use App\Http\Common\Component;
 use Livewire\Attributes\Layout;
+use App\Models\Inventory\StockReceipt;
 use App\Models\Inventory\StockTransfer;
 
 
 #[Layout('layouts.backend')]
 class StockMovementList extends Component
 {
-    #[On('couponDelete')]
+    #[On('stockTransferDelete')]
     public function destroy($data)
     {
-        // $data = $this->alertConfirm($data, 'Are you sure to delete Coupon?');
+        // $data = $this->alertConfirm($data, 'Are you sure to delete Transfer?');
 
         if(isset($data['id'])) {
-            $Coupon = StockTransfer::find($data['id']);
+            $Transfer = StockReceipt::find($data['id']);
 
-            if(!$Coupon) {
-                $this->alert('error', 'Coupon Not Found!!');
+            if(!$Transfer) {
+                $this->alert('error', 'Transfer Not Found!!');
                 return;
             }
 
-            $Coupon->delete();
+            $Transfer->delete();
 
-            $this->alert('success', 'Coupon Deleted Successfully!!');
+            $this->alert('success', 'Transfer Deleted Successfully!!');
             $this->dispatch('refreshDatatable');
         }
 

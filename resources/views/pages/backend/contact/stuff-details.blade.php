@@ -48,7 +48,7 @@
         </div>
         <div class="col-xl-4">
             <x-layouts.backend.card>
-                <x-slot:title>Note</x-slot:title>
+                <x-slot:title>Status</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeStuff" wire:target="storeStuff" class="btn-success">Save</x-button.default>
@@ -58,11 +58,9 @@
                             wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>
-                <p>Efficiently manage your team with our admin panel. <br><br> Add, edit, or remove staff members, assign roles,
-                    and streamline communication and collaboration.<br><br> Empower your team to work cohesively in maintaining
-                    your business operations.</p>
-
+                <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
             </x-layouts.backend.card>
+
             <x-layouts.backend.card>
                 <x-slot:title>Collection</x-slot:title>
                 <x-input.select wire:model="contact_group_id" label="Group Name">
@@ -71,9 +69,12 @@
                     @endforeach
                 </x-input.select>
             </x-layouts.backend.card>
+
             <x-layouts.backend.card>
-                <x-slot:title>Status</x-slot:title>
-                <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
+                <x-slot:title>Note</x-slot:title>
+                <p>Efficiently manage your team with our admin panel. <br><br> Add, edit, or remove staff members, assign roles,
+                    and streamline communication and collaboration.<br><br> Empower your team to work cohesively in maintaining
+                    your business operations.</p>
             </x-layouts.backend.card>
         </div>
     </div>

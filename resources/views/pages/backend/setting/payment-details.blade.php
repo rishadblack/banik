@@ -47,7 +47,7 @@
         </div>
         <div class="col-xl-4">
             <x-layouts.backend.card>
-                <x-slot:title>Note</x-slot:title>
+                <x-slot:title>Status</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeMethod" wire:target="storeMethod"
@@ -59,6 +59,11 @@
                             wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>
+                <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
+            </x-layouts.backend.card>
+
+            <x-layouts.backend.card>
+                <x-slot:title>Note</x-slot:title>
                 <p>Our small business accounting software offers a variety of payment options to make financial
                     transactions as convenient as possible for you. <br><br> We understand that flexibility is crucial
                     when it
@@ -66,10 +71,6 @@
                     Multiple Payment Methods: Provide your customers with various payment methods, including credit
                     cards, bank transfers, and more.
                 </p>
-            </x-layouts.backend.card>
-            <x-layouts.backend.card>
-                <x-slot:title>Status</x-slot:title>
-                <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
             </x-layouts.backend.card>
 
         </div>
