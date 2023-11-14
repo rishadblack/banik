@@ -81,7 +81,7 @@ class PurchaseDetails extends Component
         $PurchaseInfo->save();*/
 
         if($storeType == 'new'){
-            $this->reset();
+            $this->purchaseReset();
         }else{
             $this->purchase_id = $Purchase-> id;
         }
@@ -92,6 +92,13 @@ class PurchaseDetails extends Component
         }
 
         $this->alert('success', $message);
+        $this->dispatch('refreshDatatable');
+    }
+    public function purchaseReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+       // $this->code = str_pad((Order::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
 
@@ -122,6 +129,8 @@ class PurchaseDetails extends Component
 
 
         $this->alert('success', $message);
+        $this->dispatch('refreshDatatable');
+
 
     }
 
@@ -156,6 +165,8 @@ class PurchaseDetails extends Component
             $this->received_quantity = $PurchaseInfo->received_quantity;
             $this->subtotal = $PurchaseInfo->subtotal;
             $this->discount_amount = $PurchaseInfo->discount_amount;*/
+        }else{
+            $this->purchaseReset();
         }
     }
 

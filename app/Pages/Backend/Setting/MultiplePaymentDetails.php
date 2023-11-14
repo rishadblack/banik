@@ -21,7 +21,7 @@ class MultiplePaymentDetails extends Component
     public $charge;
     public $net_amount;
     public $note;
-    public $status;
+    public $status = 1;
     public function storeMultiplePayment($storeType = null){
         $this->validate([
             'code' => 'required|string',

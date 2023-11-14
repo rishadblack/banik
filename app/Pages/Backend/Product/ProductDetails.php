@@ -32,7 +32,9 @@ class ProductDetails extends Component
     public $unit_id;
     public $category_id;
     public $unit;
-    public $status;
+    public $status = 1;
+
+
 
     public function storeProduct($storeType = null)
     {
@@ -65,7 +67,7 @@ class ProductDetails extends Component
         $Product->save();
 
         if($storeType == 'new') {
-            $this->reset();
+            $this->productReset();
         } else {
             $this->product_id = $Product->id;
         }
@@ -77,6 +79,7 @@ class ProductDetails extends Component
         }
 
         $this->alert('success', $message);
+        $this->dispatch('refreshDatatable');
 
 
     }
@@ -85,7 +88,7 @@ class ProductDetails extends Component
     {
         $this->reset();
         $this->resetValidation();
-        $this->code = str_pad((Category::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
+        $this->code = str_pad((Product::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()

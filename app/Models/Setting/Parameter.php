@@ -17,4 +17,8 @@ class Parameter extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function scopeActive($query)
+    {
+        return $query->whereStatus(1);
+    }
 }

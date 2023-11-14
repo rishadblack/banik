@@ -8,6 +8,7 @@ use App\Models\Contact\Contact;
 use App\Models\Setting\Warehouse;
 use App\Models\Contact\ContactInfo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Order extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
     protected $guarded = [];
     public $timestamps = true;
 
@@ -38,7 +41,10 @@ class Order extends Model
     {
         return $this->belongsTo(Warehouse::class);
     }
-
+    public function scopeSearch($query, $term)
+    {
+        return $query->whereLike(['code'], $term);
+    }
 
 
 }

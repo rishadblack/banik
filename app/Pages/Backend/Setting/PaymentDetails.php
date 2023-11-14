@@ -21,7 +21,7 @@ class PaymentDetails extends Component
     public $account_no;
     public $opening_balance;
     public $name;
-    public $status;
+    public $status = 1;
     public function storeMethod($storeType = null){
         $this->validate([
             'code' => 'required|string',

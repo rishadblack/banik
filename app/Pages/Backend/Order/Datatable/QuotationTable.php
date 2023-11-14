@@ -93,7 +93,7 @@ class QuotationTable extends DataTableComponent
                 ->buttons([
                     LinkColumn::make('Edit')
                         ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.order.sale_details', ['sale_id' => $row->id]))
+                        ->location(fn($row) => route('backend.order.quotation_details', ['sale_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
@@ -109,7 +109,7 @@ class QuotationTable extends DataTableComponent
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
-                                'data-listener' => 'saleDelete',
+                                'data-listener' => 'quotationDelete',
                                 'class' => 'badge bg-danger me-1 p-2 ',
                                 'icon' => 'fa fa-trash',
                                 'title' => 'Delete',

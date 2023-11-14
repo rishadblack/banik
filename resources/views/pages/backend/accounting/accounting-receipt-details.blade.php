@@ -33,11 +33,7 @@
                         </x-input.select>
                     </div>
                     <div class="col-4">
-                        <x-input.select wire:model="contact_id" label="Stuff/Supplier/Customer">
-                            @foreach ($contact as $contact)
-                                <option value="{{ $contact->id }}">{{ $contact->name }}</option>
-                            @endforeach
-                        </x-input.select>
+                        <x-search.customers wire:model="contact_id" label="Search Customer"/>
                     </div>
                     <div class="col-4">
                         <x-input.select wire:model="receipt_type_id" label="Receipt Type">

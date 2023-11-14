@@ -4,6 +4,7 @@ namespace App\Pages\Backend\Order;
 
 use Livewire\Component;
 use App\Models\Order\Sale;
+use App\Models\Order\Order;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Layout;
 
@@ -20,7 +21,7 @@ class SaleList extends Component
         // $data = $this->alertConfirm($data, 'Are you sure to delete Sale?');
 
         if(isset($data['id'])) {
-            $Sale = Sale::find($data['id']);
+            $Sale = Order::find($data['id']);
 
             if(!$Sale) {
                 $this->alert('error', 'Sale Not Found!!');

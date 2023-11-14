@@ -111,23 +111,27 @@
             background-color: #cbccdb;
             padding: 10px;
             border-radius: 15px;
-            padding: 0px 34px;
+            padding: 5px 15px;
             margin-right: 50px;
-            padding-bottom: 9px;
         }
 
         .net-amount .sm {
             font-size: 14px;
+            padding-bottom: 5px;
         }
 
         .net-amount .value {
             background-color: #91caf4;
-            padding: 0px 10px;
+            padding: 0px 10px 2px;
             font-weight: 700;
             font-size: 20px;
             display: inline;
             border-radius: 15px;
-            margin-top: 20px;
+            margin-top: 2px !important;
+        }
+
+        .shadow {
+            box-shadow: 0 .1rem 1rem rgba(var(--bs-black-rgb), .15) !important;
         }
     </style>
 @endpush
@@ -143,9 +147,8 @@
                     <x-layouts.backend.card class="product-item">
                         <x-slot:title>Products (2)</x-slot:title>
                         <x-slot:search>
-                            <x-input.select class="productSearch" placeholder="Search Product Name">
-
-                            </x-input.select>
+                            <x-search.products wire:model='product_id' class="productSearch"
+                                placeholder="Search Product Name" />
                         </x-slot:search>
 
                         <x-slot:button>
@@ -324,9 +327,11 @@
             <x-layouts.backend.card class="payment-info">
                 <x-slot:title>Payment Info</x-slot:title>
                 <x-slot:button>
-                    <x-button.default type="button" href="#" wire:click="addPayment" wire:navigate class="btn btn-sm btn-theme"> Add
+                    <x-button.default type="button" href="#" wire:click="addPayment" wire:navigate
+                        class="btn btn-sm btn-theme"> Add
                         Payment</x-button.default>
-                    <x-button.default type="button" href="#" wire:click="addPayment" wire:navigate class="btn btn-sm btn-danger"> Reset</x-button.default>
+                    <x-button.default type="button" href="#" wire:click="addPayment" wire:navigate
+                        class="btn btn-sm btn-danger"> Reset</x-button.default>
                 </x-slot:button>
                 <div class="row ">
                     <div class="col-sm-12 col-md-4 col-lg-4">
@@ -342,7 +347,7 @@
                         <x-input.text wire:model="ref" label="Reference" />
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.date wire:model="txn_date" label="Date" placeholder="Enter Date"/>
+                        <x-input.date wire:model="txn_date" label="Date" placeholder="Enter Date" />
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
                         <x-input.text-group wire:model="net_amount" label="Amount">
@@ -355,8 +360,8 @@
                         <x-input.text wire:model="charge" label="Charge" />
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <div class="mt-3 mt-4 float-end fs-4 net-amount text-center"><span class="sm">Net
-                                Amount</span> <br><span class="value"> $0.00</span></div>
+                        <div class="mt-3 mt-4 float-end fs-4 net-amount text-center shadow"><span class="sm">Net
+                                Amount</span> <span class="value"> $0.00</span></div>
                     </div>
                 </div>
 
@@ -434,11 +439,7 @@
             </x-layouts.backend.card>
             <x-layouts.backend.card>
                 <x-slot:title>Supplier</x-slot:title>
-                <x-input.select wire:model="contact_id" label="Search Supplier">
-                    @foreach ($supplier as $supplier)
-                        <option value="{{ $supplier->id }}">{{ $supplier->code }}</option>
-                    @endforeach
-                </x-input.select>
+                <x-search.suppliers wire:model="contact_id" label="Search Supplier" />
             </x-layouts.backend.card>
             <x-layouts.backend.card>
                 <x-slot:title>Outlet & Warehouse</x-slot:title>

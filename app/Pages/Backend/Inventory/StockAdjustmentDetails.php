@@ -43,7 +43,7 @@ class StockAdjustmentDetails extends Component
     $AdjustmentItem->save();
 
     if($storeType == 'new'){
-        $this->reset();
+        $this->adjustmentReset();
     }else{
         $this->stockadjustment_id = $Adjustment-> id;
     }
@@ -54,6 +54,13 @@ class StockAdjustmentDetails extends Component
     }
 
     $this->alert('success', $message);
+    $this->dispatch('refreshDatatable');
+}
+public function adjustmentReset()
+{
+    $this->reset();
+    $this->resetValidation();
+    $this->code = str_pad((StockReceipt::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
 }
 
 public function mount()
@@ -67,6 +74,8 @@ public function mount()
 
         $AdjustmentItem = StockReceiptItem::find($this->stockadjustment_id);
         $this->quantity = $AdjustmentItem->quantity;
+    }else{
+        $this->adjustmentReset();
     }
 }
 

@@ -84,23 +84,14 @@
                         </div>
                     </x-slot:button>
                     <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
-
                 </x-layouts.backend.card>
+
                 <x-layouts.backend.card>
                     <x-slot:title>Collection</x-slot:title>
                     <x-search.brands wire:model="brand_id" label="Product Brand" />
+                    <x-search.units wire:model="unit_id" label="Product Unit"/>
+                    <x-search.categories wire:model="category_id" label="Product Category"/>
 
-                    <x-input.select wire:model="unit_id" label="Product Unit">
-                        @foreach ($unit as $unit)
-                            <option value="{{ $unit->id }}">{{ $unit->name }}</option>
-                        @endforeach
-                    </x-input.select>
-
-                    <x-input.select wire:model="category_id" label="Product Category">
-                        @foreach ($categories as $categories)
-                            <option value="{{ $categories->id }}">{{ $categories->name }}</option>
-                        @endforeach
-                    </x-input.select>
                 </x-layouts.backend.card>
 
                 <x-layouts.backend.card>

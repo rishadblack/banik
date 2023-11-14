@@ -40,7 +40,7 @@ class CustomerDetails extends Component
     public $address;
     public $credit_limit;
     public $opening_balance;
-    public $status;
+    public $status = 1;
 
     public function storeCustomer($storeType = null)
     {
@@ -78,7 +78,7 @@ class CustomerDetails extends Component
 
 
         if($storeType == 'new'){
-            $this->reset();
+            $this->customerReset();
         }else{
             $this->customer_id = $Customer-> id;
         }
@@ -89,6 +89,13 @@ class CustomerDetails extends Component
         }
 
         $this->alert('success', $message);
+        $this->dispatch('refreshDatatable');
+    }
+    public function customerReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+        $this->code = str_pad((Contact::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
 
@@ -112,6 +119,8 @@ class CustomerDetails extends Component
             $this->name = $CustomerInfo->name;
             $this->mobile = $CustomerInfo->mobile;
 
+        }else{
+            $this->customerReset();
         }
 
     }

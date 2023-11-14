@@ -154,6 +154,8 @@ class SaleDetails extends Component
             $this->delivery_quantity = $SaleInfo->delivery_quantity;
             $this->subtotal = $SaleInfo->subtotal;
             $this->discount_amount = $SaleInfo->discount_amount;*/
+        }else{
+            $this->reset();
         }
     }
 

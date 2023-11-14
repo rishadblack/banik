@@ -45,7 +45,7 @@ class AccountingReceiptDetails extends Component
         $Receipt->save();
 
         if ($storeType == 'new') {
-            $this->reset();
+            $this->accountingReceiptReset();
         } else {
             $this->accountingreceipt_id = $Receipt->id;
         }
@@ -56,6 +56,13 @@ class AccountingReceiptDetails extends Component
         }
 
         $this->alert('success', $message);
+        $this->dispatch('refreshDatatable');
+    }
+    public function accountingReceiptReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+        //$this->code = str_pad((Receipt::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()
@@ -70,6 +77,8 @@ class AccountingReceiptDetails extends Component
             $this->payment_method_id = $Receipt->payment_method_id;
             $this->amount = $Receipt->amount;
             $this->note = $Receipt->note;
+        }else{
+            $this->accountingReceiptReset();
         }
     }
 

@@ -122,41 +122,13 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth']]
 
     Route::group(['prefix' => 'accounting', 'as' => 'accounting.'], function () {
         Route::get('ledger-account-list', LedgerAccountList::class)->name('ledger_account_list');
-        Route::get('ledger-account-details', LedgerAccountDetails::class)->name('ledger_account_details');
         Route::get('chart-of-account-list', ChartofAccountList::class)->name('chart_account_list');
-        Route::get('chart-of-account-details', ChartofAccountDetails::class)->name('chart_account_details');
         Route::get('receipt-type-list', ReceiptTypeList::class)->name('receipt_type_list');
-        Route::get('receipt-type-details', ReceiptTypeDetails::class)->name('receipt_type_details');
         Route::get('accounting-receipt-list', AccountingReceiptList::class)->name('accounting_receipt_list');
         Route::get('accounting-receipt-details', AccountingReceiptDetails::class)->name('accounting_receipt_details');
 
     });
-    /*Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
-        Route::group(['prefix' => 'order', 'as' => 'order.'], function () {
-            Route::get('sale-list', SaleList::class)->name('sale_list');
-            Route::get('sales-due', SalesDueList::class)->name('sales_due_list');
-            Route::get('purchase-list', PurchaseList::class)->name('purchase_list');
-        });
-        Route::group(['prefix' => 'inventory', 'as' => 'inventory.'], function () {
-            Route::get('stock-list', StockList::class)->name('stock_list');
-            Route::get('stock-movement', StockMovement::class)->name('stock_movement');
-            Route::get('stock-transfer', StockTransferReport::class)->name('stock_transfer_report');
-            Route::get('stock-profit-loss', StockProfitLoss::class)->name('stock_profit_loss');
-        });
-        Route::group(['prefix' => 'accounting', 'as' => 'accounting.'], function () {
-            Route::get('general-ledger', GeneralLedger::class)->name('general_ledger');
-            Route::get('customer-ledger', CustomerLedger::class)->name('customer_ledger');
-            Route::get('supplier-ledger', SupplierLedger::class)->name('supplier_ledger');
-            Route::get('cash-flow', CashFlow::class)->name('cash_flow');
-            Route::get('receivable-report', ReceivableReport::class)->name('receivable_report');
-            Route::get('payable-report', PayableReport::class)->name('payable_report');
-            Route::get('trail-balance', TrailBalance::class)->name('trail_balance');
-            Route::get('balance-sheet', BalanceSheet::class)->name('balance_sheet');
-            Route::get('profit-loss', ProfitLoss::class)->name('profit_loss');
-        });
 
-
-    });*/
 
     Route::get('search/{type}', [SearchController::class, 'index'])->name('search');
 });

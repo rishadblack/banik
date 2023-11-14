@@ -3,9 +3,14 @@
         .productSearch {
             border-radius: 18px;
             margin-left: 239px;
-            width: 240px;
+            width: 250px;
             font-size: 11px;
             color: #736d6d;
+            height: 30px !important;
+        }
+
+        .ts-control {
+            height: 32px !important;
         }
 
         .btn-info {
@@ -106,23 +111,27 @@
             background-color: #cbccdb;
             padding: 10px;
             border-radius: 15px;
-            padding: 0px 34px;
+            padding: 5px 15px;
             margin-right: 50px;
-            padding-bottom: 9px;
         }
 
         .net-amount .sm {
             font-size: 14px;
+            padding-bottom: 5px;
         }
 
         .net-amount .value {
             background-color: #91caf4;
-            padding: 0px 10px;
+            padding: 0px 10px 2px;
             font-weight: 700;
             font-size: 20px;
             display: inline;
             border-radius: 15px;
-            margin-top: 20px;
+            margin-top: 2px !important;
+        }
+
+        .shadow {
+            box-shadow: 0 .1rem 1rem rgba(var(--bs-black-rgb), .15) !important;
         }
     </style>
 @endpush
@@ -139,7 +148,8 @@
                         <x-slot:title>Products (2)</x-slot:title>
                         <x-slot:search>
                             {{-- <x-input.select class="productSearch" placeholder="Search Product Name" /> --}}
-                            <x-search.products wire:model='product_id' placeholder="Search Product Name" />
+                            <x-search.products wire:model='product_id' class="productSearch"
+                                placeholder="Search Product Name" />
                         </x-slot:search>
 
                         <x-slot:button>
@@ -357,7 +367,7 @@
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
                         <div class="mt-3 mt-4 float-end fs-4 net-amount text-center shadow"><span class="sm">Net
-                                Amount</span> <br><span class="value"> $0.00</span></div>
+                                Amount</span><span class="value"> $0.00</span></div>
                     </div>
                 </div>
 
@@ -436,11 +446,7 @@
 
             <x-layouts.backend.card>
                 <x-slot:title>Customer</x-slot:title>
-                <x-input.select wire:model="contact_id" label="Search Customer">
-                    @foreach ($customer as $customer)
-                        <option value="{{ $customer->id }}">{{ $customer->code }}</option>
-                    @endforeach
-                </x-input.select>
+                <x-search.customers wire:model="contact_id" label="Search Customer" />
             </x-layouts.backend.card>
             <x-layouts.backend.card>
                 <x-slot:title>Outlet & Warehouse</x-slot:title>

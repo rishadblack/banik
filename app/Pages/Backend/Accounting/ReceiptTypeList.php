@@ -33,6 +33,7 @@ class ReceiptTypeList extends Component
                 return;
             }
 
+            $this->receiptType_id = $ReceiptType->id;
             $this->name = $ReceiptType->name;
             $this->code = $ReceiptType->code;
             $this->flow_type = $ReceiptType->flow_type;
@@ -59,9 +60,9 @@ class ReceiptTypeList extends Component
 
     $ReceiptType = ReceiptType::findOrNew($this->receiptType_id);
     if($this->receiptType_id) {
-        $message = 'Stock Receipt Type Updated Successfully!';
+        $message = 'Receipt Type Updated Successfully!';
     } else {
-        $message = 'Stock Receipt Type Added Successfully!';
+        $message = 'Receipt Type Added Successfully!';
         $ReceiptType->user_id = Auth::id();
     }
 

@@ -17,7 +17,7 @@ class GroupDetails extends Component
     public $if_default;
     public $name;
     public $group_id;
-    public $status;
+    public $status = 1;
     public function storeGroup($storeType = null)
     {
 

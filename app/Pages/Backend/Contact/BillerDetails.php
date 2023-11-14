@@ -33,7 +33,7 @@ class BillerDetails extends Component
     public $group_id;
     public $credit_limit;
     public $opening_balance;
-    public $status;
+    public $status = 1;
 
     public function storeBiller($storeType = null)
     {
@@ -67,7 +67,7 @@ class BillerDetails extends Component
 
 
         if($storeType == 'new'){
-            $this->reset();
+            $this->billerReset();
         }else{
             $this->biller_id = $Biller-> id;
         }
@@ -78,6 +78,13 @@ class BillerDetails extends Component
         }
 
         $this->alert('success', $message);
+        $this->dispatch('refreshDatatable');
+    }
+    public function billerReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+        $this->code = str_pad((Contact::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()
@@ -97,6 +104,8 @@ class BillerDetails extends Component
             $this->name = $Biller->first_name;
             $this->mobile = $Biller->mobile;
 
+        }else{
+            $this->billerReset();
         }
     }
 

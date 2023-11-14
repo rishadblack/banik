@@ -25,7 +25,7 @@ class OutletDetails extends Component
     public $address;
     public $upazila_id;
     public $district_id;
-    public $status;
+    public $status = 1;
     public function storeOutlet($storeType = null)
     {
         $this->validate([
@@ -46,7 +46,7 @@ class OutletDetails extends Component
         $Outlet->save();
 
         if ($storeType == 'new') {
-            $this->reset();
+            $this->outletReset();
         } else {
             $this->outlet_id = $Outlet->id;
         }
@@ -57,6 +57,16 @@ class OutletDetails extends Component
         }
 
         $this->alert('success', $message);
+        $this->dispatch('refreshDatatable');
+
+
+    }
+
+    public function outletReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+        //$this->code = str_pad((Outlet::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()
@@ -70,6 +80,8 @@ class OutletDetails extends Component
             $this->country_id = $Outlet->country_id;
             $this->division_id = $Outlet->division_id;
             $this->upazila_id = $Outlet->upazila_id;
+        }else{
+            $this->outletReset();
         }
     }
     public function render()

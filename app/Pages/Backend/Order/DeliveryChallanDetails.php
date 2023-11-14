@@ -23,6 +23,7 @@ class DeliveryChallanDetails extends Component
     public $name;
     public $quantity;
     public $note;
+    public $status = 1;
 
     public function storeDelivery($storeType = null)
     {
@@ -37,6 +38,7 @@ class DeliveryChallanDetails extends Component
     $Delivery->mobile = $this->mobile;
     $Delivery->vehicle_type = $this->vehicle_type;
     $Delivery->note = $this->note;
+    $Delivery->status = $this->status;
     $Delivery->save();
 
     $DeliveryItem = DeliveryItem::findOrNew($this->challan_id);
@@ -47,7 +49,7 @@ class DeliveryChallanDetails extends Component
     $DeliveryItem->save();
 
     if($storeType == 'new'){
-        $this->reset();
+        $this->challanReset();
     }else{
         $this->challan_id = $Delivery->id;
     }
@@ -58,6 +60,13 @@ class DeliveryChallanDetails extends Component
         $message = 'Delivery Challan Added Successfully!';
     }
     $this->alert('success',$message);
+    $this->dispatch('refreshDatatable');
+}
+public function challanReset()
+{
+    $this->reset();
+    $this->resetValidation();
+    //$this->code = str_pad((Delivery::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
 }
 
 public function mount()
@@ -69,10 +78,13 @@ public function mount()
         $this->mobile = $Delivery->mobile;
         $this->vehicle_type = $Delivery->vehicle_type;
         $this->note = $Delivery->note;
+        $this->status = $Delivery->status;
 
         $DeliveryItem = DeliveryItem::find($this->challan_id);
         $this->name = $DeliveryItem->name;
         $this->quantity = $DeliveryItem->quantity;
+    }else {
+        $this->challanReset();
     }
 }
 

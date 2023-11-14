@@ -6,14 +6,12 @@
     </style>
 @endpush
 <div>
-    <div class="d-flex align-items-center">
         <x-slot:title>Chart of Account</x-slot:title>
         <x-slot:button>
             <x-button.default class="btn d-flex float-end btn-theme" x-data
                 @click="$dispatch('openChartOfAccountModal')"><i class="fa fa-plus-circle fa-fw mt-1 mt-1 me-1"></i> Add
                 Chart Of Account</x-button.default>
         </x-slot:button>
-    </div>
 
 
     <x-layouts.backend.card>

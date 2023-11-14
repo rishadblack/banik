@@ -54,8 +54,10 @@
             border: var(--bs-card-border-width) solid #9396a1;
         }
 
-        .form-control {
-            border: var(--bs-border-width) solid #96989c;
+        .form-control,
+        .ts-control {
+            border-radius: 5px !important;
+            border: var(--bs-border-width) solid #96989c !important;
         }
 
         .app-sidebar .menu .menu-item.active:not(.has-sub)>.menu-link {
@@ -66,6 +68,7 @@
             line-height: var(--bs-app-sidebar-menu-link-line-height);
             color: #a3aed1;
         }
+
         .app-sidebar .menu .menu-item .menu-link:hover {
             color: #ffffff;
         }
@@ -104,6 +107,16 @@
         .custom-dt-thead {
             vertical-align: bottom;
             background-color: #acacde;
+            color: #40409d;
+        }
+
+        .filter-color {
+            background-color: orange;
+        }
+
+        .table> :not(caption)>*>th {
+            padding: .5rem .5rem;
+            color: #3939a8;
         }
 
         .app-sidebar .menu .menu-item {
@@ -133,14 +146,15 @@
             opacity: 0.9;
         }
 
-
+*/
         .dropdown-toggle {
             white-space: nowrap;
             background-color: orange;
         }
+
         .dropdown-toggle:hover {
-            background-color: orange;
-        }rgb(240, 187, 88) */
+            background-color: rgb(235, 165, 33);
+        }
     </style>
     @vite(['resources/sass/backend.scss', 'resources/js/backend.js'])
     @stack('css')

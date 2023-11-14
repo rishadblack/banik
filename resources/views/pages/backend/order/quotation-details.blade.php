@@ -101,9 +101,7 @@
                     <x-layouts.backend.card class="product-item">
                         <x-slot:title>Products (2)</x-slot:title>
                         <x-slot:search>
-                            <x-input.select class="productSearch" placeholder="Search Product Name">
-
-                            </x-input.select>
+                            <x-search.products wire:model='product_id' class="productSearch" placeholder="Search Product Name" />
                         </x-slot:search>
 
                         <x-slot:button>
@@ -306,11 +304,7 @@
             </x-layouts.backend.card>
             <x-layouts.backend.card>
                 <x-slot:title>Customer</x-slot:title>
-                <x-input.select wire:model="contact_id" label="Search Customer">
-                    @foreach ($customer as $customer)
-                        <option value="{{ $customer->id }}">{{ $customer->code }}</option>
-                    @endforeach
-                </x-input.select>
+                <x-search.customers wire:model="contact_id" label="Search Customer"/>
             </x-layouts.backend.card>
 
             <x-layouts.backend.card>

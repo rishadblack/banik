@@ -35,7 +35,7 @@ class SupplierDetails extends Component
     public $group_id;
     public $credit_limit;
     public $opening_balance;
-    public $status;
+    public $status = 1;
 
     public function storeSupplier($storeType = null)
     {
@@ -72,7 +72,7 @@ class SupplierDetails extends Component
 
 
         if($storeType == 'new'){
-            $this->reset();
+            $this->supplierReset();
         }else{
             $this->supplier_id = $Supplier-> id;
         }
@@ -83,6 +83,13 @@ class SupplierDetails extends Component
         }
 
         $this->alert('success', $message);
+        $this->dispatch('refreshDatatable');
+    }
+    public function supplierReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+        $this->code = str_pad((Contact::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()
@@ -104,6 +111,8 @@ class SupplierDetails extends Component
             $this->name = $Supplier->first_name;
             $this->mobile = $Supplier->mobile;
 
+        }else{
+            $this->supplierReset();
         }
     }
     public function render()

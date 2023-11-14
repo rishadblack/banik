@@ -26,7 +26,7 @@ class WarehouseDetails extends Component
     public $address;
     public $upazila_id;
     public $district_id;
-    public $status;
+    public $status = 1;
 
     public function storeWarehouse($storeType = null)
     {
