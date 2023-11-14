@@ -30,7 +30,7 @@
 
         };
 
-        document.addEventListener("DOMContentLoaded", function(event) {
+        document.addEventListener("livewire:navigated", function(event) {
             var select{{ $jsId }} = new TomSelect(document.getElementById("{{ $jsId }}"),
                 config{{ $jsId }});
 

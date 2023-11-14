@@ -10,6 +10,7 @@ use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class ProductTable extends DataTableComponent
 {
@@ -21,7 +22,7 @@ class ProductTable extends DataTableComponent
         // $this->setAdditionalSelects(['users.id as id']);
         $this->setSearchPlaceholder('Enter Search Product');
         $this->setSearchDebounce(1000);
-
+        $this->setFilterLayoutSlideDown();
         $this->setTheadAttributes([
             'default' => true,
             'class' => 'custom-dt-thead',
@@ -44,6 +45,11 @@ class ProductTable extends DataTableComponent
                 ->filter(function (Builder $builder, string $value) {
                     $builder->where('products.name', 'like', '%' . $value . '%');
                 }),
+            SelectFilter::make('Status')
+                ->options(filterOption('status.common'))
+                ->filter(function(Builder $builder, string $value) {
+                    $builder->where('products.status',$value);
+                }),
         ];
     }
     public function columns(): array
@@ -54,7 +60,7 @@ class ProductTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->excludeFromColumnSelect(),
-                Column::make('Code', 'code')
+            Column::make('Code', 'code')
                 ->sortable()
                 ->searchable(),
             Column::make('Name', 'name')

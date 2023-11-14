@@ -33,19 +33,6 @@ class BrandTable extends DataTableComponent
     {
         return Brand::query();
     }
-    public function filters(): array
-    {
-        return [
-            TextFilter::make('Name')
-                ->config([
-                    'placeholder' => 'Search Name',
-                    'maxlength' => '25',
-                ])
-                ->filter(function (Builder $builder, string $value) {
-                    $builder->where('beands.name', 'like', '%' . $value . '%');
-                }),
-        ];
-    }
 
     public function columns(): array
     {

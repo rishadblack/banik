@@ -11,9 +11,7 @@
             <select id="{{ $jsId }}" @if (isset($attributes['multiple']) && $attributes['multiple']) multiple @endif
                 {{ $attributes->wire('model') }}
                 class="@error($attributes->wire('model')->value) invalid @enderror {{ $attributes['class'] }}">
-                <option value="">
-                    {{ isset($attributes['placeholder']) ? $attributes['placeholder'] : 'Select ' . $attributes['label'] }}
-                </option>
+                <option value="">{{ isset($attributes['placeholder']) ? $attributes['placeholder'] : 'Select ' . $attributes['label'] }}</option>
                 @foreach ($products as $product)
                     <option value="{{$product->id}}">{{$product->code}} | {{$product->name}}</option>
                 @endforeach
@@ -64,7 +62,7 @@
             loadThrottle: 1000
         };
 
-        document.addEventListener("DOMContentLoaded", function(event) {
+        document.addEventListener("livewire:navigated", function(event) {
             var select{{ $jsId }} = new TomSelect(document.getElementById("{{ $jsId }}"),
                 config{{ $jsId }});
 

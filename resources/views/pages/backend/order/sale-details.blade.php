@@ -148,8 +148,7 @@
                         <x-slot:title>Products (2)</x-slot:title>
                         <x-slot:search>
                             {{-- <x-input.select class="productSearch" placeholder="Search Product Name" /> --}}
-                            <x-search.products wire:model='product_id' class="productSearch"
-                                placeholder="Search Product Name" />
+                            <x-search.products wire:model='product_id' class="productSearch" placeholder="Search Product Name" />
                         </x-slot:search>
 
                         <x-slot:button>
