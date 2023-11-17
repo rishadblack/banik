@@ -10,13 +10,11 @@ use Livewire\Attributes\Layout;
 #[Layout('layouts.backend')]
 class ProductList extends Component
 {
-    public $products;
-
 
     #[On('productDelete')]
     public function destroy($data)
     {
-        // $data = $this->alertConfirm($data, 'Are you sure to delete Product?');
+        $data = $this->alertConfirm($data, 'Are you sure to delete Product?');
 
         if(isset($data['id'])) {
             $Product = Product::find($data['id']);
@@ -36,7 +34,7 @@ class ProductList extends Component
 
     public function render()
     {
-        $this->products = Product::all();
+
         return view('pages.backend.product.product-list');
     }
 }

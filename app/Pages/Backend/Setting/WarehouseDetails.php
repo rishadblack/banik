@@ -35,6 +35,13 @@ class WarehouseDetails extends Component
             'address' => 'required|string',
         ]);
 
+        if ($this->warehouse_id) {
+            $message = 'Warehouse Updated Successfully!';
+        } else {
+            $message = 'Warehouse Added Successfully!';
+        }
+
+
         $Warehouse = Warehouse::findOrNew($this->warehouse_id);
         $Warehouse->user_id = Auth::id();
         $Warehouse->code = $this->code;
@@ -48,17 +55,22 @@ class WarehouseDetails extends Component
         $Warehouse->save();
 
         if ($storeType == 'new') {
-            $this->reset();
+            $this->warehouseReset();
         } else {
             $this->warehouse_id = $Warehouse->id;
         }
-        if ($this->warehouse_id) {
-            $message = 'Warehouse Updated Successfully!';
-        } else {
-            $message = 'Warehouse Added Successfully!';
-        }
 
         $this->alert('success', $message);
+        $this->dispatch('refreshDatatable');
+
+
+    }
+
+    public function warehouseReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+        $this->code = str_pad((Warehouse::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()
@@ -72,6 +84,8 @@ class WarehouseDetails extends Component
             $this->country_id = $Warehouse->country_id;
             $this->division_id = $Warehouse->division_id;
             $this->upazila_id = $Warehouse->upazila_id;
+        }else{
+            $this->warehouseReset();
         }
     }
     public function render()

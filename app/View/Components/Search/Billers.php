@@ -23,7 +23,7 @@ class Billers extends Component
     public function render(): View|Closure|string
     {
         return view('components.search.billers',[
-            'billers' => Contact::limit(10)->get()
+            'billers' => Contact::active()->limit(10)->get()
         ]);
     }
 }

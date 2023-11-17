@@ -11,6 +11,7 @@ use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class StuffTable extends DataTableComponent
 {
@@ -21,6 +22,7 @@ class StuffTable extends DataTableComponent
         $this->setPrimaryKey('id');
         $this->setSearchPlaceholder('Enter Search Stuff');
         $this->setSearchDebounce(1000);
+        $this->setFilterLayoutSlideDown();
         $this->setTheadAttributes([
             'default' => true,
             'class' => 'custom-dt-thead',
@@ -29,18 +31,24 @@ class StuffTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        return Contact::query();
+        return Contact::query()
+        ->where('type',4);
     }
     public function filters(): array
     {
         return [
-            TextFilter::make('Code')
-                ->config([
-                    'placeholder' => 'Search Code',
-                    'maxlength' => '25',
-                ])
-                ->filter(function (Builder $builder, string $value) {
-                    $builder->where('contacts.code', 'like', '%' . $value . '%');
+            TextFilter::make('Company Name')
+            ->config([
+                'placeholder' => 'Search Company Name',
+                'maxlength' => '25',
+            ])
+            ->filter(function (Builder $builder, string $value) {
+                $builder->where('contacts.company_name', 'like', '%' . $value . '%');
+            }),
+            SelectFilter::make('Status')
+                ->options(filterOption('status.common'))
+                ->filter(function(Builder $builder, string $value) {
+                    $builder->where('contacts.status',$value);
                 }),
         ];
     }
@@ -56,7 +64,10 @@ class StuffTable extends DataTableComponent
             Column::make('Code', 'code')
                 ->sortable()
                 ->searchable(),
-
+                Column::make('Stuff Name', 'ContactInfo.name')
+                ->eagerLoadRelations()
+                ->sortable()
+                ->searchable(),
             Column::make('Mobile', 'mobile')
                 ->sortable()
                 ->searchable()
@@ -64,6 +75,14 @@ class StuffTable extends DataTableComponent
             Column::make('Address', 'address')
                 ->sortable()
                 ->searchable(),
+
+                Column::make('Opening Balance', 'opening_balance')
+                ->format(
+                    fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+                )
+                    ->sortable()
+                    ->searchable()
+                    ->deselected(),
 
             Column::make('Create BY', 'User.name')
                 ->format(
@@ -80,7 +99,7 @@ class StuffTable extends DataTableComponent
                 ->buttons([
                     LinkColumn::make('Edit')
                         ->title(fn ($row) => 'Edit')
-                        ->location(fn ($row) => route('backend.contact.biller_details', ['biller_id' => $row->id]))
+                        ->location(fn ($row) => route('backend.contact.stuff_details', ['stuff_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
@@ -96,7 +115,7 @@ class StuffTable extends DataTableComponent
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
-                                'data-listener' => 'CustomerDelete',
+                                'data-listener' => 'stuffDelete',
                                 'class' => 'badge bg-danger me-1 p-2 ',
                                 'icon' => 'fa fa-trash',
                                 'title' => 'Delete',

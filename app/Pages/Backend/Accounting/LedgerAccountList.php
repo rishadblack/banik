@@ -50,7 +50,7 @@ class LedgerAccountList extends Component
     {
         $this->reset();
         $this->resetValidation();
-        $this->ledger_code = str_pad((LedgerAccount::latest()->orderByDesc('id')->first()->ledger_code + 1), 3, '0', STR_PAD_LEFT);
+        $this->ledger_code = str_pad((LedgerAccount::latest()->orderByDesc('id')->first()?->ledger_code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function storeLedgerAccount($storeType = null)
@@ -89,6 +89,7 @@ class LedgerAccountList extends Component
     #[On('ledgerAccountDelete')]
     public function destroy($data)
     {
+
         $data = $this->alertConfirm($data, 'Are you sure to delete Ledger Account?');
 
         if(isset($data['id'])) {

@@ -128,6 +128,10 @@
             background-color: #111c43;
         }
 
+        a {
+            text-decoration: none;
+        }
+
         /* .app-sidebar .menu .menu-item .menu-icon, */
         /* .app-sidebar .menu .menu-item .menu-text {
             margin-left: .625rem;
@@ -240,7 +244,6 @@
                     <x-menu label="Setting" sub="setting" icon="fa fa-sliders">
                         <x-menu label="Outlet" route="backend.setting.outlet_list" />
                         <x-menu label="Warehouse" route="backend.setting.warehouse_list" />
-                        <x-menu label="Mutliple Payment" route="backend.setting.multiple_payment_list" />
                         <x-menu label="Payment Method" route="backend.setting.payment_list" />
                     </x-menu>
                     <x-menu label="Product Manage" sub="product" icon="fa fa-shopping-cart">

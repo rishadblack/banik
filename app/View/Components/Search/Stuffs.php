@@ -23,7 +23,7 @@ class Stuffs extends Component
     public function render(): View|Closure|string
     {
         return view('components.search.stuffs',[
-            'stuffs' => Contact::limit(10)->get()
+            'stuffs' => Contact::active()->limit(10)->get()
         ]);
     }
 }

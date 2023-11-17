@@ -12,6 +12,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class StockAdjustmentTable extends DataTableComponent
 {
@@ -22,30 +23,26 @@ class StockAdjustmentTable extends DataTableComponent
         $this->setPrimaryKey('id');
         $this->setSearchPlaceholder('Enter Search Biller');
         $this->setSearchDebounce(1000);
+        $this->setFilterLayoutSlideDown();
+        $this->setTheadAttributes([
+            'default' => true,
+            'class' => 'custom-dt-thead',
+          ]);
     }
 
     public function builder(): Builder
     {
-        return StockReceipt::query();
+        return StockReceipt::query()
+        ->where('type',1);
     }
     public function filters(): array
     {
         return [
-            TextFilter::make('Code')
-                ->config([
-                    'placeholder' => 'Search code',
-                    'maxlength' => '25',
-                ])
-                ->filter(function (Builder $builder, string $value) {
-                    $builder->where('stock_adjustments.stock_adjustment_code', 'like', '%' . $value . '%');
-                }),
-                TextFilter::make('Status')
-                ->config([
-                    'placeholder' => 'Search Status',
-                    'maxlength' => '25',
-                ])
-                ->filter(function (Builder $builder, string $value) {
-                    $builder->where('stock_adjustments.stock_adjustment_status', 'like', '%' . $value . '%');
+
+            SelectFilter::make('Status')
+                ->options(filterOption('status.common'))
+                ->filter(function(Builder $builder, string $value) {
+                    $builder->where('brands.status',$value);
                 }),
         ];
     }
@@ -64,7 +61,7 @@ class StockAdjustmentTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
 
-                Column::make('Warehouse', 'warehouse_id')
+                Column::make('Warehouse', 'Warehouse.name')
                 ->format(
                     fn($value, $row, Column $column) => $value ? $value : '-'
                 )

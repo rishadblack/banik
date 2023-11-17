@@ -23,7 +23,7 @@
                                 <x-input.text wire:model="code" label="Code" />
                             </div>
                             <div class="col-4">
-                                <x-input.text wire:model="product_name" label="Product Name" />
+                                <x-search.products wire:model="product_id" label="Product Name" />
                             </div>
                             <div class="col-4">
                                 <x-input.text wire:model="quantity" label="Quantity" />

@@ -10,8 +10,7 @@
             <select id="{{ $jsId }}" @if (isset($attributes['multiple']) && $attributes['multiple']) multiple @endif
                 {{ $attributes->wire('model') }}
                 class="@error($attributes->wire('model')->value) invalid @enderror {{ $attributes['class'] }}">
-                <option value="">
-                    {{ isset($attributes['placeholder']) ? $attributes['placeholder'] : 'Select ' . $attributes['label'] }}
+                <option value="">{{ isset($attributes['placeholder']) ? $attributes['placeholder'] : 'Select ' . $attributes['label'] }}
                 </option>
                 @foreach ($units as $unit)
                     <option value="{{$unit->id}}">{{$unit->name}}</option>

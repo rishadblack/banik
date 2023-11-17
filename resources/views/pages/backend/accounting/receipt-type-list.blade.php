@@ -16,13 +16,18 @@
 
     <x-modal id="receiptTypeModal">
         <x-slot:title>Receipt Type</x-slot:title>
-        <x-input.text wire:model="name" label="Name" />
-        <x-input.text wire:model="code" label="Code" />
-        <x-input.select wire:model="flow_type" label="Flow[DR/CR]">
-            <option value="1">Debit</option>
-            <option value="2">Credit</option>
-        </x-input.select>
-        <x-input.select wire:model="status" label="Status" :options="config('status.common')" />
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-6"><x-input.text wire:model="code" label="Code" /></div>
+            <div class="col-sm-12 col-md-6 col-lg-6"> <x-input.text wire:model="name" label="Name" /></div>
+            <div class="col-sm-12 col-md-6 col-lg-6"><x-input.select wire:model="flow_type" label="Flow[DR/CR]">
+                <option value="1">Debit</option>
+                <option value="2">Credit</option>
+            </x-input.select></div>
+            <div class="col-sm-12 col-md-6 col-lg-6"><x-input.select wire:model="status" label="Status"
+                    :options="config('status.common')" />
+            </div>
+        </div>
+
         <x-slot:footer>
             <x-button.default wire:click="storeReceiptType" wire:target="storeReceiptType"
                 class="btn-success">Save</x-button.default>

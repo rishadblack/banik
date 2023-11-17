@@ -45,8 +45,13 @@ class BillerDetails extends Component
         ]);
 
         $Biller = Contact::findOrNew($this->biller_id);
+        if($this->biller_id) {
+            $message = 'Biller Updated Successfully!';
+        } else {
+            $message = 'Biller Added Successfully!';
+            $Biller->user_id = Auth::id();
+        }
 
-        $Biller->user_id = Auth::id();
         $Biller->code = $this->code;
         $Biller->mobile = $this->mobile;
         $Biller->type = 3;
@@ -58,8 +63,8 @@ class BillerDetails extends Component
         $Biller->status = $this->status;
         $Biller->save();
 
-        $BillerInfo = new ContactInfo();
-        $BillerInfo->user_id = Auth::id();
+        $BillerInfo = $Biller->ContactInfo()->firstOrNew();
+        $BillerInfo->user_id = $Biller->user_id;
         $BillerInfo->contact_id = $Biller->id;
         $BillerInfo->name = $this->name;
         $BillerInfo->mobile = $this->mobile;
@@ -71,11 +76,7 @@ class BillerDetails extends Component
         }else{
             $this->biller_id = $Biller-> id;
         }
-        if($this->biller_id) {
-            $message = 'Biller Updated Successfully!';
-        } else {
-            $message = 'Biller Added Successfully!';
-        }
+
 
         $this->alert('success', $message);
         $this->dispatch('refreshDatatable');
@@ -84,7 +85,7 @@ class BillerDetails extends Component
     {
         $this->reset();
         $this->resetValidation();
-        $this->code = str_pad((Contact::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
+        $this->code = str_pad((Contact::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()

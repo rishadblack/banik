@@ -24,4 +24,8 @@ class Transaction extends Model
     {
         return $this->belongsTo(PaymentMethod::class);
     }
+    public function scopeActive($query)
+    {
+        return $query->whereStatus(1);
+    }
 }

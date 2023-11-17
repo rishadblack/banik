@@ -22,7 +22,8 @@ class PaymentDetails extends Component
     public $opening_balance;
     public $name;
     public $status = 1;
-    public function storeMethod($storeType = null){
+    public function storeMethod($storeType = null)
+    {
         $this->validate([
             'code' => 'required|string',
             'account_no' => 'required|string',
@@ -41,25 +42,32 @@ class PaymentDetails extends Component
         $Payment->status = $this->status;
         $Payment->name = $this->name;
         $Payment->save();
-        if($storeType == 'new'){
-            $this->reset();
-        }
-        else{
+        if ($storeType == 'new') {
+            $this->paymentMethodReset();
+        } else {
             $this->payment_id = $Payment->id;
         }
 
-        if($this->payment_id){
+        if ($this->payment_id) {
             $message = 'Payment Method Updated Successfully!';
-        }else{
+        } else {
             $message = 'Payment Method Added Successfully!';
         }
 
-        $this->alert('success',$message);
+        $this->alert('success', $message);
+        $this->dispatch('refreshDatatable');
+    }
+
+    public function paymentMethodReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+        $this->code = str_pad((PaymentMethod::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()
     {
-        if($this->payment_id) {
+        if ($this->payment_id) {
             $Payment = PaymentMethod::find($this->payment_id);
             $this->code = $Payment->code;
             $this->name = $Payment->name;
@@ -67,6 +75,8 @@ class PaymentDetails extends Component
             $this->account_no = $Payment->account_no;
             $this->opening_balance = $Payment->opening_balance;
             $this->branch = $Payment->branch;
+        }else{
+            $this->paymentMethodReset();
         }
     }
 

@@ -6,6 +6,7 @@ namespace App\Pages\Backend\Inventory;
 use Livewire\Attributes\Url;
 use App\Http\Common\Component;
 use Livewire\Attributes\Layout;
+use App\Models\Setting\Warehouse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Inventory\StockReceipt;
 use App\Models\Inventory\StockTransfer;
@@ -31,18 +32,25 @@ class StockMovementDetails extends Component
         ]);
 
         $Transfer = StockReceipt::findOrNew($this->stocktransfer_id);
-        $Transfer->user_id = Auth::id();
+        if ($this->stocktransfer_id) {
+            $message = 'Stock Transfer Updated Successfully!';
+        } else {
+            $message = 'Stock Transfer Added Successfully!';
+            $Transfer->user_id = Auth::id();
+        }
+
         $Transfer->code = $this->code;
         $Transfer->warehouse_id = $this->warehouse_id;
+        $Transfer->type = 2;
         $Transfer->to_warehouse_id = $this->to_warehouse_id;
         $Transfer->ref = $this->ref;
         $Transfer->save();
 
-        // $TransferItem = StockReceiptItem::findOrNew($this->stocktransfer_id);
-        // $TransferItem->user_id = Auth::id();
-        // $TransferItem->stock_receipt_id = $Transfer->id;
-        // $TransferItem->quantity = $this->quantity;
-        // $TransferItem->save();
+        $TransferItem =  $Transfer-> StockReceiptItem()->firstOrNew();
+        $TransferItem->user_id = $Transfer->user_id;
+        $TransferItem->stock_receipt_id = $Transfer->id;
+        $TransferItem->quantity = $this->quantity;
+        $TransferItem->save();
 
 
         if ($storeType == 'new') {
@@ -50,11 +58,7 @@ class StockMovementDetails extends Component
         } else {
             $this->stocktransfer_id = $Transfer->id;
         }
-        if ($this->stocktransfer_id) {
-            $message = 'Stock Transfer Updated Successfully!';
-        } else {
-            $message = 'Stock Transfer Added Successfully!';
-        }
+
 
         $this->alert('success', $message);
         $this->dispatch('refreshDatatable');
@@ -63,7 +67,7 @@ class StockMovementDetails extends Component
     {
         $this->reset();
         $this->resetValidation();
-        $this->code = str_pad((StockReceipt::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
+        $this->code = str_pad((StockReceipt::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()
@@ -75,14 +79,14 @@ class StockMovementDetails extends Component
             $this->to_warehouse_id = $Transfer->to_warehouse_id;
             $this->ref = $Transfer->ref;
 
-            // $Transfer = StockReceiptItem::find($this->stocktransfer_id);
-            // $this->quantity = $Transfer->quantity;
+            $this->quantity = $Transfer->StockReceiptItem->quantity;
         } else {
             $this->transferReset();
         }
     }
     public function render()
     {
-        return view('pages.backend.inventory.stock-movement-details');
+        $warehouse = Warehouse::all();
+        return view('pages.backend.inventory.stock-movement-details',compact('warehouse'));
     }
 }

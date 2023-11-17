@@ -13,7 +13,7 @@ class AccountingReceiptList extends Component
     #[On('receiptDelete')]
     public function destroy($data)
     {
-        // $data = $this->alertConfirm($data, 'Are you sure to delete Ledger Account?');
+        $data = $this->alertConfirm($data, 'Are you sure to delete Accounting Receipt?');
 
         if(isset($data['id'])) {
             $ReceiptType = Receipt::find($data['id']);

@@ -17,6 +17,7 @@ class PurchaseList extends Component
     #[On('purchaseDelete')]
     public function destroy($data)
     {
+
         $data = $this->alertConfirm($data, 'Are you sure to delete Purchase?');
 
         if(isset($data['id'])) {

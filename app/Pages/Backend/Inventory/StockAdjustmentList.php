@@ -15,7 +15,7 @@ class StockAdjustmentList extends Component
     #[On('adjustmentDelete')]
     public function destroy($data)
     {
-        // $data = $this->alertConfirm($data, 'Are you sure to delete Adjustment?');
+       $data = $this->alertConfirm($data, 'Are you sure to delete Stock Adjustment?');
 
         if(isset($data['id'])) {
             $Adjustment = StockReceipt::find($data['id']);

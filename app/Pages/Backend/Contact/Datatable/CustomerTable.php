@@ -12,6 +12,7 @@ use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class CustomerTable extends DataTableComponent
 {
@@ -20,13 +21,14 @@ class CustomerTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id');
-        // $this->setAdditionalSelects(['users.id as id']);
+        // $this->setAdditionalSelects(['contact_infos.contact_id']);
         $this->setSearchPlaceholder('Enter Search Customer');
         $this->setSearchDebounce(1000);
+        $this->setFilterLayoutSlideDown();
         $this->setTheadAttributes([
             'default' => true,
             'class' => 'custom-dt-thead',
-          ]);
+        ]);
     }
 
     public function builder(): Builder
@@ -37,13 +39,18 @@ class CustomerTable extends DataTableComponent
     public function filters(): array
     {
         return [
-            TextFilter::make('Code')
+            TextFilter::make('Company Name')
                 ->config([
-                    'placeholder' => 'Search Code',
+                    'placeholder' => 'Search Company Name',
                     'maxlength' => '25',
                 ])
                 ->filter(function (Builder $builder, string $value) {
-                    $builder->where('contacts.code', 'like', '%' . $value . '%');
+                    $builder->where('contacts.company_name', 'like', '%' . $value . '%');
+                }),
+            SelectFilter::make('Status')
+                ->options(filterOption('status.common'))
+                ->filter(function (Builder $builder, string $value) {
+                    $builder->where('contacts.status', $value);
                 }),
         ];
     }
@@ -59,8 +66,19 @@ class CustomerTable extends DataTableComponent
             Column::make('Customer Code', 'code')
                 ->sortable()
                 ->searchable(),
+            Column::make('Customer Name', 'ContactInfo.name')
+                ->eagerLoadRelations()
+                ->sortable()
+                ->searchable(),
 
             Column::make('Mobile', 'mobile')
+                ->sortable()
+                ->searchable()
+                ->deselected(),
+            Column::make('Opening Balance', 'opening_balance')
+            ->format(
+                fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+            )
                 ->sortable()
                 ->searchable()
                 ->deselected(),
@@ -77,9 +95,9 @@ class CustomerTable extends DataTableComponent
                 ->eagerLoadRelations()
                 ->sortable()
                 ->searchable(),
-                Column::make('Status', 'status')
+            Column::make('Status', 'status')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.common.{$value}.class") . '">' . config("status.common.{$value}.name") . '</span>' : ''
+                    fn ($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.common.{$value}.class") . '">' . config("status.common.{$value}.name") . '</span>' : ''
                 )->sortable()->html(),
             ButtonGroupColumn::make("Actions")
                 ->buttons([
@@ -109,6 +127,6 @@ class CustomerTable extends DataTableComponent
                             ];
                         }),
                 ]),
-            ];
+        ];
     }
 }

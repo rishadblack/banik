@@ -14,7 +14,7 @@ class DeliveryChallanList extends Component
     #[On('deliveryDelete')]
     public function destroy($data)
     {
-        // $data = $this->alertConfirm($data, 'Are you sure to delete Purchase?');
+        $data = $this->alertConfirm($data, 'Are you sure to delete Delivery Challan?');
 
         if(isset($data['id'])) {
             $Delivery = Delivery::find($data['id']);

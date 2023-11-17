@@ -189,9 +189,9 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td><x-input.text-order wide:model="amount" class="widthtd" placeholder="" /></td>
-                                    <td><x-input.text-order wide:model="quantity" class="widthtd" placeholder="" /></td>
-                                    <td class="text-center"><x-input.text-order wide:model="discount" class="widthtd"
+                                    <td><x-input.text-order wire:model="amount" class="widthtd" placeholder="" /></td>
+                                    <td><x-input.text-order wire:model="quantity" class="widthtd" placeholder="" /></td>
+                                    <td class="text-center"><x-input.text-order wire:model="discount" class="widthtd"
                                             placeholder="" />
                                         <div class="text-body text-opacity-50 small d-flex float-end subtotal">
                                             Subtotal : 0
@@ -199,7 +199,7 @@
                                     </td>
 
                                 </tr>
-                                <tr class="shadow-none">
+                                {{-- <tr class="shadow-none">
                                     <td class="text-center">1</td>
                                     <td class="d-flex">
                                         <div
@@ -262,7 +262,7 @@
                                         </div>
                                     </td>
 
-                                </tr>
+                                </tr> --}}
 
                             </tbody>
                         </table>
@@ -344,7 +344,7 @@
                     </div>
 
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.text wire:model="ref" label="Reference" />
+                        <x-input.text wire:model="purchase_ref" label="Reference" />
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
                         <x-input.date wire:model="txn_date" label="Date" placeholder="Enter Date" />
@@ -444,12 +444,14 @@
             <x-layouts.backend.card>
                 <x-slot:title>Outlet & Warehouse</x-slot:title>
                 <x-input.select wire:model="outlet_id" label="Outlets">
-                    <option value="1">Sonargau</option>
-                    <option value="2">Paltan</option>
+                    @foreach ($outlet as $outlet)
+                    <option value="{{$outlet->id}}">{{$outlet->name}}</option>
+                    @endforeach
                 </x-input.select>
                 <x-input.select wire:model="warehouse_id" label="Warehouse">
-                    <option value="1">Sonargau</option>
-                    <option value="2">Paltan</option>
+                    @foreach ($warehouse as $warehouse)
+                    <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
+                    @endforeach
                 </x-input.select>
             </x-layouts.backend.card>
             <x-layouts.backend.card>

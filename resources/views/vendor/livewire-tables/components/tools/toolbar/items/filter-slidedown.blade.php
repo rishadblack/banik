@@ -1,7 +1,7 @@
 @aware(['component', 'tableName'])
 @props(['filterGenericData'])
 
-<div x-cloak x-show="!currentlyReorderingStatus && filtersOpen" 
+<div x-cloak x-show="!currentlyReorderingStatus && filtersOpen"
     @class([
         'container' => $component->isBootstrap(),
     ])
@@ -25,10 +25,10 @@
             @foreach ($filterRow as $filter)
                 <div
                     @class([
-                        'space-y-1 mb-4' => 
+                        'space-y-1 mb-4' =>
                             $component->isBootstrap(),
-                        'col-12 col-sm-9 col-md-6 col-lg-3' => 
-                            $component->isBootstrap() && 
+                        'col-12 col-sm-9 col-md-6 col-lg-3' =>
+                            $component->isBootstrap() &&
                             !$filter->hasFilterSlidedownColspan(),
                         'col-12 col-sm-6 col-md-6 col-lg-3' =>
                             $component->isBootstrap() &&
@@ -42,10 +42,10 @@
                             $component->isBootstrap() &&
                             $filter->hasFilterSlidedownColspan() &&
                             $filter->getFilterSlidedownColspan() == 4,
-                        'space-y-1 col-span-12' => 
+                        'space-y-1 col-span-12' =>
                             $component->isTailwind(),
-                        'sm:col-span-6 md:col-span-4 lg:col-span-2' => 
-                            $component->isTailwind() && 
+                        'sm:col-span-6 md:col-span-4 lg:col-span-2' =>
+                            $component->isTailwind() &&
                             !$filter->hasFilterSlidedownColspan(),
                         'sm:col-span-12 md:col-span-8 lg:col-span-4' =>
                             $component->isTailwind() &&

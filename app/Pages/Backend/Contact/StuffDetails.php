@@ -46,8 +46,13 @@ class StuffDetails extends Component
         ]);
 
         $Stuff = Contact::findOrNew($this->stuff_id);
+        if($this->stuff_id) {
+            $message = 'Stuff Updated Successfully!';
+        } else {
+            $message = 'Stuff Added Successfully!';
+            $Stuff->user_id = Auth::id();
+        }
 
-        $Stuff->user_id = Auth::id();
         $Stuff->code = $this->code;
         $Stuff->mobile = $this->mobile;
         $Stuff->type = 4;
@@ -59,8 +64,8 @@ class StuffDetails extends Component
         $Stuff->status = $this->status;
         $Stuff->save();
 
-        $StuffInfo = new ContactInfo();
-        $StuffInfo->user_id = Auth::id();
+        $StuffInfo = $Stuff->ContactInfo()->firstOrNew();
+        $StuffInfo->user_id = $Stuff->user_id;
         $StuffInfo->contact_id = $Stuff->id;
         $StuffInfo->name = $this->name;
         $StuffInfo->mobile = $this->mobile;
@@ -72,11 +77,7 @@ class StuffDetails extends Component
         }else{
             $this->stuff_id = $Stuff-> id;
         }
-        if($this->stuff_id) {
-            $message = 'Stuff Updated Successfully!';
-        } else {
-            $message = 'Stuff Added Successfully!';
-        }
+
 
         $this->alert('success', $message);
         $this->dispatch('refreshDatatable');

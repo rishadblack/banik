@@ -16,7 +16,7 @@ class StockMovementList extends Component
     #[On('stockTransferDelete')]
     public function destroy($data)
     {
-        // $data = $this->alertConfirm($data, 'Are you sure to delete Transfer?');
+        $data = $this->alertConfirm($data, 'Are you sure to delete Stock Transfer?');
 
         if(isset($data['id'])) {
             $Transfer = StockReceipt::find($data['id']);
