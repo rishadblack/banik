@@ -1,18 +1,13 @@
 @push('css')
     <style>
-        .caret {
-            display: none;
-        }
     </style>
 @endpush
 <div>
-    <div class="d-flex align-items-center">
         <x-slot:title>Categories</x-slot:title>
         <x-slot:button>
             <x-button.default class="btn d-flex float-end btn-theme" x-data @click="$dispatch('openCategoryModal')"><i
                     class="fa fa-plus-circle fa-fw mt-1 me-1"></i> Add Category</x-button.default>
         </x-slot:button>
-    </div>
 
     <x-layouts.backend.card>
         <livewire:backend.product.datatable.category-table />

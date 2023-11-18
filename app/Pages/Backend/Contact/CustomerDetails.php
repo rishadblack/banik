@@ -51,9 +51,15 @@ class CustomerDetails extends Component
 
         ]);
 
-        $Customer = Contact::findOrNew($this->customer_id);
 
-        $Customer->user_id = Auth::id();
+        $Customer = Contact::findOrNew($this->customer_id);
+        if($this->customer_id) {
+            $message = 'Customer Updated Successfully!';
+        } else {
+            $message = 'Customer Added Successfully!';
+            $Customer->user_id = Auth::id();
+        }
+
         $Customer->code = $this->code;
         $Customer->mobile = $this->mobile;
         $Customer->type = 1;
@@ -68,8 +74,8 @@ class CustomerDetails extends Component
         $Customer->status = $this->status;
         $Customer->save();
 
-        $CustomerInfo = new ContactInfo();
-        $CustomerInfo->user_id = Auth::id();
+        $CustomerInfo = $Customer->ContactInfo()->firstOrNew();
+        $CustomerInfo->user_id = $Customer->user_id;
         $CustomerInfo->contact_id = $Customer->id;
         $CustomerInfo->name = $this->name;
         $CustomerInfo->mobile = $this->mobile;
@@ -82,11 +88,6 @@ class CustomerDetails extends Component
         }else{
             $this->customer_id = $Customer-> id;
         }
-        if($this->customer_id) {
-            $message = 'Customer Updated Successfully!';
-        } else {
-            $message = 'Customer Added Successfully!';
-        }
 
         $this->alert('success', $message);
         $this->dispatch('refreshDatatable');
@@ -95,7 +96,7 @@ class CustomerDetails extends Component
     {
         $this->reset();
         $this->resetValidation();
-        $this->code = str_pad((Contact::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
+        $this->code = str_pad((Contact::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
 
@@ -115,9 +116,9 @@ class CustomerDetails extends Component
             $this->opening_balance = $Customer->opening_balance;
             $this->credit_limit = $Customer->credit_limit;
 
-            $CustomerInfo = ContactInfo::find($this->customer_id);
-            $this->name = $CustomerInfo->name;
-            $this->mobile = $CustomerInfo->mobile;
+
+            $this->name = $Customer->ContactInfo->name;
+            $this->mobile =$Customer->ContactInfo->mobile;
 
         }else{
             $this->customerReset();

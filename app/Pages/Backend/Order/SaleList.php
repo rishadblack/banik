@@ -18,7 +18,7 @@ class SaleList extends Component
     #[On('saleDelete')]
     public function destroy($data)
     {
-        // $data = $this->alertConfirm($data, 'Are you sure to delete Sale?');
+        $data = $this->alertConfirm($data, 'Are you sure to delete Sale?');
 
         if(isset($data['id'])) {
             $Sale = Order::find($data['id']);

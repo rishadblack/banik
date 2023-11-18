@@ -9,6 +9,7 @@ use App\Http\Common\LaravelLivewireTables\Column;
 use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class UnitTable extends DataTableComponent
 {
@@ -20,6 +21,7 @@ class UnitTable extends DataTableComponent
         // $this->setAdditionalSelects(['users.id as id']);
         $this->setSearchPlaceholder('Enter Search Unit');
         $this->setSearchDebounce(1000);
+        $this->setFilterLayoutSlideDown();
         $this->setPaginationMethod('simple');
         $this->setTheadAttributes([
             'default' => true,
@@ -34,16 +36,15 @@ class UnitTable extends DataTableComponent
     public function filters(): array
     {
         return [
-            TextFilter::make('Name')
-                ->config([
-                    'placeholder' => 'Search Name',
-                    'maxlength' => '25',
-                ])
-                ->filter(function (Builder $builder, string $value) {
-                    $builder->where('units.name', 'like', '%' . $value . '%');
+
+            SelectFilter::make('Status')
+                ->options(filterOption('status.common'))
+                ->filter(function(Builder $builder, string $value) {
+                    $builder->where('brands.status',$value);
                 }),
         ];
     }
+
 
     public function columns(): array
     {

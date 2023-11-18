@@ -23,7 +23,7 @@ class Suppliers extends Component
     public function render(): View|Closure|string
     {
         return view('components.search.suppliers',[
-            'suppliers' => Contact::limit(10)->get()
+            'suppliers' => Contact::active()->limit(10)->get()
         ]);
     }
 }

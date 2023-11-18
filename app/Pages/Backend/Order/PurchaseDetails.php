@@ -8,10 +8,12 @@ use Livewire\Attributes\Url;
 use Livewire\WithFileUploads;
 use App\Http\Common\Component;
 use App\Models\Order\Purchase;
+use App\Models\Setting\Outlet;
 use App\Models\Contact\Contact;
 use App\Models\Order\OrderItem;
 use App\Models\Product\Product;
 use Livewire\Attributes\Layout;
+use App\Models\Setting\Warehouse;
 use App\Models\Contact\ContactInfo;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Accounting\Transaction;
@@ -24,9 +26,11 @@ class PurchaseDetails extends Component
 
     #[Url]
     public $purchase_id;
+
     public $contact_id;
     public $product_id;
     public $ref;
+    public $purchase_ref;
     public $outlet_id;
     public $delivery_status;
     public $name;
@@ -42,7 +46,7 @@ class PurchaseDetails extends Component
     public $received_quantity;
     public $discount_amount;
     public $additional_charge;
-    public $paid_amount;
+    public $amount;
     public $code;
     public $txn_date;
     public $charge;
@@ -55,10 +59,17 @@ class PurchaseDetails extends Component
 
         ]);
 
+
         $Purchase = Order::findOrNew($this->purchase_id);
-        $Purchase->user_id = Auth::id();
+        if($this->purchase_id) {
+            $message = 'Purchase Updated Successfully!';
+        } else {
+            $message = 'Purchase Added Successfully!';
+            $Purchase->user_id = Auth::id();
+        }
+
         $Purchase->code = $this->code;
-        $Purchase->ref = $this->ref;
+        $Purchase->ref = $this->purchase_ref;
         $Purchase->warehouse_id = $this->warehouse_id;
         $Purchase->outlet_id = $this->outlet_id;
         $Purchase->type = 3;
@@ -69,27 +80,24 @@ class PurchaseDetails extends Component
         $Purchase->discount = $this->discount;
         $Purchase->save();
 
-        /*$PurchaseInfo = OrderItem::findOrNew($this->purchase_id);
+        $PurchaseInfo = $Purchase->OrderItem()->firstOrNew();
+        $PurchaseInfo->user_id =  $Purchase->user_id;
         $PurchaseInfo->order_id = $Purchase->id;
         $PurchaseInfo->product_id = $this->product_id;
-        $PurchaseInfo->name = $this->name;
-        $PurchaseInfo->amount = $this->amount;
-        $PurchaseInfo->quantity = $this->quantity;
-        $PurchaseInfo->discount_amount = $this->discount_amount;
-        $PurchaseInfo->subtotal = $this->subtotal;
-        $PurchaseInfo->received_quantity = $this->received_quantity;
-        $PurchaseInfo->save();*/
+        $PurchaseInfo->name = $this->name??0;
+        $PurchaseInfo->amount = $this->amount??0;
+        $PurchaseInfo->quantity = $this->quantity??0;
+        $PurchaseInfo->discount_amount = $this->discount_amount??0;
+        $PurchaseInfo->subtotal = $this->subtotal??0;
+        $PurchaseInfo->received_quantity = $this->received_quantity??0;
+        $PurchaseInfo->save();
 
         if($storeType == 'new'){
             $this->purchaseReset();
         }else{
             $this->purchase_id = $Purchase-> id;
         }
-        if($this->purchase_id) {
-            $message = 'Purchase Updated Successfully!';
-        } else {
-            $message = 'Purchase Added Successfully!';
-        }
+
 
         $this->alert('success', $message);
         $this->dispatch('refreshDatatable');
@@ -98,7 +106,7 @@ class PurchaseDetails extends Component
     {
         $this->reset();
         $this->resetValidation();
-       // $this->code = str_pad((Order::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
+       $this->code = str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
 
@@ -148,23 +156,15 @@ class PurchaseDetails extends Component
             $this->payment_method_id = $Purchase->payment_method_id;
             $this->delivery_status = $Purchase->delivery_status;
             $this->discount = $Purchase->discount;
-            $this->paid_amount = $Purchase->paid_amount;
 
-            $Purchase = Transaction::find($this->purchase_id);
-            $this->payment_method_id = $Purchase->payment_method_id;
-            $this->net_amount = $Purchase->net_amount;
-            $this->charge = $Purchase->charge;
-            $this->ref = $Purchase->ref;
-            $this->txn_date = $Purchase->txn_date;
+            $this->name = $Purchase->OrderItem->name;
+            $this->amount = $Purchase->OrderItem->amount;
+            $this->quantity =$Purchase->OrderItem->quantity;
+            $this->received_quantity =$Purchase->OrderItem->received_quantity;
+            $this->subtotal =$Purchase->OrderItem->subtotal;
+            $this->discount_amount =$Purchase->OrderItem->discount_amount;
 
-            /*$PurchaseInfo = OrderItem::findOrNew($this->purchase_id);
-            $this->product_id = $PurchaseInfo->product_id;
-            $this->name = $PurchaseInfo->name;
-            $this->amount = $PurchaseInfo->amount;
-            $this->quantity = $PurchaseInfo->quantity;
-            $this->received_quantity = $PurchaseInfo->received_quantity;
-            $this->subtotal = $PurchaseInfo->subtotal;
-            $this->discount_amount = $PurchaseInfo->discount_amount;*/
+
         }else{
             $this->purchaseReset();
         }
@@ -182,6 +182,8 @@ class PurchaseDetails extends Component
         $payment = OrderItem::all();
         $product=Product::all();
         $transaction=Transaction::all();
-        return view('pages.backend.order.purchase-details', compact('supplier','payment','order','product','transaction'));
+        $outlet = Outlet::all();
+        $warehouse = Warehouse::all();
+        return view('pages.backend.order.purchase-details', compact('supplier','payment','order','product','transaction','outlet','warehouse'));
     }
 }

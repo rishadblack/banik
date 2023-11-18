@@ -14,7 +14,7 @@ class PurchaseReturnList extends Component
     #[On('purchasereturnDelete')]
     public function destroy($data)
     {
-        $data = $this->alertConfirm($data, 'Are you sure to delete Purchase?');
+        $data = $this->alertConfirm($data, 'Are you sure to delete Purchase Return?');
 
         if(isset($data['id'])) {
             $Purchase = Order::find($data['id']);

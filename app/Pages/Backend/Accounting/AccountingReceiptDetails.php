@@ -62,7 +62,7 @@ class AccountingReceiptDetails extends Component
     {
         $this->reset();
         $this->resetValidation();
-        //$this->code = str_pad((Receipt::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
+        $this->code = str_pad((Receipt::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()

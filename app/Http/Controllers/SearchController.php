@@ -19,13 +19,16 @@ class SearchController extends Controller
             return $this->searchCustomers();
         }
         if ($request->type == 'suppliers') {
-            return $this->searchCustomers();
+            return $this->searchSuppliers();
         }
         if ($request->type == 'billers') {
-            return $this->searchCustomers();
+            return $this->searchBillers();
         }
         if ($request->type == 'stuffs') {
-            return $this->searchCustomers();
+            return $this->searchStuffs();
+        }
+        if ($request->type == 'ledgeraccounts') {
+            return $this->searchLedgerAccounts();
         }
 
         return collect([]);
@@ -147,6 +150,30 @@ class SearchController extends Controller
             //$item['name'] = $item->name;
             $item['code'] = $item->code;
             $item['company_name'] = $item->company_name;
+            $item['search'] = request()->search;
+            return $item;
+        });
+
+        return response()->json($query);
+    }
+
+    //Ledger Account
+    public function searchLedgerAccounts()
+    {
+        $query = Contact::query();
+
+        $query->select('id', 'code', 'name');
+        $query->limit(10);
+
+        if (request()->has('search') && request()->filled('search')) {
+            $query->search(request()->search);
+        }
+
+        $query = $query->get()->map(function ($item, $key) {
+            $item['id'] = $item->id;
+            //$item['name'] = $item->name;
+            $item['code'] = $item->code;
+            $item['name'] = $item->company_name;
             $item['search'] = request()->search;
             return $item;
         });

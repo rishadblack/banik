@@ -11,6 +11,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class OutletTable extends DataTableComponent
 {
@@ -20,7 +21,8 @@ class OutletTable extends DataTableComponent
     {
         $this->setPrimaryKey('id');
         // $this->setAdditionalSelects(['users.id as id']);
-        $this->setSearchPlaceholder('Enter Search Biller');
+        $this->setSearchPlaceholder('Enter Search Outlet');
+        $this->setFilterLayoutSlideDown();
         $this->setSearchDebounce(1000);
 
         $this->setTheadAttributes([
@@ -37,14 +39,27 @@ class OutletTable extends DataTableComponent
     public function filters(): array
     {
         return [
-            TextFilter::make('Code')
-                ->config([
-                    'placeholder' => 'Search Code',
-                    'maxlength' => '25',
-                ])
-                ->filter(function (Builder $builder, string $value) {
-                    $builder->where('outlets.code', 'like', '%' . $value . '%');
-                }),
+            TextFilter::make('Name')
+            ->config([
+                'placeholder' => 'Search Name',
+                'maxlength' => '25',
+            ])
+            ->filter(function (Builder $builder, string $value) {
+                $builder->where('outlets.name', 'like', '%' . $value . '%');
+            }),
+            TextFilter::make('Address')
+            ->config([
+                'placeholder' => 'Search Code',
+                'maxlength' => '25',
+            ])
+            ->filter(function (Builder $builder, string $value) {
+                $builder->where('outlets.address', 'like', '%' . $value . '%');
+            }),
+        SelectFilter::make('Status')
+            ->options(filterOption('status.common'))
+            ->filter(function (Builder $builder, string $value) {
+                $builder->where('outlets.status', $value);
+            }),
         ];
     }
 
@@ -84,10 +99,11 @@ class OutletTable extends DataTableComponent
                 ->buttons([
                     LinkColumn::make('Edit')
                         ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.setting.outlet_details', ['outlet_id' => $row->id]))
+                        ->location(fn($row) => 'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
+                                'data-listener' => 'openOutletModal',
                                 'class' => 'badge bg-success me-1 p-2 ',
                                 'icon' => 'fa fa-edit',
                                 'title' => 'Edit',

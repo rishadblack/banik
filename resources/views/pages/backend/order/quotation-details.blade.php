@@ -141,79 +141,15 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td><x-input.text-order wide:model="amount" class="widthtd" placeholder="" /></td>
-                                    <td><x-input.text-order wide:model="quantity" class="widthtd" placeholder="" /></td>
-                                    <td class="text-center"><x-input.text-order wide:model="discount" class="widthtd"
+                                    <td><x-input.text-order wire:model="amount" class="widthtd" placeholder="" /></td>
+                                    <td><x-input.text-order wire:model="quantity" class="widthtd" placeholder="" /></td>
+                                    <td class="text-center"><x-input.text-order wire:model="discount" class="widthtd"
                                             placeholder="" />
                                         <div class="text-body text-opacity-50 small d-flex float-end subtotal">
                                             Subtotal : 0
                                         </div>
                                     </td>
-
                                 </tr>
-                                <tr class="shadow-none">
-                                    <td class="text-center">1</td>
-                                    <td class="d-flex">
-                                        <div
-                                            class="h-65px w-65px d-flex align-items-center position-relative bg-body rounded p-2">
-                                            <img src="{{ asset('backend/assets/img/product/product-2.png') }}" alt
-                                                class="mw-100 mh-100">
-                                            <span
-                                                class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
-                                        </div>
-                                        <div class="ps-6 flex-1 ">
-                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro Max</a>
-                                            </div>
-                                            <div class="text-body text-opacity-50 small ">
-                                                SKU: IP14PROMAX-512
-                                            </div>
-                                            <div class="text-body text-opacity-50 small">
-                                                Stock : 0 , Delivery product : 0
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><x-input.text-order wide:model="amount" class="widthtd" placeholder="" /></td>
-                                    <td><x-input.text-order wide:model="quantity" class="widthtd" placeholder="" /></td>
-                                    <td class="text-center"><x-input.text-order wide:model="discount" class="widthtd"
-                                            placeholder="" />
-                                        <div class="text-body text-opacity-50 small d-flex float-end subtotal">
-                                            Subtotal : 0
-                                        </div>
-                                    </td>
-
-                                </tr>
-                                <tr class="shadow-none">
-                                    <td class="text-center">1</td>
-                                    <td class="d-flex">
-                                        <div
-                                            class="h-65px w-65px d-flex align-items-center position-relative bg-body rounded p-2">
-                                            <img src="{{ asset('backend/assets/img/product/product-2.png') }}" alt
-                                                class="mw-100 mh-100">
-                                            <span
-                                                class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
-                                        </div>
-                                        <div class="ps-6 flex-1 ">
-                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro Max</a>
-                                            </div>
-                                            <div class="text-body text-opacity-50 small ">
-                                                SKU: IP14PROMAX-512
-                                            </div>
-                                            <div class="text-body text-opacity-50 small">
-                                                Stock : 0 , Delivery product : 0
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><x-input.text-order wide:model="amount" class="widthtd" placeholder="" /></td>
-                                    <td><x-input.text-order wide:model="quantity" class="widthtd" placeholder="" /></td>
-                                    <td class="text-center"><x-input.text-order wide:model="discount" class="widthtd"
-                                            placeholder="" />
-                                        <div class="text-body text-opacity-50 small d-flex float-end subtotal">
-                                            Subtotal : 0
-                                        </div>
-                                    </td>
-
-                                </tr>
-
                             </tbody>
                         </table>
                     </x-layouts.backend.card>
@@ -241,7 +177,7 @@
                                 </tr>
                                 <tr class="mb-1">
                                     <td class="w-150px">Discount</td>
-                                    {{--<td><x-input.text wide:model="discount" class="width" placeholder="" /></td>--}}
+                                    {{--<td><x-input.text wire:model="discount" class="width" placeholder="" /></td>--}}
                                     <td></td>
                                     <td class="text-end">$3,496.00</td>
                                 </tr>
@@ -253,7 +189,7 @@
                                 <tr class="mb-1">
                                     <td class="w-150px">Additional Charge</td>
                                     <td></td>
-                                    {{-- <td><x-input.text wide:model="additional_charge" class="width" placeholder="" /></td> --}}
+                                    {{-- <td><x-input.text wire:model="additional_charge" class="width" placeholder="" /></td> --}}
                                     <td class="text-end">$3,496.00</td>
                                 </tr>
                                 <tr>
@@ -310,29 +246,19 @@
             <x-layouts.backend.card>
                 <x-slot:title>Outlet & Warehouse</x-slot:title>
                 <x-input.select wire:model="outlet_id" label="Outlets">
-                    <option value="1">Sonargau</option>
-                    <option value="2">Paltan</option>
+                    @foreach ($outlet as $outlet)
+                    <option value="{{$outlet->id}}">{{$outlet->name}}</option>
+                    @endforeach
                 </x-input.select>
                 <x-input.select wire:model="warehouse_id" label="Warehouse">
-                    <option value="1">Sonargau</option>
-                    <option value="2">Paltan</option>
+                    @foreach ($warehouse as $warehouse)
+                    <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
+                    @endforeach
                 </x-input.select>
             </x-layouts.backend.card>
 
             <x-layouts.backend.card>
                 <x-slot:title>Status</x-slot:title>
-                <x-input.select wire:model="payment_status" label="Payment Status">
-                    <option value="1">Receipt</option>
-                    <option value="2">Pending</option>
-                    <option value="3">Hold</option>
-                    <option value="4">Cancle</option>
-                </x-input.select>
-                <x-input.select wire:model="delivery_status" label="Delivery Status">
-                    <option value="1">Receipt</option>
-                    <option value="2">Pending</option>
-                    <option value="3">Hold</option>
-                    <option value="4">Cancle</option>
-                </x-input.select>
                 <x-input.select wire:model="status" label="Status" :options="config('status.common')" />
             </x-layouts.backend.card>
 

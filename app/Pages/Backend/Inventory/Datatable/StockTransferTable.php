@@ -13,6 +13,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class StockTransferTable extends DataTableComponent
 {
@@ -23,22 +24,26 @@ class StockTransferTable extends DataTableComponent
         $this->setPrimaryKey('id');
         $this->setSearchPlaceholder('Enter Search Biller');
         $this->setSearchDebounce(1000);
+        $this->setFilterLayoutSlideDown();
+        $this->setTheadAttributes([
+            'default' => true,
+            'class' => 'custom-dt-thead',
+          ]);
     }
 
     public function builder(): Builder
     {
-        return StockReceipt::query();
+        return StockReceipt::query()
+        ->where('type',2);
     }
     public function filters(): array
     {
         return [
-            TextFilter::make('Name')
-                ->config([
-                    'placeholder' => 'Search Name',
-                    'maxlength' => '25',
-                ])
-                ->filter(function (Builder $builder, string $value) {
-                    $builder->where('stock-transfers.name', 'like', '%' . $value . '%');
+
+            SelectFilter::make('Status')
+                ->options(filterOption('status.common'))
+                ->filter(function(Builder $builder, string $value) {
+                    $builder->where('brands.status',$value);
                 }),
         ];
     }
@@ -56,10 +61,16 @@ class StockTransferTable extends DataTableComponent
                 Column::make('Code', 'code')
                 ->sortable()
                 ->searchable(),
-                Column::make('From Warehouse', 'warehouse_id')
+                Column::make('From Warehouse', 'Warehouse.name')
+                ->format(
+                    fn($value, $row, Column $column) => $value ? $value : '-'
+                )
                 ->sortable()
                 ->searchable(),
                 Column::make('To Warehouse', 'to_warehouse_id')
+                ->format(
+                    fn($value, $row, Column $column) => $value ? $value : '-'
+                )
                 ->sortable()
                 ->searchable(),
             Column::make('Create BY', 'User.name')

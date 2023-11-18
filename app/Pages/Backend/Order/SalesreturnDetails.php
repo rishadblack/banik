@@ -5,11 +5,13 @@ namespace App\Pages\Backend\Order;
 use App\Models\Order\Order;
 use Livewire\Attributes\Url;
 use App\Http\Common\Component;
+use App\Models\Setting\Outlet;
 use App\Models\Contact\Contact;
 use App\Models\Order\OrderItem;
 use App\Models\Product\Product;
 use Livewire\Attributes\Layout;
 use App\Models\order\SaleReturn;
+use App\Models\Setting\Warehouse;
 use App\Models\Contact\ContactInfo;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +22,7 @@ class SalesreturnDetails extends Component
 
     #[Url]
     public $salereturn_id;
+
     public $contact_id;
     public $product_id;
     public $ref;
@@ -50,7 +53,13 @@ class SalesreturnDetails extends Component
         ]);
 
         $Sale = Order::findOrNew($this->salereturn_id);
-        $Sale->user_id = Auth::id();
+        if($this->salereturn_id) {
+            $message = 'Sale Return Updated Successfully!';
+        } else {
+            $message = 'Sale Return Added Successfully!';
+            $Sale->user_id = Auth::id();
+        }
+
         $Sale->code = $this->code;
         $Sale->ref = $this->ref;
         $Sale->warehouse_id = $this->warehouse_id;
@@ -58,36 +67,38 @@ class SalesreturnDetails extends Component
         $Sale->type = 2;
         $Sale->contact_id = $this->contact_id;
         $Sale->payment_status = $this->payment_status;
-        $Sale->payment_date = $this->payment_date;
         $Sale->delivery_status = $this->delivery_status;
-        $Sale->discount = $this->discount;
-        $Sale->sales_person = $this->sales_person;
-        $Sale->payment_method_id = $this->payment_method_id;
+        $Sale->discount = $this->discount??0;
+        $Sale->sales_person = $this->sales_person??0;
         $Sale->save();
 
-       /* $SaleInfo = OrderItem::findOrNew($this->salereturn_id);
+        $SaleInfo = $Sale->OrderItem()->firstOrNew();
+        $SaleInfo->user_id =  $Sale->user_id;
         $SaleInfo->order_id = $Sale->id;
         $SaleInfo->product_id = $this->product_id;
-        $SaleInfo->name = $this->name;
-        $SaleInfo->amount = $this->amount;
-        $SaleInfo->quantity = $this->quantity;
-        $SaleInfo->discount_amount = $this->discount_amount;
-        $SaleInfo->subtotal = $this->subtotal;
-        $SaleInfo->delivery_quantity = $this->delivery_quantity;
-        $SaleInfo->save();*/
+        $SaleInfo->name = $this->name??0;
+        $SaleInfo->amount = $this->amount??0;
+        $SaleInfo->quantity = $this->quantity??0;
+        $SaleInfo->discount_amount = $this->discount_amount??0;
+        $SaleInfo->subtotal = $this->subtotal??0;
+        $SaleInfo->received_quantity = $this->received_quantity??0;
+        $SaleInfo->save();
 
         if($storeType == 'new'){
-            $this->reset();
+            $this->salesReset();
         }else{
             $this->salereturn_id = $Sale-> id;
         }
-        if($this->salereturn_id) {
-            $message = 'Sale Return Updated Successfully!';
-        } else {
-            $message = 'Sale Return Added Successfully!';
-        }
+
 
         $this->alert('success', $message);
+        $this->dispatch('refreshDatatable');
+    }
+    public function salesReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+       $this->code = str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()
@@ -100,20 +111,21 @@ class SalesreturnDetails extends Component
             $this->outlet_id = $Sale->outlet_id;
             $this->contact_id = $Sale->contact_id;
             $this->payment_status = $Sale->payment_status;
-            $this->payment_date = $Sale->payment_date;
             $this->delivery_status = $Sale->delivery_status;
             $this->discount = $Sale->discount;
             $this->sales_person = $Sale->sales_person;
             $this->payment_method_id = $Sale->payment_method_id;
 
-           /* $SaleInfo = OrderItem::findOrNew($this->salereturn_id);
-            $this->product_id = $SaleInfo->product_id;
-            $this->name = $SaleInfo->name;
-            $this->amount = $SaleInfo->amount;
-            $this->quantity = $SaleInfo->quantity;
-            $this->delivery_quantity = $SaleInfo->delivery_quantity;
-            $this->subtotal = $SaleInfo->subtotal;
-            $this->discount_amount = $SaleInfo->discount_amount;*/
+
+            $this->product_id =  $Sale->OrderItem->product_id;
+            $this->name =  $Sale->OrderItem->name;
+            $this->amount =  $Sale->OrderItem->amount;
+            $this->quantity =  $Sale->OrderItem->quantity;
+            $this->delivery_quantity =  $Sale->OrderItem->delivery_quantity;
+            $this->subtotal =  $Sale->OrderItem->subtotal;
+            $this->discount_amount =  $Sale->OrderItem->discount_amount;
+        }else{
+            $this->salesReset();
         }
     }
 
@@ -124,6 +136,8 @@ class SalesreturnDetails extends Component
         $order = Order::Where('type',2);
         $payment = OrderItem::all();
         $product=Product::all();
-        return view('pages.backend.order.salesreturn-details',compact('customer','payment','order','product'));
+        $outlet = Outlet::all();
+        $warehouse = Warehouse::all();
+        return view('pages.backend.order.salesreturn-details',compact('customer','payment','order','product','outlet','warehouse'));
     }
 }

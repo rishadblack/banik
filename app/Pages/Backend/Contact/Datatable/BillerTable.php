@@ -11,6 +11,7 @@ use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class BillerTable extends DataTableComponent
 {
@@ -21,30 +22,36 @@ class BillerTable extends DataTableComponent
         $this->setPrimaryKey('id');
         $this->setSearchPlaceholder('Enter Search Biller');
         $this->setSearchDebounce(1000);
+        $this->setFilterLayoutSlideDown();
         $this->setTheadAttributes([
             'default' => true,
             'class' => 'custom-dt-thead',
-          ]);
+        ]);
     }
 
     public function builder(): Builder
     {
-        return Contact::query();
+        return Contact::query()
+            ->where('type', 3);
     }
     public function filters(): array
     {
         return [
-            TextFilter::make('Code')
+            TextFilter::make('Company Name')
                 ->config([
-                    'placeholder' => 'Search Code',
+                    'placeholder' => 'Search Company Name',
                     'maxlength' => '25',
                 ])
                 ->filter(function (Builder $builder, string $value) {
-                    $builder->where('contacts.code', 'like', '%' . $value . '%');
+                    $builder->where('contacts.company_name', 'like', '%' . $value . '%');
+                }),
+            SelectFilter::make('Status')
+                ->options(filterOption('status.common'))
+                ->filter(function (Builder $builder, string $value) {
+                    $builder->where('contacts.status', $value);
                 }),
         ];
     }
-
     public function columns(): array
     {
         return [
@@ -56,7 +63,10 @@ class BillerTable extends DataTableComponent
             Column::make('Code', 'code')
                 ->sortable()
                 ->searchable(),
-
+                Column::make('Biller Name', 'ContactInfo.name')
+                ->eagerLoadRelations()
+                ->sortable()
+                ->searchable(),
             Column::make('Mobile', 'mobile')
                 ->sortable()
                 ->searchable()
@@ -64,7 +74,13 @@ class BillerTable extends DataTableComponent
             Column::make('Address', 'address')
                 ->sortable()
                 ->searchable(),
-
+            Column::make('Opening Balance', 'opening_balance')
+                ->format(
+                    fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+                )
+                ->sortable()
+                ->searchable()
+                ->deselected(),
             Column::make('Create BY', 'User.name')
                 ->format(
                     fn ($value, $row, Column $column) => $value ? $value : '-'
@@ -72,9 +88,9 @@ class BillerTable extends DataTableComponent
                 ->eagerLoadRelations()
                 ->sortable()
                 ->searchable(),
-                Column::make('Status', 'status')
+            Column::make('Status', 'status')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.common.{$value}.class") . '">' . config("status.common.{$value}.name") . '</span>' : ''
+                    fn ($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.common.{$value}.class") . '">' . config("status.common.{$value}.name") . '</span>' : ''
                 )->sortable()->html(),
             ButtonGroupColumn::make("Actions")
                 ->buttons([
@@ -104,6 +120,6 @@ class BillerTable extends DataTableComponent
                             ];
                         }),
                 ]),
-            ];
+        ];
     }
 }

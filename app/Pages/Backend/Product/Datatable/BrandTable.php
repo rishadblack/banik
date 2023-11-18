@@ -11,6 +11,7 @@ use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\MultiSelectFilter;
 
 class BrandTable extends DataTableComponent
@@ -23,6 +24,7 @@ class BrandTable extends DataTableComponent
         // $this->setAdditionalSelects(['users.id as id']);
         $this->setSearchPlaceholder('Enter Search Brand');
         $this->setSearchDebounce(1000);
+        $this->setFilterLayoutSlideDown();
         $this->setTheadAttributes([
             'default' => true,
             'class' => 'custom-dt-thead',
@@ -32,6 +34,17 @@ class BrandTable extends DataTableComponent
     public function builder(): Builder
     {
         return Brand::query();
+    }
+    public function filters(): array
+    {
+        return [
+
+            SelectFilter::make('Status')
+                ->options(filterOption('status.common'))
+                ->filter(function(Builder $builder, string $value) {
+                    $builder->where('brands.status',$value);
+                }),
+        ];
     }
 
     public function columns(): array

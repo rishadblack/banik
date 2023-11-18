@@ -11,6 +11,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class PurchaseTable extends DataTableComponent
 {
@@ -22,6 +23,7 @@ class PurchaseTable extends DataTableComponent
         // $this->setAdditionalSelects(['users.id as id']);
         $this->setSearchPlaceholder('Enter Search Biller');
         $this->setSearchDebounce(1000);
+        $this->setFilterLayoutSlideDown();
         $this->setTheadAttributes([
             'default' => true,
             'class' => 'custom-dt-thead',
@@ -43,6 +45,12 @@ class PurchaseTable extends DataTableComponent
                 ])
                 ->filter(function (Builder $builder, string $value) {
                     $builder->where('orders.code', 'like', '%' . $value . '%');
+                }),
+
+            SelectFilter::make('Status')
+                ->options(filterOption('status.common'))
+                ->filter(function(Builder $builder, string $value) {
+                    $builder->where('brands.status',$value);
                 }),
         ];
     }
@@ -74,6 +82,13 @@ class PurchaseTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             Column::make('Discount', 'discount_amount')
+            ->format(
+                fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+            )
+                ->sortable()
+                ->searchable()
+                ->deselected(),
+            Column::make('Quantity', 'OrderItem.quantity')
 
                 ->sortable()
                 ->searchable()

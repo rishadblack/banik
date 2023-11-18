@@ -6,6 +6,7 @@ namespace App\Pages\Backend\Inventory;
 use Livewire\Attributes\Url;
 use App\Http\Common\Component;
 use Livewire\Attributes\Layout;
+use App\Models\Setting\Warehouse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Inventory\StockReceipt;
 use App\Models\Inventory\StockReceiptItem;
@@ -20,6 +21,8 @@ class StockAdjustmentDetails extends Component
     public $ref;
     public $warehouse_id;
     public $quantity;
+    public $damage_quantity;
+    public $amount;
 
     public function storeStockAdjustment($storeType = null)
     {
@@ -28,18 +31,24 @@ class StockAdjustmentDetails extends Component
     ]);
 
     $Adjustment = StockReceipt::findOrNew($this->stockadjustment_id);
-    $Adjustment->user_id = Auth::id();
+    if($this->stockadjustment_id) {
+        $message = 'Stock Adjustment Updated Successfully!';
+    } else {
+        $message = 'Stock Adjustment Added Successfully!';
+        $Adjustment->user_id = Auth::id();
+    }
+
     $Adjustment->type = 1;
     $Adjustment->code = $this->code;
     $Adjustment->ref = $this->ref;
     $Adjustment->warehouse_id = $this->warehouse_id;
-    $Adjustment->quantity = $this->quantity;
+    $Adjustment->quantity = $this->damage_quantity??0;
     $Adjustment->save();
 
-    $AdjustmentItem = StockReceiptItem::findOrNew($this->stockadjustment_id);
-    $AdjustmentItem->user_id = Auth::id();
+    $AdjustmentItem = $Adjustment-> StockReceiptItem()->firstOrNew();
+    $AdjustmentItem->user_id =  $Adjustment->user_id;
     $AdjustmentItem->stock_receipt_id = $Adjustment->id;
-    $AdjustmentItem->quantity = $this->quantity;
+    $AdjustmentItem->quantity = $this->quantity??0;
     $AdjustmentItem->save();
 
     if($storeType == 'new'){
@@ -47,11 +56,7 @@ class StockAdjustmentDetails extends Component
     }else{
         $this->stockadjustment_id = $Adjustment-> id;
     }
-    if($this->stockadjustment_id) {
-        $message = 'Stock Adjustment Updated Successfully!';
-    } else {
-        $message = 'Stock Adjustment Added Successfully!';
-    }
+
 
     $this->alert('success', $message);
     $this->dispatch('refreshDatatable');
@@ -60,7 +65,7 @@ public function adjustmentReset()
 {
     $this->reset();
     $this->resetValidation();
-    $this->code = str_pad((StockReceipt::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
+    $this->code = str_pad((StockReceipt::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
 }
 
 public function mount()
@@ -70,10 +75,9 @@ public function mount()
         $this->code = $Adjustment->code;
         $this->ref = $Adjustment->ref;
         $this->warehouse_id = $Adjustment->warehouse_id;
-        $this->quantity = $Adjustment->quantity;
+        $this->quantity = $Adjustment->quantity??0;
 
-        $AdjustmentItem = StockReceiptItem::find($this->stockadjustment_id);
-        $this->quantity = $AdjustmentItem->quantity;
+        $this->quantity = $Adjustment->StockReceiptItem->quantity??0;
     }else{
         $this->adjustmentReset();
     }
@@ -81,6 +85,7 @@ public function mount()
 
     public function render()
     {
-        return view('pages.backend.inventory.stock-adjustment-details');
+        $warehouse = Warehouse::all();
+        return view('pages.backend.inventory.stock-adjustment-details',compact('warehouse'));
     }
 }

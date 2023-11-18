@@ -15,6 +15,7 @@ class BillerList extends Component
     #[On('billerDelete')]
     public function destroy($data)
     {
+        $data = $this->alertConfirm($data, 'Are you sure to delete Biller?');
 
         if(isset($data['id'])) {
             $Biller = Contact::find($data['id']);

@@ -15,7 +15,7 @@ class SalesReturnList extends Component
     #[On('salereturnDelete')]
     public function destroy($data)
     {
-        // $data = $this->alertConfirm($data, 'Are you sure to delete Sale?');
+        $data = $this->alertConfirm($data, 'Are you sure to delete Sale Return?');
 
         if(isset($data['id'])) {
             $Sale = Order::find($data['id']);

@@ -11,6 +11,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class ChartOfAccountTable extends DataTableComponent
 {
@@ -21,6 +22,7 @@ class ChartOfAccountTable extends DataTableComponent
         $this->setPrimaryKey('id');
         $this->setSearchPlaceholder('Enter Search Ledger Account');
         $this->setSearchDebounce(1000);
+        $this->setFilterLayoutSlideDown();
         $this->setTheadAttributes([
             'default' => true,
             'class' => 'custom-dt-thead',
@@ -34,17 +36,14 @@ class ChartOfAccountTable extends DataTableComponent
     public function filters(): array
     {
         return [
-            TextFilter::make('Code')
-                ->config([
-                    'placeholder' => 'Search code',
-                    'maxlength' => '25',
-                ])
-                ->filter(function (Builder $builder, string $value) {
-                    $builder->where('chart-of-accounts.ledger_code', 'like', '%' . $value . '%');
+
+            SelectFilter::make('Status')
+                ->options(filterOption('status.common'))
+                ->filter(function(Builder $builder, string $value) {
+                    $builder->where('brands.status',$value);
                 }),
         ];
     }
-
     public function columns(): array
     {
 

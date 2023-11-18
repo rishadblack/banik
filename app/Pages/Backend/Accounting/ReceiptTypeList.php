@@ -47,7 +47,7 @@ class ReceiptTypeList extends Component
     {
         $this->reset();
         $this->resetValidation();
-        $this->code = str_pad((ReceiptType::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
+        $this->code = str_pad((ReceiptType::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
 

@@ -75,8 +75,6 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth']]
         Route::get('outlet-details', OutletDetails::class)->name('outlet_details');
         Route::get('warehouse-list', WarehouseList::class)->name('warehouse_list');
         Route::get('warehouse-details', WarehouseDetails::class)->name('warehouse_details');
-        Route::get('multiple-payment-list', MultiplePaymentList::class)->name('multiple_payment_list');
-        Route::get('multiple-payment-details', MultiplePaymentDetails::class)->name('multiple_payment_details');
         Route::get('payment-list',PaymentList::class)->name('payment_list');
         Route::get('payment-details',PaymentDetails::class)->name('payment_details');
     });

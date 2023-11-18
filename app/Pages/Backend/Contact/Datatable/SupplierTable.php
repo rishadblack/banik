@@ -11,6 +11,7 @@ use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class SupplierTable extends DataTableComponent
 {
@@ -22,6 +23,7 @@ class SupplierTable extends DataTableComponent
         // $this->setAdditionalSelects(['users.id as id']);
         $this->setSearchPlaceholder('Enter Search Supplier');
         $this->setSearchDebounce(1000);
+        $this->setFilterLayoutSlideDown();
         $this->setTheadAttributes([
             'default' => true,
             'class' => 'custom-dt-thead',
@@ -36,13 +38,18 @@ class SupplierTable extends DataTableComponent
     public function filters(): array
     {
         return [
-            TextFilter::make('Name')
-                ->config([
-                    'placeholder' => 'Search Name',
-                    'maxlength' => '25',
-                ])
-                ->filter(function (Builder $builder, string $value) {
-                    $builder->where('suppliers.name', 'like', '%' . $value . '%');
+            TextFilter::make('Company Name')
+            ->config([
+                'placeholder' => 'Search Company Name',
+                'maxlength' => '25',
+            ])
+            ->filter(function (Builder $builder, string $value) {
+                $builder->where('contacts.company_name', 'like', '%' . $value . '%');
+            }),
+            SelectFilter::make('Status')
+                ->options(filterOption('status.common'))
+                ->filter(function(Builder $builder, string $value) {
+                    $builder->where('contacts.status',$value);
                 }),
         ];
     }
@@ -58,17 +65,25 @@ class SupplierTable extends DataTableComponent
             Column::make('Supplier Code', 'code')
                 ->sortable()
                 ->searchable(),
-
+                Column::make('Supplier Name', 'ContactInfo.name')
+                ->eagerLoadRelations()
+                ->sortable()
+                ->searchable(),
                 Column::make('Mobile', 'mobile')
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-            Column::make('Opening Balance', 'opening_balance')
-                ->sortable()
-                ->searchable(),
+
                 Column::make('Group Name', 'ContactGroup.name')
                 ->sortable()
                 ->searchable(),
+                Column::make('Opening Balance', 'opening_balance')
+                ->format(
+                    fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+                )
+                    ->sortable()
+                    ->searchable()
+                    ->deselected(),
             Column::make('Create BY', 'User.name')
                 ->format(
                     fn($value, $row, Column $column) => $value ? $value : '-'

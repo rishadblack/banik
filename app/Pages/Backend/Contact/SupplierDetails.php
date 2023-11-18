@@ -47,8 +47,13 @@ class SupplierDetails extends Component
         ]);
 
         $Supplier = Contact::findOrNew($this->supplier_id);
+        if($this->supplier_id) {
+            $message = 'Supplier Updated Successfully!';
+        } else {
+            $message = 'Supplier Added Successfully!';
+            $Supplier->user_id = Auth::id();
+        }
 
-        $Supplier->user_id = Auth::id();
         $Supplier->code = $this->code;
         $Supplier->mobile = $this->mobile;
         $Supplier->type = 2;
@@ -63,8 +68,8 @@ class SupplierDetails extends Component
         $Supplier->status = $this->status;
         $Supplier->save();
 
-        $SupplierInfo = new ContactInfo();
-        $SupplierInfo->user_id = Auth::id();
+        $SupplierInfo = $Supplier->ContactInfo()->firstOrNew();
+        $SupplierInfo->user_id = $Supplier->user_id;
         $SupplierInfo->contact_id = $Supplier->id;
         $SupplierInfo->name = $this->name;
         $SupplierInfo->mobile = $this->mobile;
@@ -76,11 +81,7 @@ class SupplierDetails extends Component
         }else{
             $this->supplier_id = $Supplier-> id;
         }
-        if($this->supplier_id) {
-            $message = 'Supplier Updated Successfully!';
-        } else {
-            $message = 'Supplier Added Successfully!';
-        }
+
 
         $this->alert('success', $message);
         $this->dispatch('refreshDatatable');
@@ -108,7 +109,7 @@ class SupplierDetails extends Component
             $this->credit_limit = $Supplier->credit_limit;
 
             $Supplier = ContactInfo::find($this->supplier_id);
-            $this->name = $Supplier->first_name;
+            $this->name = $Supplier->name;
             $this->mobile = $Supplier->mobile;
 
         }else{

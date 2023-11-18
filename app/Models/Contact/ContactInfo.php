@@ -24,5 +24,9 @@ class ContactInfo extends Model
     {
         return $this->belongsTo(ContactGroup::class, 'contact_group_id');
     }
+    public function scopeActive($query)
+    {
+        return $query->whereStatus(1);
+    }
 
 }

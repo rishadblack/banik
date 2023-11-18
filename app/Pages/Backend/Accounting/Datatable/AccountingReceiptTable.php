@@ -13,6 +13,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Http\Common\LaravelLivewireTables\LinkColumn;
 use App\Http\Common\LaravelLivewireTables\TextFilter;
 use App\Http\Common\LaravelLivewireTables\ButtonGroupColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class AccountingReceiptTable extends DataTableComponent
 {
@@ -23,6 +24,7 @@ class AccountingReceiptTable extends DataTableComponent
         $this->setPrimaryKey('id');
         $this->setSearchPlaceholder('Enter Search Ledger Account');
         $this->setSearchDebounce(1000);
+        $this->setFilterLayoutSlideDown();
         $this->setTheadAttributes([
             'default' => true,
             'class' => 'custom-dt-thead',
@@ -36,13 +38,11 @@ class AccountingReceiptTable extends DataTableComponent
     public function filters(): array
     {
         return [
-            TextFilter::make('Code')
-                ->config([
-                    'placeholder' => 'Search code',
-                    'maxlength' => '25',
-                ])
-                ->filter(function (Builder $builder, string $value) {
-                    $builder->where('receipts.code', 'like', '%' . $value . '%');
+
+            SelectFilter::make('Status')
+                ->options(filterOption('status.common'))
+                ->filter(function(Builder $builder, string $value) {
+                    $builder->where('brands.status',$value);
                 }),
         ];
     }
@@ -93,7 +93,7 @@ class AccountingReceiptTable extends DataTableComponent
                 ->buttons([
                     LinkColumn::make('Edit')
                         ->title(fn ($row) => 'Edit')
-                        ->location(fn ($row) => route('backend.accounting.receipt_type_details', ['receiptType_id' => $row->id]))
+                        ->location(fn ($row) => route('backend.accounting.accounting_receipt_details', ['receiptType_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,

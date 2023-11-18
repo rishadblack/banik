@@ -25,6 +25,10 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             ContactGroupSeeder::class,
             PaymentMethodSeeder::class,
+            OutletSeeder::class,
+            WarehouseSeeder::class,
+            ChartOfAccountSeeder::class,
+            LedgerAccountSeeder::class,
         ]);
     }
 }

@@ -17,7 +17,7 @@
             </div>
 
             <div class="container-login100-form-btn">
-                <button wire:click="login" class="login100-form-btn">
+                <button wire:click="login" wire:target="login" class="login100-form-btn">
                     Login
                 </button>
             </div>

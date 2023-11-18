@@ -27,6 +27,7 @@ return new class () extends Migration {
             $table->double('opening_stock', 20, 2)->nullable();
             $table->tinyInteger('status')->nullable();
             $table->tinyInteger('is_single')->nullable();
+            $table->tinyInteger('is_inventory')->nullable();
             $table->string('low_stock_alert', 100)->nullable();
             $table->tinyInteger('is_out_of_stock_sell')->nullable();
             $table->tinyInteger('is_change_variation')->nullable();

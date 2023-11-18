@@ -6,10 +6,12 @@ namespace App\Pages\Backend\Order;
 use App\Models\Order\Order;
 use Livewire\Attributes\Url;
 use App\Http\Common\Component;
+use App\Models\Setting\Outlet;
 use App\Models\Contact\Contact;
 use App\Models\Order\OrderItem;
 use App\Models\Product\Product;
 use Livewire\Attributes\Layout;
+use App\Models\Setting\Warehouse;
 use App\Models\Contact\ContactInfo;
 use App\Models\order\PurchaseReturn;
 use Illuminate\Support\Facades\Auth;
@@ -20,10 +22,12 @@ class PurchasereturnDetails extends Component
 {
     #[Url]
     public $purchase_id;
+
     public $purchase_code;
     public $contact_id;
     public $product_id;
     public $ref;
+    public $purchase_return_ref;
     public $outlet_id;
     public $delivery_status;
     public $name;
@@ -51,43 +55,51 @@ class PurchasereturnDetails extends Component
         ]);
 
         $Purchase = Order::findOrNew($this->purchase_id);
-        $Purchase->user_id = Auth::id();
-        $Purchase->code = $this->code;
-        $Purchase->ref = $this->ref;
-        $Purchase->warehouse_id = $this->warehouse_id;
-        $Purchase->outlet_id = $this->outlet_id;
-        $Purchase->type = 4;
-        $Purchase->contact_id = $this->contact_id;
-        $Purchase->payment_status = $this->payment_status;
-        $Purchase->payment_method_id = $this->payment_method_id;
-        $Purchase->payment_date = $this->payment_date;
-        $Purchase->delivery_status = $this->delivery_status;
-        $Purchase->discount = $this->discount;
-        $Purchase->save();
-
-        /*$PurchaseInfo = OrderItem::findOrNew($this->purchase_id);
-        $PurchaseInfo->order_id = $Purchase->id;
-        $PurchaseInfo->product_id = $this->product_id;
-        $PurchaseInfo->name = $this->name;
-        $PurchaseInfo->amount = $this->amount;
-        $PurchaseInfo->quantity = $this->quantity;
-        $PurchaseInfo->discount_amount = $this->discount_amount;
-        $PurchaseInfo->subtotal = $this->subtotal;
-        $PurchaseInfo->received_quantity = $this->received_quantity;
-        $PurchaseInfo->save();*/
-
-        if($storeType == 'new'){
-            $this->reset();
-        }else{
-            $this->purchase_id = $Purchase-> id;
-        }
         if($this->purchase_id) {
             $message = 'Purchase Return Updated Successfully!';
         } else {
             $message = 'Purchase Return Added Successfully!';
+            $Purchase->user_id = Auth::id();
         }
 
+        $Purchase->code = $this->code;
+        $Purchase->ref = $this->purchase_return_ref;
+        $Purchase->warehouse_id = $this->warehouse_id;
+        $Purchase->outlet_id = $this->outlet_id;
+        $Purchase->type = 4;
+        $Purchase->contact_id = $this->contact_id;
+        $Purchase->payment_status = $this->payment_status ?? 0;
+        $Purchase->delivery_status = $this->delivery_status ?? 0;
+        $Purchase->discount = $this->discount ?? 0;
+        $Purchase->save();
+
+        $PurchaseInfo = $Purchase->OrderItem()->firstOrNew();
+        $PurchaseInfo->user_id =  $Purchase->user_id;
+        $PurchaseInfo->order_id = $Purchase->id;
+        $PurchaseInfo->product_id = $this->product_id;
+        $PurchaseInfo->name = $this->name??0;
+        $PurchaseInfo->amount = $this->amount??0;
+        $PurchaseInfo->quantity = $this->quantity??0;
+        $PurchaseInfo->discount_amount = $this->discount_amount??0;
+        $PurchaseInfo->subtotal = $this->subtotal??0;
+        $PurchaseInfo->received_quantity = $this->received_quantity??0;
+        $PurchaseInfo->save();
+
+        if($storeType == 'new'){
+            $this->purchaseReset();
+        }else{
+            $this->purchase_id = $Purchase-> id;
+        }
+
+
         $this->alert('success', $message);
+        $this->dispatch('refreshDatatable');
+    }
+    public function purchaseReset()
+    {
+        $this->reset();
+        $this->resetValidation();
+       $this->code = str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()
@@ -100,19 +112,20 @@ class PurchasereturnDetails extends Component
             $this->outlet_id = $Purchase->outlet_id;
             $this->contact_id = $Purchase->contact_id;
             $this->payment_status = $Purchase->payment_status;
-            $this->payment_date = $Purchase->payment_date;
-            $this->payment_method_id = $Purchase->payment_method_id;
-            $this->delivery_status = $Purchase->delivery_status;
-            $this->discount = $Purchase->discount;;
+            $this->payment_date = $Purchase->payment_date??0;
+            $this->payment_method_id = $Purchase->payment_method_id ??0;
+            $this->delivery_status = $Purchase->delivery_status??0;
+            $this->discount = $Purchase->discount??0;
 
-            /*$PurchaseInfo = OrderItem::findOrNew($this->purchase_id);
-            $this->product_id = $PurchaseInfo->product_id;
-            $this->name = $PurchaseInfo->name;
-            $this->amount = $PurchaseInfo->amount;
-            $this->quantity = $PurchaseInfo->quantity;
-            $this->received_quantity = $PurchaseInfo->received_quantity;
-            $this->subtotal = $PurchaseInfo->subtotal;
-            $this->discount_amount = $PurchaseInfo->discount_amount;*/
+            $this->product_id = $Purchase->OrderItem->product_id;
+            $this->name = $Purchase->OrderItem->name;
+            $this->amount = $Purchase->OrderItem->amount;
+            $this->quantity = $Purchase->OrderItem->quantity;
+            $this->received_quantity = $Purchase->OrderItem->received_quantity ?? 0;
+            $this->subtotal = $Purchase->OrderItem->subtotal ??0;
+            $this->discount_amount = $Purchase->OrderItem->discount_amount ?? 0;
+        }else{
+            $this->purchaseReset();
         }
     }
 
@@ -122,6 +135,8 @@ class PurchasereturnDetails extends Component
         $order = Order::where('type',4)->get();
         $payment = OrderItem::all();
         $product=Product::all();
-        return view('pages.backend.order.purchasereturn-details',compact('payment','supplier','order'));
+        $outlet = Outlet::all();
+        $warehouse = Warehouse::all();
+        return view('pages.backend.order.purchasereturn-details',compact('payment','supplier','order','outlet','warehouse'));
     }
 }
