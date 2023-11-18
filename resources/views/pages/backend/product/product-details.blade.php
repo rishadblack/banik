@@ -16,7 +16,6 @@
 @endpush
 
 <div>
-    <div class="container">
         <div class="d-flex align-items-center mb-3">
             <div>
                 <x-slot:title>{{ $product_id ? 'Update' : 'Create' }} Product</x-slot:title>
@@ -73,7 +72,7 @@
             </div>
             <div class="col-xl-4">
                 <x-layouts.backend.card>
-                    <x-slot:title>Status</x-slot:title>
+                    <x-slot:title>Action</x-slot:title>
                     <x-slot:button>
                         <div class="dropdown">
                             <x-button.default wire:click="storeProduct" class="btn-success">Save</x-button.default>
@@ -83,6 +82,7 @@
                                 wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                         </div>
                     </x-slot:button>
+                    <x-input.checkbox2 wire:wodel="is_inventory" label="If Inventory"></x-input.checkbox2>
                     <x-input.select wire:model="status" label="Status" :options="config('status.common')"/>
                 </x-layouts.backend.card>
 
@@ -104,7 +104,6 @@
                 </x-layouts.backend.card>
             </div>
         </div>
-    </div>
 
 </div>
 

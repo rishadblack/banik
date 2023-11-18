@@ -71,7 +71,7 @@ class UnitList extends Component
 
     public function storeUnit($storeType = null)
     {
-        $this->validate([
+        $data =$this->validate([
             'name' => 'required|string',
             'code' => 'required|string',
         ]);

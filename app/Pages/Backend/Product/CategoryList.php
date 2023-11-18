@@ -71,7 +71,7 @@ class CategoryList extends Component
     public function storeCategory($storeType = null)
     {
 
-        $this->validate([
+        $data =$this->validate([
             'name' => 'required|string',
             'code' => 'required|string',
         ]);

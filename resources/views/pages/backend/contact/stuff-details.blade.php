@@ -51,7 +51,7 @@
         </div>
         <div class="col-xl-4">
             <x-layouts.backend.card>
-                <x-slot:title>Status</x-slot:title>
+                <x-slot:title>Action</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
                         <x-button.default wire:click="storeStuff" wire:target="storeStuff" class="btn-success">Save</x-button.default>

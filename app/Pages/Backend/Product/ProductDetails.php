@@ -32,6 +32,7 @@ class ProductDetails extends Component
     public $unit_id;
     public $category_id;
     public $unit;
+    public $is_inventory;
     public $status = 1;
 
 
@@ -47,6 +48,7 @@ class ProductDetails extends Component
             'net_sale_price' => 'nullable',
             'net_purchase_price' => 'nullable',
             'profit_margin' => 'nullable',
+            'is_inventory' => 'nullable',
         ]);
 
         $Product = Product::findOrNew($this->product_id);
@@ -54,7 +56,7 @@ class ProductDetails extends Component
         $Product->name = $this->name;
         $Product->code = $this->code;
         $Product->description = $this->description;
-        /*$Product->type = $this->type;  */
+        $Product->is_inventory = $this->is_inventory;
         $Product->net_purchase_price = $this->net_purchase_price;
         $Product->net_sale_price = $this->net_sale_price;
         $Product->profit_margin = $this->profit_margin;
@@ -100,6 +102,7 @@ class ProductDetails extends Component
             $this->description = $Product->description;
             $this->net_purchase_price = $Product->net_purchase_price;
             $this->net_sale_price = $Product->net_sale_price;
+            $this->is_inventory = $Product->is_inventory;
             $this->profit_margin = $Product->profit_margin;
             $this->brand_id = $Product->brand_id;
             $this->category_id = $Product->category_id;

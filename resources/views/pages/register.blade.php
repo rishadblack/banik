@@ -47,7 +47,7 @@
     </div>
 
     <div class="container-login100-form-btn">
-        <button wire:click="register" class="login100-form-btn">
+        <button wire:click="register" wire:target="register" class="login100-form-btn">
             Register
         </button>
     </div>
