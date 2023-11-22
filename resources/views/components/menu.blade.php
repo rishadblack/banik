@@ -1,9 +1,11 @@
 @isset($attributes['sub'])
 <div class="menu-item has-sub @if(in_array($attributes['sub'],explode('.', Route::currentRouteName()))) active @endif">
     <a href="#" class="menu-link">
+        @isset($attributes['icon'])
         <span class="menu-icon">
             <i class="{{$attributes['icon']}}"></i>
         </span>
+        @endisset
         <span class="menu-text">{{$attributes['label']}}</span>
         <span class="menu-caret"><b class="caret"></b></span>
     </a>

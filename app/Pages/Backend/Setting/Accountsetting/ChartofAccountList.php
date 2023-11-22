@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Pages\Backend\Accounting;
+namespace App\Pages\Backend\Setting\Accountsetting;
 
 
 use Livewire\Attributes\On;
@@ -101,6 +101,6 @@ class ChartofAccountList extends Component
     }
     public function render()
     {
-        return view('pages.backend.accounting.chartof-account-list');
+        return view('pages.backend.setting.accountsetting.chartof-account-list');
     }
 }

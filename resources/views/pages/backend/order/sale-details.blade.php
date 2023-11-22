@@ -3,7 +3,7 @@
         .productSearch {
             border-radius: 18px;
             margin-left: 239px;
-            width: 250px;
+            width: 280px;
             font-size: 11px;
             color: #736d6d;
             height: 30px !important;
@@ -11,14 +11,6 @@
 
         .ts-control {
             height: 32px !important;
-        }
-
-        .btn-info {
-            border-radius: 10px !important;
-            margin-left: 147px;
-            width: 90px;
-            background-color: rgb(54, 129, 242);
-            color: #fff;
         }
 
         .table>thead {
@@ -52,6 +44,18 @@
         .width {
             width: 54px;
             height: 21px;
+        }
+
+        .charges .widthtd {
+            margin-bottom: 5px;
+        }
+
+        .sub-width {
+            width: 54px;
+        }
+
+        .stock {
+            width: 80px !important;
         }
 
         .sl {
@@ -111,8 +115,9 @@
             background-color: #cbccdb;
             padding: 10px;
             border-radius: 15px;
-            padding: 5px 15px;
-            margin-right: 50px;
+            padding: 5px 10px;
+            margin-right: 0px;
+            width: 225px;
         }
 
         .net-amount .sm {
@@ -122,7 +127,8 @@
 
         .net-amount .value {
             background-color: #91caf4;
-            padding: 0px 10px 2px;
+            padding: 0px 3px 2px;
+            margin-left: 5px;
             font-weight: 700;
             font-size: 20px;
             display: inline;
@@ -147,46 +153,40 @@
                     <x-layouts.backend.card class="product-item">
                         <x-slot:title>Products (2)</x-slot:title>
                         <x-slot:search>
-                            {{-- <x-input.select class="productSearch" placeholder="Search Product Name" /> --}}
                             <x-search.products wire:model='product_id' class="productSearch"
                                 placeholder="Search Product Name" />
                         </x-slot:search>
 
                         <x-slot:button>
-                            <x-button.default type="button" class="btn btn-sm rounded btn-info" data-bs-toggle="modal"
-                                data-bs-target="#openProductAddModal">Add
+                            <x-button.default type="button" class="btn btn-sm rounded btn-info" x-data
+                                @click="$dispatch('openProductModal')">Add
                                 Product</x-button.default>
                         </x-slot:button>
 
-
-                        <table class="table table-striped ">
-                            <thead class="text-center">
-                                <th class="sl">SL</th>
-                                <th class="text-center">Product Name</th>
-                                <th class="widthtd">Purchase Price</th>
-                                <th class="widthtd">Quantity</th>
-                                <th class="widthtd">Discount</th>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <th>SL</th>
+                                <th>Product Name</th>
+                                <th class="width text-center">Sale Price</th>
+                                <th class="width text-center">Quantity</th>
+                                <th class="width text-center">Discount</th>
+                                <th class="text-center">Subtotal</th>
+                                <th class="text-center">Action</th>
                             </thead>
                             <tbody>
                                 <tr class="shadow-none">
                                     <td class="text-center">1</td>
-                                    <td class="d-flex">
-                                        <div
-                                            class="h-65px w-65px d-flex align-items-center position-relative bg-body rounded p-2">
-                                            <img src="{{ asset('backend/assets/img/product/product-2.png') }}" alt
-                                                class="mw-100 mh-100">
-                                            <span
-                                                class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
-                                        </div>
-                                        <div class="ps-6 flex-1 ">
-                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro
-                                                    Max</a>
+
+                                    <td class="d-flex text-left">
+                                        <div class="flex-1 ">
+                                            <div><a href="#" class="text-decoration-none text-body">Suscipit sunt
+                                                    sed provident</a>
                                             </div>
                                             <div class="text-body text-opacity-50 small ">
                                                 SKU: IP14PROMAX-512
                                             </div>
                                             <div class="text-body text-opacity-50 small">
-                                                Stock : 0 , Delivery product : 0
+                                                Stock : 0; Delivery product : 0
                                             </div>
                                         </div>
                                     </td>
@@ -194,10 +194,13 @@
                                     <td><x-input.text-order wire:model="quantity" class="widthtd" placeholder="" /></td>
                                     <td class="text-center"><x-input.text-order wire:model="discount" class="widthtd"
                                             placeholder="" />
-                                        <div class="text-body text-opacity-50 small d-flex float-end subtotal">
-                                            Subtotal : 0
-                                        </div>
                                     </td>
+                                    <td class="text-center">
+                                        0
+                                    </td>
+                                    <td> <a wire:click="delete()"
+                                            wire:navigate="true"class="btn btn-danger btn-sm rounded"><i
+                                                class="fa fa-close"></i></a></td>
 
                                 </tr>
 
@@ -205,60 +208,47 @@
                         </table>
                     </x-layouts.backend.card>
                 </div>
-                {{-- <div class="col-7">
+
+                <div class="col-lg-7 charges">
                     <x-layouts.backend.card>
-                        <x-slot:title>Supplier</x-slot:title>
-                        <x-input.text wire:model="contact_id" class="form-control-sm" label="Discount"/>
-                        <x-input.text wire:model="contact_id" class="form-control-sm" label="Additional Charge"/>
+                        <div class="row mb-1">
+                            <div class="col-1"><b>1</b></div>
+                            <div class="col-7">Discount</div>
+                            <div class="col-4 text-end"><b>200.00 ৳</b></div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-1"><b>2</b></div>
+                            <div class="col-7">Tax</div>
+                            <div class="col-4 text-end"><b>0.00 ৳</b></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1"><b>3</b></div>
+                            <div class="col-7">Shipping Charge</div>
+                            <div class="col-4 text-end"><b>0.00 ৳</b></div>
+                        </div>
                     </x-layouts.backend.card>
-                </div> --}}
-                <div class="col-lg-5 offset-lg-7">
+                </div>
+                <div class="col-lg-5">
                     <x-layouts.backend.card>
-                        {{-- <x-slot:title>Payment Records</x-slot:title> --}}
-                        <x-slot:button>
-                            <a href="#" class="ms-auto text-decoration-none fs-13px text-body text-opacity-50"><i
-                                    class="fab fa-paypal me-1 fa-lg"></i> View paypal records</a>
-                        </x-slot:button>
                         <table class="table table-borderless table-sm m-0">
                             <tbody>
                                 <tr class="mb-1">
                                     <td class="w-150px">Subtotal</td>
                                     <td></td>
-                                    <td class="text-end">$3,496.00</td>
+                                    <td class="text-end"><b>3,496.00 ৳</b></td>
                                 </tr>
-                                <tr class="mb-1">
-                                    <td class="w-150px">Discount</td>
-                                    {{-- <td><x-input.text wire:model="discount" class="width" placeholder="" /></td> --}}
-                                    <td></td>
-                                    <td class="text-end">$3,496.00</td>
-                                </tr>
-                                <tr class="mb-1">
-                                    <td>Tax</td>
-                                    <td></td>
-                                    <td class="text-end">$174.80</td>
-                                </tr>
-                                <tr class="mb-1">
-                                    <td class="w-150px">Additional Charge</td>
-                                    <td></td>
-                                    {{-- <td><x-input.text wire:model="additional_charge" class="width" placeholder="" /></td> --}}
-                                    <td class="text-end">$3,496.00</td>
-                                </tr>
-                                <tr>
+                                {{-- <tr>
                                     <td colspan="3">
                                         <hr class="mt-2 mb-2">
                                     </td>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <td colspan="2"><b>Total</b></td>
-                                    <td class="text-end text-decoration-underline"><b>$3670.80</b></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2"><b>Total Payment</b></td>
-                                    <td class="text-end  text-decoration-underline"><b>$3670.80</b></td>
+                                    <td class="text-end text-decoration-underline"><b>3670.80 ৳</b></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Due</b></td>
-                                    <td class="text-end  text-decoration-underline"><b>$00.80</b></td>
+                                    <td class="text-end  text-decoration-underline"><b>00.80 ৳</b></td>
                                 </tr>
 
                             </tbody>
@@ -303,7 +293,7 @@
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
                         <div class="mt-3 mt-4 float-end fs-4 net-amount text-center shadow"><span class="sm">Net
-                                Amount</span><span class="value"> $0.00</span></div>
+                                Amount</span><span class="value"> 2000.00 ৳</span></div>
                     </div>
                 </div>
 
@@ -320,7 +310,7 @@
                     </thead>
                     <tbody>
 
-                         @foreach ($transaction as $transaction)
+                        @foreach ($transaction as $transaction)
                             <tr>
                                 <td>{{ $transaction->id }}</td>
                                 <td class="py-1 align-middle">
@@ -419,7 +409,7 @@
         </div>
     </div>
 
-    <x-modal id="openProductAddModal">
+    <x-modal id="productModal">
 
     </x-modal>
 

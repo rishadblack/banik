@@ -3,7 +3,7 @@
     .productSearch {
             border-radius: 18px;
             margin-left: 239px;
-            width: 240px;
+            width: 280px;
             font-size: 11px;
             color: #736d6d;
         }

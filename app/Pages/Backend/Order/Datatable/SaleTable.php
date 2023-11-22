@@ -63,14 +63,12 @@ class SaleTable extends DataTableComponent
                 ->format(
                     fn ($value, $row, Column $column) => $value ? $value : '-'
                 )
-                ->sortable()
                 ->searchable(),
-            Column::make('outlet', 'Outlet.name')
+            Column::make('Outlet', 'Outlet.name')
                 ->format(
                     fn ($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->eagerLoadRelations()
-                ->sortable()
                 ->searchable(),
             Column::make('Discount', 'discount_amount')
 
@@ -85,18 +83,44 @@ class SaleTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-            Column::make('Payment Status', 'payment_status')
-                ->format(
-                    fn ($value, $row, Column $column) => $value ? '<span class="badge bg-primary text-primary-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
-                class="fa fa-circle text-primary fs-9px fa-fw me-5px"></i>' . config("status.delivery_status.{$value}.name") . '</span>' : ''
-                )->sortable()->html(),
-            Column::make('Delivery Status', 'delivery_status')
-                ->format(
-                    fn ($value, $row, Column $column) => $value ? '<span class="badge bg-danger text-danger-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
-                class="fa fa-circle text-danger fs-9px fa-fw me-5px"></i>' . config("status.delivery_status.{$value}.name") . '</span>' : ''
-                )->sortable()->html(),
+            // Column::make('Payment Status', 'payment_status')
+            //     ->format(
+            //         fn ($value, $row, Column $column) => $value ? '<span class="badge bg-primary text-primary-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
+            //     class="fa fa-circle text-primary fs-9px fa-fw me-5px"></i>' . config("status.delivery_status.{$value}.name") . '</span>' : ''
+            //     )->sortable()->html(),
+            // Column::make('Delivery Status', 'delivery_status')
+            //     ->format(
+            //         fn ($value, $row, Column $column) => $value ? '<span class="badge bg-danger text-danger-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
+            //     class="fa fa-circle text-danger fs-9px fa-fw me-5px"></i>' . config("status.delivery_status.{$value}.name") . '</span>' : ''
+            //     )->sortable()->html(),
             ButtonGroupColumn::make("Actions")
                 ->buttons([
+                    LinkColumn::make('Delivery')
+                        ->title(fn ($row) => 'Delivery')
+                        ->location(fn ($row) =>'javascript:void(0)')
+                        ->attributes(function ($row) {
+                            return [
+                                'data-id' => $row->id,
+                                'data-listener' => 'openDeliveryModal',
+                                'class' => 'badge bg-info me-1 p-2 ',
+                                'icon' => 'fa fa-edit',
+                                'title' => 'Delivery',
+
+                            ];
+                        }),
+                        LinkColumn::make('Payment')
+                        ->title(fn ($row) => 'Payment')
+                        ->location(fn ($row) => 'javascript:void(0)')
+                        ->attributes(function ($row) {
+                            return [
+                                'data-id' => $row->id,
+                                'data-listener' => 'openPaymentModal',
+                                'class' => 'badge bg-warning me-1 p-2 ',
+                                'icon' => 'fa fa-edit',
+                                'title' => 'Payment',
+
+                            ];
+                        }),
                     LinkColumn::make('Edit')
                         ->title(fn ($row) => 'Edit')
                         ->location(fn ($row) => route('backend.order.sale_details', ['sale_id' => $row->id]))

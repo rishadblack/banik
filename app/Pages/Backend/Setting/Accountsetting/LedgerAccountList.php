@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Pages\Backend\Accounting;
+namespace App\Pages\Backend\Setting\Accountsetting;
 
 use Livewire\Attributes\On;
 
@@ -110,6 +110,6 @@ class LedgerAccountList extends Component
     public function render()
     {
         $chart = ChartOfAccount::all();
-        return view('pages.backend.accounting.ledger-account-list',compact('chart'));
+        return view('pages.backend.setting.accountsetting.ledger-account-list',compact('chart'));
     }
 }

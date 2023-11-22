@@ -6,7 +6,7 @@
     </x-slot:button>
 
     <x-layouts.backend.card>
-        <livewire:backend.accounting.datatable.ledger-account-table />
+        <livewire:backend.setting.accountsetting.datatable.ledger-account-table />
     </x-layouts.backend.card>
 
     <x-modal id="ledgerModal">

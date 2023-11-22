@@ -159,6 +159,16 @@
         .dropdown-toggle:hover {
             background-color: rgb(235, 165, 33);
         }
+
+        .app-sidebar {
+            --bs-app-sidebar-width: 17rem;
+        }
+
+        .app-content {
+            padding: 0.5rem 3.125rem 0.5rem 5.125rem;
+        }
+
+
     </style>
     @vite(['resources/sass/backend.scss', 'resources/js/backend.js'])
     @stack('css')
@@ -210,7 +220,7 @@
                 <div class="menu-item dropdown" x-data="{ open: false }">
                     <a class="menu-link" x-bind:class="open ? 'show' : ''" x-on:click="open = ! open">
                         <div class="menu-img online">
-                            <img src="{{ auth()->user()->profile_image }}" alt class="ms-100 mh-100 rounded-circle">
+                            <img src="{{ asset('storage/' . auth()user()->profile_image) }}" alt class="ms-100 mh-100 rounded-circle">
                         </div>
                         <div class="menu-text">{{ auth()->user()->email }}</span>
                         </div>
@@ -241,10 +251,16 @@
                             <span class="menu-text">Dashboard</span>
                         </a>
                     </div>
-                    <x-menu label="Setting" sub="setting" icon="fa fa-sliders">
+                    <x-menu label="Setting" sub="setting" icon="fa fa-sliders" class="accountsetting">
                         <x-menu label="Outlet" route="backend.setting.outlet_list" />
                         <x-menu label="Warehouse" route="backend.setting.warehouse_list" />
                         <x-menu label="Payment Method" route="backend.setting.payment_list" />
+                        <x-menu label="Account Setting" sub="accountsetting">
+                            <x-menu label="Chart Of Account"
+                                route="backend.setting.accountsetting.chart_account_list" />
+                            <x-menu label="Ledger Account"
+                                route="backend.setting.accountsetting.ledger_account_list" />
+                        </x-menu>
                     </x-menu>
                     <x-menu label="Product Manage" sub="product" icon="fa fa-shopping-cart">
                         <x-menu label="Products" route="backend.product.product_list" />
@@ -272,10 +288,7 @@
                         <x-menu label="Stock Transfer" route="backend.inventory.stock_movement_list" />
                     </x-menu>
                     <x-menu label="Accounting" sub="accounting" icon="fa fa-dollar">
-                        <x-menu label="Chart Of Account" route="backend.accounting.chart_account_list" />
                         <x-menu label="Accounting Receipt" route="backend.accounting.accounting_receipt_list" />
-                        <x-menu label="Receipt Type" route="backend.accounting.receipt_type_list" />
-                        <x-menu label="Ledger Account" route="backend.accounting.ledger_account_list" />
                     </x-menu>
                 </div>
             </div>

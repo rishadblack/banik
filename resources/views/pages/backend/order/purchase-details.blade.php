@@ -3,7 +3,7 @@
         .productSearch {
             border-radius: 18px;
             margin-left: 239px;
-            width: 240px;
+            width: 280px;
             font-size: 11px;
             color: #736d6d;
         }
@@ -111,7 +111,7 @@
             background-color: #cbccdb;
             padding: 10px;
             border-radius: 15px;
-            padding: 5px 15px;
+            padding: 5px 10px;
             margin-right: 50px;
         }
 
@@ -152,8 +152,7 @@
                         </x-slot:search>
 
                         <x-slot:button>
-                            <x-button.default type="button" class="btn btn-sm rounded btn-info" data-bs-toggle="modal"
-                                data-bs-target="#openProductAddModal">Add
+                            <x-button.default type="button" class="btn btn-sm rounded btn-info" x-data @click="$dispatch('openProductModal')">Add
                                 Product</x-button.default>
                         </x-slot:button>
 
@@ -199,70 +198,6 @@
                                     </td>
 
                                 </tr>
-                                {{-- <tr class="shadow-none">
-                                    <td class="text-center">1</td>
-                                    <td class="d-flex">
-                                        <div
-                                            class="h-65px w-65px d-flex align-items-center position-relative bg-body rounded p-2">
-                                            <img src="{{ asset('backend/assets/img/product/product-2.png') }}" alt
-                                                class="mw-100 mh-100">
-                                            <span
-                                                class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
-                                        </div>
-                                        <div class="ps-6 flex-1 ">
-                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro
-                                                    Max</a>
-                                            </div>
-                                            <div class="text-body text-opacity-50 small ">
-                                                SKU: IP14PROMAX-512
-                                            </div>
-                                            <div class="text-body text-opacity-50 small">
-                                                Stock : 0 , Receive product : 0
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><x-input.text-order wide:model="amount" class="widthtd" placeholder="" /></td>
-                                    <td><x-input.text-order wide:model="quantity" class="widthtd" placeholder="" /></td>
-                                    <td class="text-center"><x-input.text-order wide:model="discount" class="widthtd"
-                                            placeholder="" />
-                                        <div class="text-body text-opacity-50 small d-flex float-end subtotal">
-                                            Subtotal : 0
-                                        </div>
-                                    </td>
-
-                                </tr>
-                                <tr class="shadow-none">
-                                    <td class="text-center">1</td>
-                                    <td class="d-flex">
-                                        <div
-                                            class="h-65px w-65px d-flex align-items-center position-relative bg-body rounded p-2">
-                                            <img src="{{ asset('backend/assets/img/product/product-2.png') }}" alt
-                                                class="mw-100 mh-100">
-                                            <span
-                                                class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
-                                        </div>
-                                        <div class="ps-6 flex-1 ">
-                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro
-                                                    Max</a>
-                                            </div>
-                                            <div class="text-body text-opacity-50 small ">
-                                                SKU: IP14PROMAX-512
-                                            </div>
-                                            <div class="text-body text-opacity-50 small">
-                                                Stock : 0 , Receive product : 0
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><x-input.text-order wide:model="amount" class="widthtd" placeholder="" /></td>
-                                    <td><x-input.text-order wide:model="quantity" class="widthtd" placeholder="" /></td>
-                                    <td class="text-center"><x-input.text-order wide:model="discount" class="widthtd"
-                                            placeholder="" />
-                                        <div class="text-body text-opacity-50 small d-flex float-end subtotal">
-                                            Subtotal : 0
-                                        </div>
-                                    </td>
-
-                                </tr> --}}
 
                             </tbody>
                         </table>
@@ -474,7 +409,7 @@
         </div>
 
     </div>
-    <x-modal id="openProductAddModal">
+    <x-modal id="productModal">
 
     </x-modal>
 
