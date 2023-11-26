@@ -28,6 +28,7 @@
         .product-search {
             background-color: #fff;
         }
+
         .modal-dialog {
             max-width: 740px;
             margin-right: auto;
@@ -38,6 +39,12 @@
             background-color: #acacde;
         }
 
+        .table> :not(caption)>*>th {
+            padding: .5rem .5rem;
+            color: #3939a8;
+            font-size: 13px;
+        }
+
         .product select {
             word-wrap: normal;
             padding: 7px 11px;
@@ -45,6 +52,7 @@
             border: 1px solid #9f9e9e;
             border-radius: 10px;
         }
+
         .btn-info {
             background-color: rgb(54, 129, 242);
             color: #fff;
@@ -102,13 +110,13 @@
             </div>
             <div class="col-2"></div>
         </div>
-        <table class="table table-striped table-hover">
+        <table class="table table-striped table-hover shadow">
             <thead>
                 <th>SL</th>
                 <th>Product Name</th>
-                <th class="width text-center">Sale Price</th>
-                <th class="width text-center">Quantity</th>
-                <th class="width text-center">Discount</th>
+                <th class="width text-center">Order Quantity</th>
+                <th class="width text-center">Delivery Quantity</th>
+                <th class="width text-center">Total Quantity</th>
                 <th class="text-center">Subtotal</th>
                 <th class="text-center">Action</th>
             </thead>
@@ -185,7 +193,7 @@
                         Amount</span><span class="value"> $0.00</span></div>
             </div>
         </div>
-        <hr  class="mt-4 mb-4">
+        <hr class="mt-4 mb-4">
         <table class="table table-striped payment-table shadow">
             <thead>
                 <th>SL</th>

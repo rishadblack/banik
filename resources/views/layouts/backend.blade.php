@@ -220,7 +220,7 @@
                 <div class="menu-item dropdown" x-data="{ open: false }">
                     <a class="menu-link" x-bind:class="open ? 'show' : ''" x-on:click="open = ! open">
                         <div class="menu-img online">
-                            <img src="{{ asset('storage/' . auth()user()->profile_image) }}" alt class="ms-100 mh-100 rounded-circle">
+                            <img src="" alt class="ms-100 mh-100 rounded-circle">
                         </div>
                         <div class="menu-text">{{ auth()->user()->email }}</span>
                         </div>

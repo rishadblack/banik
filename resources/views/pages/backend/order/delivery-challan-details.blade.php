@@ -160,23 +160,25 @@
                                 Product</x-button.default>
                         </x-slot:button>
 
-
                         <table class="table table-striped table-hover">
-                            <thead class="text-center">
+                            <thead>
                                 <th>SL</th>
-                                <th></th>
                                 <th>Product Name</th>
-                                <th>Order Quantity</th>
-                                <th>Delivery Quantity</th>
-                                <th>Total Quantity</th>
-                                <th></th>
+                                <th class="width text-center">Sale Price</th>
+                                <th class="width text-center">Quantity</th>
+                                <th class="width text-center">Discount</th>
+                                <th class="text-center">Subtotal</th>
+                                <th class="text-center">Action</th>
                             </thead>
                             <tbody>
                                 <tr class="shadow-none">
                                     <td class="text-center">1</td>
-                                    <td>
-                                        <div class="flex-1 ">
 
+                                    <td class="d-flex text-left">
+                                        <div class="flex-1 ">
+                                            <div><a href="#" class="text-decoration-none text-body">Suscipit sunt
+                                                    sed provident</a>
+                                            </div>
                                             <div class="text-body text-opacity-50 small ">
                                                 SKU: IP14PROMAX-512
                                             </div>
@@ -185,81 +187,67 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="d-flex">
-                                        <div class="flex-1 ">
-                                            <div><a href="#" class="text-decoration-none text-body">Suscipit sunt
-                                                    sed provident</a>
-                                            </div>
-                                        </div>
+                                    <td><x-input.text-order wire:model="amount" class="widthtd" placeholder="" /></td>
+                                    <td><x-input.text-order wire:model="quantity" class="widthtd" placeholder="" /></td>
+                                    <td class="text-center"><x-input.text-order wire:model="discount" class="widthtd"
+                                            placeholder="" />
                                     </td>
-                                    <td><x-input.text-order wire:model="order_quantity" class="widthtd" placeholder="" /></td>
-                                    <td><x-input.text-order wire:model="delivery_quantity" class="widthtd" placeholder="" /></td>
-                                    <td><x-input.text-order wire:model="total_quantity" class="widthtd" placeholder="" />
+                                    <td class="text-center">
+                                        0
                                     </td>
-                                    <td>
-                                        <div class="text-body text-opacity-50 small d-flex float-end subtotal">
-                                            Subtotal : 0
-                                        </div>
-                                    </td>
+                                    <td> <a wire:click="delete()"
+                                            wire:navigate="true"class="btn btn-danger btn-sm rounded"><i
+                                                class="fa fa-close"></i></a></td>
 
                                 </tr>
+
                             </tbody>
                         </table>
                     </x-layouts.backend.card>
                 </div>
-                <div class="col-lg-5 offset-lg-7">
-                    <x-layouts.backend.card>
-                        {{-- <x-slot:title>Payment Records</x-slot:title> --}}
-                        <x-slot:button>
-                            <a href="#" class="ms-auto text-decoration-none fs-13px text-body text-opacity-50"><i
-                                    class="fab fa-paypal me-1 fa-lg"></i> View paypal records</a>
-                        </x-slot:button>
+                {{-- <div class="col-lg-6 charges">
+                    <x-layouts.backend.card class="shadow">
+                         <div class="row mb-1">
+                            <div class="col-7">Discount</div>
+                            <div class="col-5 text-end"><b>200.00 ৳</b></div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-7">Tax</div>
+                            <div class="col-5 text-end"><b>0.00 ৳</b></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-7">Shipping Charge</div>
+                            <div class="col-5 text-end"><b>0.00 ৳</b></div>
+                        </div>
+                    </x-layouts.backend.card>
+                </div> --}}
+                {{-- <div class="col-lg-6">
+                    <x-layouts.backend.card class="shadow">
                         <table class="table table-borderless table-sm m-0">
                             <tbody>
                                 <tr class="mb-1">
                                     <td class="w-150px">Subtotal</td>
                                     <td></td>
-                                    <td class="text-end">$3,496.00</td>
-                                </tr>
-                                <tr class="mb-1">
-                                    <td class="w-150px">Discount</td>
-                                    {{-- <td><x-input.text wire:model="discount" class="width" placeholder="" /></td> --}}
-                                    <td></td>
-                                    <td class="text-end">$3,496.00</td>
-                                </tr>
-                                <tr class="mb-1">
-                                    <td>Tax</td>
-                                    <td></td>
-                                    <td class="text-end">$174.80</td>
-                                </tr>
-                                <tr class="mb-1">
-                                    <td class="w-150px">Additional Charge</td>
-                                    <td></td>
-                                    {{-- <td><x-input.text wire:model="additional_charge" class="width" placeholder="" /></td> --}}
-                                    <td class="text-end">$3,496.00</td>
-                                </tr>
-                                <tr>
+                                    <td class="text-end"><b>3,496.00 ৳</b></td>
+                                </tr>--}}
+                                {{-- <tr>
                                     <td colspan="3">
                                         <hr class="mt-2 mb-2">
                                     </td>
-                                </tr>
-                                <tr>
+                                </tr> --}}
+                                {{-- <tr>
                                     <td colspan="2"><b>Total</b></td>
-                                    <td class="text-end text-decoration-underline"><b>$3670.80</b></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2"><b>Total Payment</b></td>
-                                    <td class="text-end  text-decoration-underline"><b>$3670.80</b></td>
+                                    <td class="text-end text-decoration-underline"><b>3670.80 ৳</b></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Due</b></td>
-                                    <td class="text-end  text-decoration-underline"><b>$00.80</b></td>
+                                    <td class="text-end  text-decoration-underline"><b>00.80 ৳</b></td>
                                 </tr>
 
                             </tbody>
                         </table>
                     </x-layouts.backend.card>
-                </div>
+                </div>  --}}
             </div>
         </div>
         <div class="col-xl-4">

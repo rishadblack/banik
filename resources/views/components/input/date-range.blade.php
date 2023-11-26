@@ -1,5 +1,7 @@
 <div class="mt-2">
+    @isset($label)
     <label for="{{$attributes->wire('model')->value}}">{{ $attributes['label'] }}</label>
+    @endisset
     <div wire:ignore>
         <input id="{{$attributes->wire('model')->value}}" @if($attributes['read-only']) readonly @endif type="text" id="{{$attributes->wire('model')->value}}" class="form-control  @error($attributes->wire('model')->value) is-invalid @enderror {{$attributes['class']}}" placeholder="{{ $attributes['placeholder'] }}" >
     </div>

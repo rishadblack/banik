@@ -210,26 +210,23 @@
                 </div>
 
                 <div class="col-lg-7 charges">
-                    <x-layouts.backend.card>
+                    <x-layouts.backend.card class="shadow">
                         <div class="row mb-1">
-                            <div class="col-1"><b>1</b></div>
                             <div class="col-7">Discount</div>
-                            <div class="col-4 text-end"><b>200.00 ৳</b></div>
+                            <div class="col-5 text-end"><b>200.00 ৳</b></div>
                         </div>
                         <div class="row mb-1">
-                            <div class="col-1"><b>2</b></div>
                             <div class="col-7">Tax</div>
-                            <div class="col-4 text-end"><b>0.00 ৳</b></div>
+                            <div class="col-5 text-end"><b>0.00 ৳</b></div>
                         </div>
                         <div class="row">
-                            <div class="col-1"><b>3</b></div>
                             <div class="col-7">Shipping Charge</div>
-                            <div class="col-4 text-end"><b>0.00 ৳</b></div>
+                            <div class="col-5 text-end"><b>0.00 ৳</b></div>
                         </div>
                     </x-layouts.backend.card>
                 </div>
                 <div class="col-lg-5">
-                    <x-layouts.backend.card>
+                    <x-layouts.backend.card class="shadow">
                         <table class="table table-borderless table-sm m-0">
                             <tbody>
                                 <tr class="mb-1">
