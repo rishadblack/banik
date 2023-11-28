@@ -15,7 +15,7 @@
 
 
     <x-layouts.backend.card>
-        <livewire:backend.accounting.datatable.chart-of-account-table />
+        <livewire:backend.setting.accountsetting.datatable.chart-of-account-table />
     </x-layouts.backend.card>
 
     <x-modal id="chartModal">

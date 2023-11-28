@@ -4,6 +4,7 @@ namespace App\Pages\Backend\Order;
 
 use App\Models\Order\Sale;
 use App\Models\Order\Order;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\WithFileUploads;
 use App\Http\Common\Component;
@@ -168,10 +169,17 @@ class SaleDetails extends Component
         }
     }
 
+    #[On('openProductModal')]
+    public function openProductModal($data = [])
+    {
+
+        $this->dispatch('modalOpen', 'productModal');
+    }
+
     public function render()
     {
         $customer = Contact::where('type', 1)->get();
-        $order = Order::Where('type', 1);
+        $order = Order::where('type', 1);
         $payment = OrderItem::all();
         $product = Product::all();
         $transaction = Transaction::all();

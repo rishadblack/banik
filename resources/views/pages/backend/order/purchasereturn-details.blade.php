@@ -3,17 +3,14 @@
         .productSearch {
             border-radius: 18px;
             margin-left: 239px;
-            width: 240px;
+            width: 280px;
             font-size: 11px;
             color: #736d6d;
+            height: 30px !important;
         }
 
-        .btn-info {
-            border-radius: 10px !important;
-            margin-left: 147px;
-            width: 90px;
-            background-color: rgb(54, 129, 242);
-            color: #fff;
+        .ts-control {
+            height: 32px !important;
         }
 
         .table>thead {
@@ -47,6 +44,18 @@
         .width {
             width: 54px;
             height: 21px;
+        }
+
+        .charges .widthtd {
+            margin-bottom: 5px;
+        }
+
+        .sub-width {
+            width: 54px;
+        }
+
+        .stock {
+            width: 80px !important;
         }
 
         .sl {
@@ -89,6 +98,50 @@
             margin-top: 5px;
             font-size: 12px;
         }
+
+        .add-payment {
+            margin-bottom: 20px;
+            border-radius: 7px;
+            margin-right: 22px;
+            margin-top: -12px;
+        }
+
+        b,
+        strong {
+            font-weight: 700;
+        }
+
+        .net-amount {
+            background-color: #cbccdb;
+            padding: 10px;
+            border-radius: 15px;
+            padding: 5px 10px;
+            margin-right: 0px;
+            width: 225px;
+        }
+
+        .net-amount .sm {
+            font-size: 14px;
+            padding-bottom: 5px;
+        }
+
+        .net-amount .value {
+            background-color: #91caf4;
+            padding: 0px 3px 2px;
+            margin-left: 5px;
+            font-weight: 700;
+            font-size: 20px;
+            display: inline;
+            border-radius: 15px;
+            margin-top: 2px !important;
+        }
+
+        .shadow {
+            box-shadow: 0 .1rem 1rem rgba(var(--bs-black-rgb), .15) !important;
+        }
+        .table>thead {
+            background-color: #acacde;
+        }
     </style>
 @endpush
 <div>
@@ -103,7 +156,8 @@
                     <x-layouts.backend.card class="product-item">
                         <x-slot:title>Products (2)</x-slot:title>
                         <x-slot:search>
-                            <x-search.products wire:model='product_id' class="productSearch" placeholder="Search Product Name" />
+                            <x-search.products wire:model='product_id' class="productSearch"
+                                placeholder="Search Product Name" />
                         </x-slot:search>
 
                         <x-slot:button>
@@ -115,32 +169,28 @@
 
                         <table class="table table-striped ">
                             <thead class="text-center">
-                                <th class="sl">SL</th>
-                                <th class="text-center">Product Name</th>
-                                <th class="widthtd">Purchase Price</th>
-                                <th class="widthtd">Quantity</th>
-                                <th class="widthtd">Discount</th>
+                                <th>SL</th>
+                                <th>Product Name</th>
+                                <th class="width text-center">Purchase Price</th>
+                                <th class="width text-center">Quantity</th>
+                                <th class="width text-center">Discount</th>
+                                <th class="text-center">Subtotal</th>
+                                <th class="text-center">Action</th>
                             </thead>
                             <tbody>
                                 <tr class="shadow-none">
                                     <td class="text-center">1</td>
-                                    <td class="d-flex">
-                                        <div
-                                            class="h-65px w-65px d-flex align-items-center position-relative bg-body rounded p-2">
-                                            <img src="{{ asset('backend/assets/img/product/product-2.png') }}" alt
-                                                class="mw-100 mh-100">
-                                            <span
-                                                class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
-                                        </div>
-                                        <div class="ps-6 flex-1 ">
-                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro
-                                                    Max</a>
+
+                                    <td class="d-flex text-left">
+                                        <div class="flex-1 ">
+                                            <div><a href="#" class="text-decoration-none text-body">Suscipit sunt
+                                                    sed provident</a>
                                             </div>
                                             <div class="text-body text-opacity-50 small ">
                                                 SKU: IP14PROMAX-512
                                             </div>
                                             <div class="text-body text-opacity-50 small">
-                                                Stock : 0 , Receive product : 0
+                                                Stock : 0; Delivery product : 0
                                             </div>
                                         </div>
                                     </td>
@@ -148,13 +198,15 @@
                                     <td><x-input.text-order wire:model="quantity" class="widthtd" placeholder="" /></td>
                                     <td class="text-center"><x-input.text-order wire:model="discount" class="widthtd"
                                             placeholder="" />
-                                        <div class="text-body text-opacity-50 small d-flex float-end subtotal">
-                                            Subtotal : 0
-                                        </div>
                                     </td>
+                                    <td class="text-center">
+                                        0
+                                    </td>
+                                    <td> <a wire:click="delete()"
+                                            wire:navigate="true"class="btn btn-danger btn-sm rounded"><i
+                                                class="fa fa-close"></i></a></td>
 
                                 </tr>
-
 
                             </tbody>
                         </table>
@@ -167,53 +219,43 @@
                         <x-input.text wire:model="contact_id" class="form-control-sm" label="Additional Charge"/>
                     </x-layouts.backend.card>
                 </div> --}}
-                <div class="col-lg-5 offset-lg-7">
-                    <x-layouts.backend.card>
-                        {{-- <x-slot:title>Payment Records</x-slot:title> --}}
-                        <x-slot:button>
-                            <a href="#" class="ms-auto text-decoration-none fs-13px text-body text-opacity-50"><i
-                                    class="fab fa-paypal me-1 fa-lg"></i> View paypal records</a>
-                        </x-slot:button>
+                <div class="col-lg-7 charges">
+                    <x-layouts.backend.card class="shadow">
+                        <div class="row mb-1">
+                            <div class="col-7">Discount</div>
+                            <div class="col-5 text-end"><b>200.00 ৳</b></div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-7">Tax</div>
+                            <div class="col-5 text-end"><b>0.00 ৳</b></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-7">Shipping Charge</div>
+                            <div class="col-5 text-end"><b>0.00 ৳</b></div>
+                        </div>
+                    </x-layouts.backend.card>
+                </div>
+                <div class="col-lg-5">
+                    <x-layouts.backend.card class="shadow">
                         <table class="table table-borderless table-sm m-0">
                             <tbody>
                                 <tr class="mb-1">
                                     <td class="w-150px">Subtotal</td>
-                                    <td>3 items</td>
-                                    <td class="text-end">$3,496.00</td>
-                                </tr>
-                                <tr class="mb-1">
-                                    <td class="w-150px">Discount</td>
-                                    {{-- <td><x-input.text wide:model="discount" class="width" placeholder="" /></td> --}}
                                     <td></td>
-                                    <td class="text-end">$3,496.00</td>
+                                    <td class="text-end"><b>3,496.00 ৳</b></td>
                                 </tr>
-                                <tr class="mb-1">
-                                    <td>Tax</td>
-                                    <td>GST 5%</td>
-                                    <td class="text-end">$174.80</td>
-                                </tr>
-                                <tr class="mb-1">
-                                    <td class="w-150px">Additional Charge</td>
-                                    <td></td>
-                                    {{-- <td><x-input.text wide:model="additional_charge" class="width" placeholder="" /></td> --}}
-                                    <td class="text-end">$3,496.00</td>
-                                </tr>
-                                <tr>
+                                {{-- <tr>
                                     <td colspan="3">
                                         <hr class="mt-2 mb-2">
                                     </td>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <td colspan="2"><b>Total</b></td>
-                                    <td class="text-end text-decoration-underline"><b>$3670.80</b></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2"><b>Total Payment</b></td>
-                                    <td class="text-end  text-decoration-underline"><b>$3670.80</b></td>
+                                    <td class="text-end text-decoration-underline"><b>3670.80 ৳</b></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Due</b></td>
-                                    <td class="text-end  text-decoration-underline"><b>$00.80</b></td>
+                                    <td class="text-end  text-decoration-underline"><b>00.80 ৳</b></td>
                                 </tr>
 
                             </tbody>
@@ -247,19 +289,19 @@
             </x-layouts.backend.card>
             <x-layouts.backend.card>
                 <x-slot:title>Supplier</x-slot:title>
-                <x-search.suppliers wire:model="contact_id" label="Search Supplier"/>
+                <x-search.suppliers wire:model="contact_id" label="Search Supplier" />
 
             </x-layouts.backend.card>
             <x-layouts.backend.card>
                 <x-slot:title>Outlet & Warehouse</x-slot:title>
                 <x-input.select wire:model="outlet_id" label="Outlets">
                     @foreach ($outlet as $outlet)
-                    <option value="{{$outlet->id}}">{{$outlet->name}}</option>
+                        <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
                     @endforeach
                 </x-input.select>
                 <x-input.select wire:model="warehouse_id" label="Warehouse">
                     @foreach ($warehouse as $warehouse)
-                    <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
+                        <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
                     @endforeach
                 </x-input.select>
             </x-layouts.backend.card>

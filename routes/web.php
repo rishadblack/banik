@@ -15,6 +15,7 @@ use App\Pages\Backend\Contact\BillerList;
 use App\Pages\Backend\Order\PurchaseList;
 use App\Pages\Backend\Product\VendorList;
 use App\Pages\Backend\Setting\OutletList;
+use App\Http\Controllers\SearchController;
 use App\Pages\Backend\Order\QuotationList;
 use App\Pages\Backend\Product\ProductList;
 use App\Pages\Backend\Product\UnitDetails;
@@ -27,7 +28,6 @@ use App\Pages\Backend\Product\CategoryList;
 use App\Pages\Backend\Contact\BillerDetails;
 use App\Pages\Backend\Order\PurchaseDetails;
 use App\Pages\Backend\Order\SalesReturnList;
-use App\Pages\Backend\Product\VendorDetails;
 use App\Pages\Backend\Setting\OutletDetails;
 use App\Pages\Backend\Setting\WarehouseList;
 use App\Pages\Backend\Order\QuotationDetails;
@@ -35,29 +35,21 @@ use App\Pages\Backend\Product\ProductDetails;
 use App\Pages\Backend\Setting\PaymentDetails;
 use App\Pages\Backend\Contact\CustomerDetails;
 use App\Pages\Backend\Contact\SupplierDetails;
-use App\Pages\Backend\Product\CategoryDetails;
 use App\Pages\Backend\Order\PurchaseReturnList;
 use App\Pages\Backend\Order\SalesreturnDetails;
 use App\Pages\Backend\Setting\WarehouseDetails;
 use App\Pages\Backend\Order\DeliveryChallanList;
-use App\Pages\Backend\Accounting\ReceiptTypeList;
 use App\Pages\Backend\Inventory\StockMovementList;
 use App\Pages\Backend\Order\PurchasereturnDetails;
-use App\Pages\Backend\Setting\MultiplePaymentList;
-use App\Pages\Backend\Accounting\LedgerAccountList;
 use App\Pages\Backend\Order\DeliveryChallanDetails;
-use App\Pages\Backend\Accounting\ChartofAccountList;
-use App\Pages\Backend\Accounting\ReceiptTypeDetails;
 use App\Pages\Backend\Inventory\StockAdjustmentList;
 use App\Pages\Backend\Inventory\StockMovementDetails;
-use App\Pages\Backend\Setting\MultiplePaymentDetails;
-use App\Pages\Backend\Accounting\LedgerAccountDetails;
 use App\Pages\Backend\Accounting\AccountingReceiptList;
-use App\Pages\Backend\Accounting\ChartofAccountDetails;
 use App\Pages\Backend\Inventory\StockAdjustmentDetails;
 use App\Pages\Backend\Accounting\AccountingReceiptDetails;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\SearchController;
+use App\Pages\Backend\Setting\Accountsetting\LedgerAccountList;
+use App\Pages\Backend\Setting\Accountsetting\ChartofAccountList;
 
 Route::get('login', Login::class)->name('login');
 Route::get('register', Register::class)->name('register');
@@ -72,11 +64,14 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth']]
 
     Route::group(['prefix' => 'settings', 'as' => 'setting.'], function () {
         Route::get('outlet-list', OutletList::class)->name('outlet_list');
-        Route::get('outlet-details', OutletDetails::class)->name('outlet_details');
         Route::get('warehouse-list', WarehouseList::class)->name('warehouse_list');
-        Route::get('warehouse-details', WarehouseDetails::class)->name('warehouse_details');
         Route::get('payment-list',PaymentList::class)->name('payment_list');
         Route::get('payment-details',PaymentDetails::class)->name('payment_details');
+
+        Route::group(['prefix' => 'account-settings', 'as' => 'accountsetting.'], function () {
+        Route::get('ledger-account-list', LedgerAccountList::class)->name('ledger_account_list');
+        Route::get('chart-of-account-list', ChartofAccountList::class)->name('chart_account_list');
+        });
     });
     Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
         Route::get('product-list', ProductList::class)->name('product_list');
@@ -119,9 +114,6 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth']]
     });
 
     Route::group(['prefix' => 'accounting', 'as' => 'accounting.'], function () {
-        Route::get('ledger-account-list', LedgerAccountList::class)->name('ledger_account_list');
-        Route::get('chart-of-account-list', ChartofAccountList::class)->name('chart_account_list');
-        Route::get('receipt-type-list', ReceiptTypeList::class)->name('receipt_type_list');
         Route::get('accounting-receipt-list', AccountingReceiptList::class)->name('accounting_receipt_list');
         Route::get('accounting-receipt-details', AccountingReceiptDetails::class)->name('accounting_receipt_details');
 

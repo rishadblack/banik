@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Pages\Backend\Accounting\Datatable;
+namespace App\Pages\Backend\Setting\Accountsetting\Datatable;
 
 
 use App\Http\Common\DataTableComponent;

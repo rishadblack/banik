@@ -15,7 +15,7 @@
             @if (!isset($attributes['no-footer']))
                 <div class="modal-footer">
                     {{ $footer != 'button' ? $footer : '' }}
-                    <x-button.default data-bs-dismiss="modal">Close</x-button.default>
+                    <x-button.default class="btn btn-danger" data-bs-dismiss="modal">Close</x-button.default>
                 </div>
             @endif
         </div>

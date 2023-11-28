@@ -1,64 +1,55 @@
 @push('css')
     <style>
-        .form-check {
-            font-size: 12px;
+        .container {
+            margin-top: 100px;
+            max-width: 22%;
         }
-        .container-login100-form-btn {
-            padding-top: 0px;
+
+        .version {
+            font-size: 11px;
         }
-        .wrap-login100 {
-  padding: 150px 130px 33px 70px;
-}
-* {
-  margin: 0px;
-  padding: 0px;
-  box-sizing: border-box;
-}
     </style>
 @endpush
+
 <div>
-    <x-slot:title>Sign Up</x-slot:title>
-    <div class="wrap-input100 validate-input">
-        <input class="input100" wire:model="name" type="text" placeholder="Name">
-        <span class="focus-input100"></span>
-        <span class="symbol-input100">
-            <i class="fa fa-user" aria-hidden="true"></i>
-        </span>
-    </div>
 
-    <div class="wrap-input100 validate-input">
-        <input class="input100" wire:model="email" type="text" placeholder="Email">
-        <span class="focus-input100"></span>
-        <span class="symbol-input100">
-            <i class="fa fa-envelope" aria-hidden="true"></i>
-        </span>
-    </div>
-
-    <div class="wrap-input100 validate-input">
-        <input class="input100" wire:model="password" type="password" placeholder="Password">
-        <span class="focus-input100"></span>
-        <span class="symbol-input100">
-            <i class="fa fa-lock" aria-hidden="true"></i>
-        </span>
-    </div>
-    <div>
-        <x-input.checkbox wire:model="customCheck1" style="font-size:11px"
-            label="I have read and agree to the Terms of Use and Privacy Policy." require />
-    </div>
-
-    <div class="container-login100-form-btn">
-        <button wire:click="register" wire:target="register" class="login100-form-btn">
-            Register
-        </button>
+    <div class="container text-center">
+        <h4>Banik BMS</h4>
+        <br>
+        <h5>Banik Business Management System</h5>
+        <p class="text-muted version"> Version 1.0.0</p>
+        <br><br>
+        <div>
+            <h6>Welcome Back!</h6>
+            <p>Register to continue</p>
+            <form wire:submit.prevent="register" action="" method="get">
+                <div class="mb-3">
+                    <x-input.text  wire:model="name" placeholder="e.g John Smith" require/>
+                </div>
+                <div class="mb-3">
+                    <x-input.text  wire:model="email" placeholder="username@address.com" require/>
+                    </div>
+                <div class="mb-3">
+                    <x-input.password  wire:model="password" placeholder="Password" require/>
+                </div>
+                <div class="mb-3">
+                    <x-input.checkbox wire:model="customCheck1" label="I have read and agree to the Terms of Use and Privacy Policy." require/>
+                </div>
+                <div class="mb-3">
+                    <x-button.default type="submit" class="btn btn-theme btn-lg fs-15px fw-500 d-block w-100">Sign Up</x-button.default>
+                </div>
+                <div class="text-muted text-center">
+                    Already have an Admin ID? <a href="{{route('login')}}">Sign Up</a>
+                </div>
+            </form>
+        </div>
     </div>
 
 
-    <div class="text-center p-t-136">
-        <a class="txt2" href="{{ route('login') }}">
-            Sign in to your Account
-            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
-        </a>
-    </div>
+
+
+
+
     {{-- <x-slot:title>Sign Up</x-slot:title>
             <x-layouts.backend.card>
             <form wire:submit.prevent="register" action="" method="get">

@@ -4,6 +4,7 @@ namespace App\Pages\Backend\Order;
 
 
 use App\Models\Order\Order;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\WithFileUploads;
 use App\Http\Common\Component;
@@ -173,6 +174,13 @@ class PurchaseDetails extends Component
     public function delete($id){
         Transaction::find($id)->delete();
         $this->dispatch('refreshDatatable');
+    }
+
+    #[On('openProductModal')]
+    public function openProductModal($data = [])
+    {
+
+        $this->dispatch('modalOpen', 'productModal');
     }
 
     public function render()
