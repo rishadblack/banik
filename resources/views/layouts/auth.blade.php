@@ -17,17 +17,34 @@
     {{ config('app.name') }}"
         name="description" content>
     <meta name="author" content="{{ config('app.name') }}" content>
-    <link href="{{ asset('backend/assets/css/vendor.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('backend/assets/css/app.min.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('auth/images/icons/favicon.icon')}}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('auth/vendor/bootstrap/css/bootstrap.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('auth/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('auth/vendor/animate/animate.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('auth/vendor/css-hamburgers/hamburgers.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('auth/vendor/select2/select2.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('auth/css/util.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('auth/css/main.css')}}">
     @livewireStyles
 
     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
         .card {
             border: 1px solid #5f5959;
         }
 
         .form-control {
-            border: var(--bs-border-width) solid #96989c;
+            border: 2px solid #9b98a6;
+            padding: 0.575rem .75rem;
         }
 
         .container-login100 {
@@ -46,17 +63,36 @@
 
 <body>
 
-                        @isset($title)
-                            {{ $title }}
-                        @endisset
+    @isset($title)
+        {{ $title }}
+    @endisset
+    <div class="container text-center">
+        <h4>Banik BMS</h4>
+        <br>
+        <h5>Banik Business Management System</h5>
+        <p class="text-muted version"> Version 1.0.0</p>
+        <br><br>
+        <div>
+            {{ $slot }}
+        </div>
+    </div>
 
-                    {{ $slot }}
 
-
-
-    <script src="{{ asset('backend/assets/js/vendor.min.js') }}?v={{ now() }}" type="text/javascript"></script>
-    <script src="{{ asset('backend/assets/js/app.min.js') }}?v={{ now() }}" type="text/javascript"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('auth/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+    <!--===============================================================================================-->
+        <script src="{{ asset('auth/vendor/bootstrap/js/popper.js')}}"></script>
+        <script src="{{ asset('auth/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+    <!--===============================================================================================-->
+        <script src="{{ asset('auth/vendor/select2/select2.min.js')}}"></script>
+    <!--===============================================================================================-->
+        <script src="{{ asset('auth/vendor/tilt/tilt.jquery.min.js')}}"></script>
+        <script >
+            $('.js-tilt').tilt({
+                scale: 1.1
+            })
+        </script>
+    <!--===============================================================================================-->
+        <script src="{{ asset('auth/js/main.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js" type="text/javascript"></script>
     @livewireScripts
     <x-livewire-alert::scripts />

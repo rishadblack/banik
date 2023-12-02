@@ -290,6 +290,42 @@
                     <x-menu label="Accounting" sub="accounting" icon="fa fa-dollar">
                         <x-menu label="Accounting Receipt" route="backend.accounting.accounting_receipt_list" />
                     </x-menu>
+                    <x-menu label="Reports" sub="reports" icon="fa-file-text" class="accountsetting">
+                        <x-menu label="Order Reports" sub="order_reports">
+                            <x-menu label="Sales Report"
+                                route="backend.reports.order_reports.sales_report" />
+                            <x-menu label="Purchase Report"
+                                route="backend.reports.order_reports.purchase_report" />
+                                <x-menu label="Sales Due Report"
+                                route="backend.reports.order_reports.sales_due_report" />
+                        </x-menu>
+                        <x-menu label="inventory Reports" sub="inventory_reports">
+                            <x-menu label="Stock"
+                                route="backend.reports.inventory_reports.stock_report" />
+                            <x-menu label="Stock Movement"
+                                route="backend.reports.inventory_reports.stock_movement_report" />
+                                <x-menu label="Stock Adjustment"
+                                route="backend.reports.inventory_reports.stock_adjustment_report" />
+                                <x-menu label="Stock Transfer"
+                                route="backend.reports.inventory_reports.stock_transfer_report" />
+                                <x-menu label="Profit Loss"
+                                route="backend.reports.inventory_reports.profit_loss" />
+                        </x-menu>
+                        <x-menu label="accounting Reports" sub="accounting_reports">
+                            <x-menu label="General Ledger"
+                                route="backend.reports.accounting_reports.general_ledger" />
+                            <x-menu label="Customer Ledger"
+                                route="backend.reports.accounting_reports.customer_ledger" />
+                                <x-menu label="Supplier Ledger"
+                                route="backend.reports.accounting_reports.supplier_ledger" />
+                                <x-menu label="Customer Ledger"
+                                route="backend.reports.accounting_reports.customer_ledger" />
+                                <x-menu label="Payable Report"
+                                route="backend.reports.accounting_reports.payable_report" />
+                                <x-menu label="Receivable Report"
+                                route="backend.reports.accounting_reports.receivable_report" />
+                        </x-menu>
+                    </x-menu>
                 </div>
             </div>
 
