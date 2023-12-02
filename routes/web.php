@@ -46,10 +46,24 @@ use App\Pages\Backend\Inventory\StockAdjustmentList;
 use App\Pages\Backend\Inventory\StockMovementDetails;
 use App\Pages\Backend\Accounting\AccountingReceiptList;
 use App\Pages\Backend\Inventory\StockAdjustmentDetails;
+use App\Pages\Backend\Reports\OrderReports\SalesReport;
 use App\Pages\Backend\Accounting\AccountingReceiptDetails;
+use App\Pages\Backend\Reports\InventoryReports\ProfitLoss;
+use App\Pages\Backend\Reports\OrderReports\PurchaseReport;
+use App\Pages\Backend\Reports\OrderReports\SalesDueReport;
+use App\Pages\Backend\Reports\InventoryReports\StockReport;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Pages\Backend\Reports\AccountingReports\BillerLedger;
+use App\Pages\Backend\Reports\AccountingReports\GeneralLedger;
+use App\Pages\Backend\Reports\AccountingReports\PayableReport;
+use App\Pages\Backend\Reports\AccountingReports\CustomerLedger;
+use App\Pages\Backend\Reports\AccountingReports\SupplierLedger;
 use App\Pages\Backend\Setting\Accountsetting\LedgerAccountList;
 use App\Pages\Backend\Setting\Accountsetting\ChartofAccountList;
+use App\Pages\Backend\Reports\AccountingReports\ReceivableReport;
+use App\Pages\Backend\Reports\InventoryReports\StockMovementReport;
+use App\Pages\Backend\Reports\InventoryReports\StockTransferReport;
+use App\Pages\Backend\Reports\InventoryReports\StockAdjustmentReport;
 
 Route::get('login', Login::class)->name('login');
 Route::get('register', Register::class)->name('register');
@@ -65,12 +79,12 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth']]
     Route::group(['prefix' => 'settings', 'as' => 'setting.'], function () {
         Route::get('outlet-list', OutletList::class)->name('outlet_list');
         Route::get('warehouse-list', WarehouseList::class)->name('warehouse_list');
-        Route::get('payment-list',PaymentList::class)->name('payment_list');
-        Route::get('payment-details',PaymentDetails::class)->name('payment_details');
+        Route::get('payment-list', PaymentList::class)->name('payment_list');
+        Route::get('payment-details', PaymentDetails::class)->name('payment_details');
 
         Route::group(['prefix' => 'account-settings', 'as' => 'accountsetting.'], function () {
-        Route::get('ledger-account-list', LedgerAccountList::class)->name('ledger_account_list');
-        Route::get('chart-of-account-list', ChartofAccountList::class)->name('chart_account_list');
+            Route::get('ledger-account-list', LedgerAccountList::class)->name('ledger_account_list');
+            Route::get('chart-of-account-list', ChartofAccountList::class)->name('chart_account_list');
         });
     });
     Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
@@ -102,7 +116,7 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth']]
         Route::get('sales-return-list', SalesReturnList::class)->name('sales_return_list');
         Route::get('sales-return-details', SalesreturnDetails::class)->name('salesreturn_details');
         Route::get('purchase-return-list', PurchaseReturnList::class)->name('purchase_return_list');
-        Route::get('purchase-return-details',PurchasereturnDetails::class)->name('purchasereturn_details');
+        Route::get('purchase-return-details', PurchasereturnDetails::class)->name('purchasereturn_details');
         Route::get('delivery-challan-list', DeliveryChallanList::class)->name('delivery_challan_list');
         Route::get('delivery-challan-details', DeliveryChallanDetails::class)->name('delivery_challan_details');
     });
@@ -116,7 +130,29 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth']]
     Route::group(['prefix' => 'accounting', 'as' => 'accounting.'], function () {
         Route::get('accounting-receipt-list', AccountingReceiptList::class)->name('accounting_receipt_list');
         Route::get('accounting-receipt-details', AccountingReceiptDetails::class)->name('accounting_receipt_details');
+    });
+    Route::group(['prefix' => 'invoice', 'as' => 'reports.'], function () {
+        Route::group(['prefix' => 'order', 'as' => 'order_reports.'], function () {
+            Route::get('sales-report', SalesReport::class)->name('sales_report');
+            Route::get('sales-due-report', SalesDueReport::class)->name('sales_due_report');
+            Route::get('purchase-report', PurchaseReport::class)->name('purchase_report');
 
+        });
+        Route::group(['prefix' => 'inventory', 'as' => 'inventory_reports.'], function () {
+            Route::get('stock', StockReport::class)->name('stock_report');
+            Route::get('stock-adjustment', StockAdjustmentReport::class)->name('stock_adjustment_report');
+            Route::get('stock-movement', StockMovementReport::class)->name('stock_movement_report');
+            Route::get('stock-transfer', StockTransferReport::class)->name('stock_transfer_report');
+            Route::get('profit-loss', ProfitLoss::class)->name('profit_loss');
+        });
+        Route::group(['prefix' => 'accounting', 'as' => 'accounting_reports.'], function () {
+            Route::get('general-ledger', GeneralLedger::class)->name('general_ledger');
+            Route::get('customer-ledger', CustomerLedger::class)->name('customer_ledger');
+            Route::get('supplier-ledger', SupplierLedger::class)->name('supplier_ledger');
+            Route::get('biller-ledger', BillerLedger::class)->name('biller_ledger');
+            Route::get('receivable-report', ReceivableReport::class)->name('receivable_report');
+            Route::get('payable-report', PayableReport::class)->name('payable_report');
+        });
     });
 
 

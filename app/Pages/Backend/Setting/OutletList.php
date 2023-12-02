@@ -9,9 +9,8 @@ use App\Models\Division;
 use Livewire\Attributes\On;
 use App\Http\Common\Component;
 use App\Models\Setting\Outlet;
-use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
-
+use Livewire\Attributes\Layout;
 #[Layout('layouts.backend')]
 class OutletList extends Component
 {
