@@ -8,80 +8,64 @@
         .version {
             font-size: 11px;
         }
+
+        button {
+            outline: none !important;
+            border: none;
+            background: #2bb146;
+            width: 288px;
+            height: 40px;
+            border-radius: 17px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
     </style>
 @endpush
-
 <div>
-
-    <div class="container text-center">
-        <h4>Banik BMS</h4>
-        <br>
-        <h5>Banik Business Management System</h5>
-        <p class="text-muted version"> Version 1.0.0</p>
-        <br><br>
-        <div>
-            <h6>Welcome Back!</h6>
-            <p>Register to continue</p>
-            <form wire:submit.prevent="register" action="" method="get">
-                <div class="mb-3">
-                    <x-input.text  wire:model="name" placeholder="e.g John Smith" require/>
-                </div>
-                <div class="mb-3">
-                    <x-input.text  wire:model="email" placeholder="username@address.com" require/>
-                    </div>
-                <div class="mb-3">
-                    <x-input.password  wire:model="password" placeholder="Password" require/>
-                </div>
-                <div class="mb-3">
-                    <x-input.checkbox wire:model="customCheck1" label="I have read and agree to the Terms of Use and Privacy Policy." require/>
-                </div>
-                <div class="mb-3">
-                    <x-button.default type="submit" class="btn btn-theme btn-lg fs-15px fw-500 d-block w-100">Sign Up</x-button.default>
-                </div>
-                <div class="text-muted text-center">
-                    Already have an Admin ID? <a href="{{route('login')}}">Sign Up</a>
-                </div>
-            </form>
-        </div>
+    <div class="mb-2">
+        <h6>Welcome Back!</h6>
+        <p>Login to continue</p>
     </div>
+    <form wire:submit.prevent="register" action="" method="get">
+        <div class="wrap-input100 validate-input" data-validate = "Valid name is required: John Seg">
+            <input class="input100" wire:model="name" type="text" placeholder="Name">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+                <i class="fa fa-user" aria-hidden="true"></i>
+            </span>
+        </div>
+        <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+            <input class="input100" wire:model="email" type="text" placeholder="Email">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </span>
+        </div>
+        <div class="wrap-input100 validate-input" data-validate = "Password is required">
+            <input class="input100" wire:model="password" type="password" placeholder="Password">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+                <i class="fa fa-lock" aria-hidden="true"></i>
+            </span>
+        </div>
+        {{-- <div class="mb-3">
+        <x-input.text wire:model="email" placeholder="Enter Username" />
+    </div> --}}
+        {{-- <div class="mb-3">
+            <x-input.password wire:model="password" placeholder="Enter Password" />
+        </div> --}}
+        <div class="mb-3 d-flex justify-space-between">
+            <x-input.checkbox wire:model="customCheck1" label="Remember me" require />
+            <a href="#" class="ms-auto text-muted">Forgot password?</a>
+        </div>
+        <button type="submit">Sign Up</button>
+        <div class="text-center text-muted">
+            Already have an account? <a href="{{ route('login') }}">Sign in</a>.
+        </div>
+
+    </form>
 
 
 
 
-
-
-    {{-- <x-slot:title>Sign Up</x-slot:title>
-            <x-layouts.backend.card>
-            <form wire:submit.prevent="register" action="" method="get">
-                <div class="mb-3">
-                    <x-input.text  wire:model="name" label="Name" placeholder="e.g John Smith" require/>
-                </div>
-                <div class="mb-3">
-                    <x-input.text  wire:model="email" label="Email" placeholder="username@address.com" require/>
-                    </div>
-                <div class="mb-3">
-                    <x-input.password  wire:model="password" label="Password" require/>
-                </div>
-
-                <div class="mb-3">
-                    <x-input.select wire:model="country" label="Country" :options="config('status.country')" require/>
-                </div>
-                <div class="mb-3">
-                    <x-input.select wire:model="gender" label="Gender" :options="config('status.gender')" require/>
-
-                    </div>
-                <div class="mb-3">
-                    <x-input.date wire:model="date" label="Date Of Birth" require/>
-                </div>
-                <div class="mb-3">
-                    <x-input.checkbox wire:model="customCheck1" label="I have read and agree to the Terms of Use and Privacy Policy." require/>
-                </div>
-                <div class="mb-3">
-                    <x-button.default type="submit" class="btn btn-theme btn-lg fs-15px fw-500 d-block w-100">Sign Up</x-button.default>
-                </div>
-                <div class="text-muted text-center">
-                    Already have an Admin ID? <a href="{{route('login')}}">Sign In</a>
-                </div>
-            </form>
-        </x-layouts.backend.card> --}}
 </div>

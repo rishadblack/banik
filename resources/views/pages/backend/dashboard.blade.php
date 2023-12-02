@@ -69,7 +69,9 @@
 @endpush
 
 <div>
-    <x-slot:title>Dashboard</x-slot:title>
+    <div class="text-center">
+        <x-slot:title>Banik Business Management System</x-slot:title>
+    </div>
     <div class="row">
         <div class="col-4">
             <x-input.select wire:model="branch_id" label="Branch">
