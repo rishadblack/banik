@@ -95,49 +95,49 @@
         <h4>Welcome {{ auth()->user()->name }}</h4>
         <div class="row">
             <div class="col-3">
-                <x-layouts.backend.card>
+                <x-layouts.backend.card class="shadow">
                     <p>Total Sales</p>
                     <h4><i class="fa-solid fa-coins"></i>0.00 ৳</h4>
                 </x-layouts.backend.card>
             </div>
             <div class="col-3">
-                <x-layouts.backend.card>
+                <x-layouts.backend.card class="shadow">
                     <p>Total Collection</p>
                     <h4><i class="fa fa-usd"></i>0.00 ৳</h4>
                 </x-layouts.backend.card>
             </div>
             <div class="col-3">
-                <x-layouts.backend.card>
+                <x-layouts.backend.card class="shadow">
                     <p>Total Payment</p>
                     <h4><i class="fa-solid fa-money-check-dollar"></i>0.00 ৳</h4>
                 </x-layouts.backend.card>
             </div>
             <div class="col-3">
-                <x-layouts.backend.card>
+                <x-layouts.backend.card class="shadow">
                     <p>Cash in Hand</p>
                     <h4><i class="fa-solid fa-sack-dollar"></i>0.00 ৳</h4>
                 </x-layouts.backend.card>
             </div>
             <div class="col-3">
-                <x-layouts.backend.card>
+                <x-layouts.backend.card class="shadow">
                     <p>Total Receivable</p>
                     <h4><i class="fa-solid fa-money-bill-trend-up"></i>0.00 ৳</h4>
                 </x-layouts.backend.card>
             </div>
             <div class="col-3">
-                <x-layouts.backend.card>
+                <x-layouts.backend.card class="shadow">
                     <p>Total Payable</p>
                     <h4><i class="fa-solid fa-money-bill-transfer"></i>0.00 ৳</h4>
                 </x-layouts.backend.card>
             </div>
             <div class="col-3">
-                <x-layouts.backend.card>
+                <x-layouts.backend.card class="shadow">
                     <p>Current Stock</p>
                     <h4><i class="fa-solid fa-cubes"></i>0.00 ৳</h4>
                 </x-layouts.backend.card>
             </div>
             <div class="col-3">
-                <x-layouts.backend.card>
+                <x-layouts.backend.card class="shadow">
                     <p>Damage Stock</p>
                     <h4><i class="fa-solid fa-layer-group"></i>0.00 ৳</h4>
                 </x-layouts.backend.card>
