@@ -15,10 +15,11 @@ use App\Models\Accounting\Transaction;
 #[Layout('layouts.backend')]
 class SaleList extends Component
 {
-    public $challan_id;
+    public $dalivery_id;
     public $payment_id;
 
     public $vehicle_type;
+    public $search_product;
     public $person_name;
     public $code;
     public $mobile;
@@ -32,6 +33,8 @@ class SaleList extends Component
     public $charge;
     public $txn_date;
     public $status = 1;
+
+
 
     #[On('openDeliveryModal')]
     public function openDeliveryModal($data = [])
@@ -52,8 +55,8 @@ class SaleList extends Component
             'code' => 'required|string',
         ]);
 
-        $DeliveryChallan = Delivery::findOrNew($this->challan_id);
-        if ($this->challan_id) {
+        $DeliveryChallan = Delivery::findOrNew($this->dalivery_id);
+        if ($this->dalivery_id) {
             $message = 'Delivery Challan Updated Successfully!';
         } else {
             $message = 'Delivery Challan Added Successfully!';
@@ -79,7 +82,7 @@ class SaleList extends Component
         if ($storeType == 'new') {
             $this->challanReset();
         } else {
-            $this->challan_id = $DeliveryChallan->id;
+            $this->dalivery_id = $DeliveryChallan->id;
         }
         $this->alert('success', $message);
         $this->dispatch('refreshDatatable');

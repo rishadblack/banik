@@ -153,7 +153,7 @@
                     <x-layouts.backend.card class="product-item">
                         <x-slot:title>Products (2)</x-slot:title>
                         <x-slot:search>
-                            <x-search.products wire:model='product_id' class="productSearch"
+                            <x-search.products wire:model.blur='search_product' class="productSearch"
                                 placeholder="Search Product Name" />
                         </x-slot:search>
 

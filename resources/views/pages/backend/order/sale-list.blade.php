@@ -103,10 +103,9 @@
         <div class="row">
             <div class="col-2"></div>
             <div class="col-8 product d-flex mt-2 mb-2">
-                <x-search.products wire:model='product_id' class="productSearch" placeholder="Search Product Name" />
+                <x-search.products wire:model.live='search_product' class="productSearch" placeholder="Search Product Name" />
                 <x-button.default type="button" class="btn btn-sm rounded btn-info" x-data
-                    @click="$dispatch('openProductModal')">Add
-                    Product</x-button.default>
+                    @click="$dispatch('openProductModal')">Add Product</x-button.default>
             </div>
             <div class="col-2"></div>
         </div>
