@@ -26,6 +26,8 @@ class SaleDetails extends Component
     #[Url]
     public $sale_id;
 
+    public $search_product;
+
     public $contact_id;
     public $product_id;
     public $ref;
@@ -49,6 +51,13 @@ class SaleDetails extends Component
     public $delivery_charge;
     public $txn_date;
     public $charge;
+
+    public $item_rows = [];
+
+    public function updatedSearchProduct($value)
+    {
+        dd($value);
+    }
 
     public function storeSale($storeType = null)
     {

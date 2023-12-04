@@ -12,7 +12,7 @@
         button {
             outline: none !important;
             border: none;
-            background: #2bb146;
+            background: #518bfc;
             width: 288px;
             height: 40px;
             border-radius: 17px;
@@ -30,11 +30,12 @@
     </div>
     <form wire:submit.prevent="login" wire:target="login" method="get">
         <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-            <input class="input100" wire:model="email" type="text" placeholder="Email">
-            <span class="focus-input100"></span>
             <span class="symbol-input100">
                 <i class="fa fa-envelope" aria-hidden="true"></i>
             </span>
+            <input class="input100" wire:model="email" type="text" placeholder="Email">
+            <span class="focus-input100"></span>
+
         </div>
         <div class="wrap-input100 validate-input" data-validate = "Password is required">
             <input class="input100" wire:model="password" type="password" placeholder="Password">
