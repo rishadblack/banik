@@ -41,7 +41,7 @@
     }
 
     .width {
-        width: 54px;
+        width: 110px;
         height: 21px;
     }
 
@@ -155,73 +155,69 @@
                     <x-layouts.backend.card class="product-item">
                         <x-slot:title>Products (2)</x-slot:title>
                         <x-slot:search>
-                            <x-search.products wire:model='product_id' class="productSearch" placeholder="Search Product Name" />
+                            <x-search.products wire:model.live='search_product' class="productSearch" placeholder="Search Product Name" />
                         </x-slot:search>
 
                         <x-slot:button>
-                            <x-button.default type="button" class="btn btn-sm rounded btn-info"
-                               data-bs-toggle="modal" data-bs-target="#openProductAddModal">Add
+                            <x-button.default type="button" class="btn btn-sm rounded btn-info" x-data @click="$dispatch('openProductModal')">Add
                                 Product</x-button.default>
                         </x-slot:button>
 
 
-                        <table class="table table-striped table-hover">
+                        <table class="table table-striped ">
                             <thead>
                                 <th>SL</th>
                                 <th>Product Name</th>
-                                <th class="width text-center">Sale Price</th>
+                                <th class="width text-center">Purchase Price</th>
                                 <th class="width text-center">Quantity</th>
                                 <th class="width text-center">Discount</th>
                                 <th class="text-center">Subtotal</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-end">Action</th>
                             </thead>
                             <tbody>
-                                <tr class="shadow-none">
-                                    <td class="text-center">1</td>
+                                @forelse ($item_rows as $item_row)
+
+                                <tr class="shadow-none" wire:key="product-{{$item_row}}">
+                                    <td class="text-center">{{ $loop->iteration}}</td>
 
                                     <td class="d-flex text-left">
                                         <div class="flex-1 ">
-                                            <div><a href="#" class="text-decoration-none text-body">Suscipit sunt
-                                                    sed provident</a>
+                                            <div><a href="#" class="text-decoration-none text-body">{{ $item_name[$item_row]}}</a>
                                             </div>
                                             <div class="text-body text-opacity-50 small ">
-                                                SKU: IP14PROMAX-512
+                                                SKU: {{ $item_code[$item_row]}}
                                             </div>
                                             <div class="text-body text-opacity-50 small">
                                                 Stock : 0; Delivery product : 0
                                             </div>
                                         </div>
                                     </td>
-                                    <td><x-input.text-order wire:model="amount" class="widthtd" placeholder="" /></td>
-                                    <td><x-input.text-order wire:model="quantity" class="widthtd" placeholder="" /></td>
-                                    <td class="text-center"><x-input.text-order wire:model="discount" class="widthtd"
-                                            placeholder="" />
+                                    <td><x-input.text-order wire:model.live.debounce.500ms="item_price.{{$item_row}}" class="widthtd" placeholder="" /></td>
+                                    <td><x-input.text-order wire:model.live.debounce.500ms="item_quantity.{{$item_row}}" class="widthtd" placeholder="" /></td>
+                                    <td class="text-center"><x-input.text-order wire:model.live.debounce.500ms="item_discount.{{$item_row}}" class="widthtd" placeholder="" />
                                     </td>
                                     <td class="text-center">
-                                        0
+                                        {{ numberFormat($item_subtotal[$item_row], true) }}
                                     </td>
-                                    <td> <a wire:click="delete()"
-                                            wire:navigate="true"class="btn btn-danger btn-sm rounded"><i
-                                                class="fa fa-close"></i></a></td>
+                                    <td> <button wire:click="removeItem('{{ $item_row }}')" class="btn btn-danger btn-sm rounded" style="float:right"><i class="fa fa-close"></i></button></td>
 
                                 </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">No Data Found</td>
+                                    </tr>
+                                @endforelse
 
                             </tbody>
                         </table>
                     </x-layouts.backend.card>
                 </div>
-                {{-- <div class="col-7">
-                    <x-layouts.backend.card>
-                        <x-slot:title>Supplier</x-slot:title>
-                        <x-input.text wire:model="contact_id" class="form-control-sm" label="Discount"/>
-                        <x-input.text wire:model="contact_id" class="form-control-sm" label="Additional Charge"/>
-                    </x-layouts.backend.card>
-                </div> --}}
+
                 <div class="col-lg-7 charges">
                     <x-layouts.backend.card class="shadow">
                         <div class="row mb-1">
                             <div class="col-7">Discount</div>
-                            <div class="col-5 text-end"><b>200.00 ৳</b></div>
+                            <div class="col-5 text-end"><b>{{numberFormat($discount,true)}}</b></div>
                         </div>
                         <div class="row mb-1">
                             <div class="col-7">Tax</div>
@@ -240,7 +236,7 @@
                                 <tr class="mb-1">
                                     <td class="w-150px">Subtotal</td>
                                     <td></td>
-                                    <td class="text-end"><b>3,496.00 ৳</b></td>
+                                    <td class="text-end"><b>{{numberFormat($subtotal,true)}}</b></td>
                                 </tr>
                                 {{-- <tr>
                                     <td colspan="3">
@@ -249,7 +245,7 @@
                                 </tr> --}}
                                 <tr>
                                     <td colspan="2"><b>Total</b></td>
-                                    <td class="text-end text-decoration-underline"><b>3670.80 ৳</b></td>
+                                    <td class="text-end text-decoration-underline"><b>{{numberFormat($net_amount,true)}}</b></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Due</b></td>

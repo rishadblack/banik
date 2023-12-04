@@ -268,10 +268,7 @@ class PurchaseDetails extends Component
         }
     }
 
-    public function delete($id){
-        Transaction::find($id)->delete();
-        $this->dispatch('refreshDatatable');
-    }
+
 
     #[On('openProductModal')]
     public function openProductModal($data = [])

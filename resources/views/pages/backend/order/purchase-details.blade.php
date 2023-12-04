@@ -41,7 +41,7 @@
     }
 
     .width {
-        width: 54px;
+        width: 110px;
         height: 21px;
     }
 
@@ -172,7 +172,7 @@
                                 <th class="width text-center">Quantity</th>
                                 <th class="width text-center">Discount</th>
                                 <th class="text-center">Subtotal</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-end">Action</th>
                             </thead>
                             <tbody>
                                 @forelse ($item_rows as $item_row)
@@ -199,7 +199,7 @@
                                     <td class="text-center">
                                         {{ numberFormat($item_subtotal[$item_row], true) }}
                                     </td>
-                                    <td> <button wire:click="removeItem('{{ $item_row }}')" class="btn btn-danger btn-sm rounded"><i class="fa fa-close"></i></button></td>
+                                    <td> <button wire:click="removeItem('{{ $item_row }}')" class="btn btn-danger btn-sm rounded" style="float:right"><i class="fa fa-close"></i></button></td>
 
                                 </tr>
                                 @empty
@@ -245,7 +245,7 @@
                                 </tr> --}}
                                 <tr>
                                     <td colspan="2"><b>Total</b></td>
-                                    <td class="text-end text-decoration-underline"><b>{{numberFormat($net_amount,true)}} ৳</b></td>
+                                    <td class="text-end text-decoration-underline"><b>{{numberFormat($net_amount,true)}}</b></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Due</b></td>

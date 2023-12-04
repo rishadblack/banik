@@ -23,6 +23,8 @@ class PurchasereturnDetails extends Component
     #[Url]
     public $purchase_id;
 
+    public $search_product;
+
     public $purchase_code;
     public $contact_id;
     public $product_id;
@@ -45,17 +47,113 @@ class PurchasereturnDetails extends Component
     public $additional_charge;
     public $paid_amount;
     public $code;
+    public $net_amount;
+
+    public $item_rows = [];
+    public $item_product_id = [];
+    public $item_name = [];
+    public $item_code = [];
+    public $item_price = [];
+    public $item_quantity = [];
+    public $item_discount = [];
+    public $item_subtotal = [];
+
+    public function updatedSearchProduct($value)
+    {
+        if (empty($value)) {
+            return true;
+        }
+
+        $Product = Product::find($value);
+
+        $item_rows = collect($this->item_rows);
+
+        if ($item_rows->contains($Product->id)) {
+            $this->alert('error', 'Product Already Added!');
+            return true;
+        }
+
+        $item_rows->push($Product->id);
+        $this->item_rows = $item_rows;
+
+        $this->item_product_id[$Product->id] = $Product->id;
+        $this->item_name[$Product->id] = $Product->name;
+        $this->item_code[$Product->id] = $Product->code;
+        $this->item_price[$Product->id] = $Product->net_purchase_price;
+        $this->item_quantity[$Product->id] = 1;
+        $this->item_discount[$Product->id] = 0;
+        $this->item_subtotal[$Product->id] = $Product->net_purchase_price;
+
+        $this->reset('search_product');
+        $this->dispatch('search_product_reset');
+    }
+
+    public function updatedItemPrice($value, $productId)
+    {
+        $this->ItemRowsUpdate($productId);
+    }
+
+    public function updatedItemQuantity($value, $productId)
+    {
+        $this->ItemRowsUpdate($productId);
+    }
+
+    public function updatedItemDiscount($value, $productId)
+    {
+        $this->ItemRowsUpdate($productId);
+    }
+
+    public function ItemRowsUpdate($productId)
+    {
+        $item_price = isset($this->item_price[$productId]) && $this->item_price[$productId] > 0 ? $this->item_price[$productId] : 0;
+        $item_quantity = isset($this->item_quantity[$productId]) && $this->item_quantity[$productId] > 0 ? $this->item_quantity[$productId] : 1;
+        $item_discount = isset($this->item_discount[$productId]) && $this->item_discount[$productId] > 0 ? $this->item_discount[$productId] : 0;
+
+        $this->item_subtotal[$productId] = ($item_price * $item_quantity) - $item_discount;
+
+        $this->rowsUpdate();
+    }
+
+    public function rowsUpdate()
+    {
+        $item_subtotal = collect($this->item_subtotal)->sum();
+        $item_quantity = collect($this->item_quantity)->sum();
+        $item_discount = collect($this->item_discount)->sum();
+
+        $this->subtotal = $item_subtotal;
+        $this->net_amount = $item_subtotal;
+        $this->discount = $item_discount;
+    }
+
+    public function removeItem($productId)
+    {
+        $item_rows = collect($this->item_rows);
+        $item_rows = $item_rows->filter(function ($value, $key) use ($productId) {
+            return $value != $productId;
+        });
+        $this->item_rows = $item_rows;
+
+        unset($this->item_product_id[$productId]);
+        unset($this->item_name[$productId]);
+        unset($this->item_code[$productId]);
+        unset($this->item_price[$productId]);
+        unset($this->item_quantity[$productId]);
+        unset($this->item_discount[$productId]);
+        unset($this->item_subtotal[$productId]);
+
+        $this->rowsUpdate();
+    }
 
     public function storePurchase($storeType = null)
     {
 
         $this->validate([
             'code' => 'required|string',
-
+            'item_quantity' => 'required|min:1',
         ]);
 
         $Purchase = Order::findOrNew($this->purchase_id);
-        if($this->purchase_id) {
+        if ($this->purchase_id) {
             $message = 'Purchase Return Updated Successfully!';
         } else {
             $message = 'Purchase Return Added Successfully!';
@@ -73,22 +171,22 @@ class PurchasereturnDetails extends Component
         $Purchase->discount = $this->discount ?? 0;
         $Purchase->save();
 
-        $PurchaseInfo = $Purchase->OrderItem()->firstOrNew();
-        $PurchaseInfo->user_id =  $Purchase->user_id;
-        $PurchaseInfo->order_id = $Purchase->id;
-        $PurchaseInfo->product_id = $this->product_id;
-        $PurchaseInfo->name = $this->name??0;
-        $PurchaseInfo->amount = $this->amount??0;
-        $PurchaseInfo->quantity = $this->quantity??0;
-        $PurchaseInfo->discount_amount = $this->discount_amount??0;
-        $PurchaseInfo->subtotal = $this->subtotal??0;
-        $PurchaseInfo->received_quantity = $this->received_quantity??0;
-        $PurchaseInfo->save();
-
-        if($storeType == 'new'){
+        foreach ($this->item_rows as $key => $value) {
+            $PurchaseInfo = $Purchase->OrderItem()->where('product_id', $this->item_product_id[$value])->firstOrNew(['order_id' => $Purchase->id, 'product_id' => $this->item_product_id[$value]]);
+            $PurchaseInfo->user_id =  $Purchase->user_id;
+            $PurchaseInfo->order_id = $Purchase->id;
+            $PurchaseInfo->product_id = $this->product_id;
+            $PurchaseInfo->name = $this->item_name[$value];
+            $PurchaseInfo->amount = $this->item_price[$value];
+            $PurchaseInfo->quantity = $this->item_quantity[$value];
+            $PurchaseInfo->discount_amount = $this->item_discount[$value];
+            $PurchaseInfo->subtotal = $this->item_subtotal[$value];
+            $PurchaseInfo->save();
+        }
+        if ($storeType == 'new') {
             $this->purchaseReset();
-        }else{
-            $this->purchase_id = $Purchase-> id;
+        } else {
+            $this->purchase_id = $Purchase->id;
         }
 
 
@@ -99,12 +197,12 @@ class PurchasereturnDetails extends Component
     {
         $this->reset();
         $this->resetValidation();
-       $this->code = str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
+        $this->code = str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()
     {
-        if($this->purchase_id) {
+        if ($this->purchase_id) {
             $Purchase = Order::find($this->purchase_id);
             $this->code = $Purchase->code;
             $this->ref = $Purchase->ref;
@@ -112,19 +210,19 @@ class PurchasereturnDetails extends Component
             $this->outlet_id = $Purchase->outlet_id;
             $this->contact_id = $Purchase->contact_id;
             $this->payment_status = $Purchase->payment_status;
-            $this->payment_date = $Purchase->payment_date??0;
-            $this->payment_method_id = $Purchase->payment_method_id ??0;
-            $this->delivery_status = $Purchase->delivery_status??0;
-            $this->discount = $Purchase->discount??0;
+            $this->payment_date = $Purchase->payment_date ?? 0;
+            $this->payment_method_id = $Purchase->payment_method_id ?? 0;
+            $this->delivery_status = $Purchase->delivery_status ?? 0;
+            $this->discount = $Purchase->discount ?? 0;
 
             $this->product_id = $Purchase->OrderItem->product_id;
             $this->name = $Purchase->OrderItem->name;
             $this->amount = $Purchase->OrderItem->amount;
             $this->quantity = $Purchase->OrderItem->quantity;
             $this->received_quantity = $Purchase->OrderItem->received_quantity ?? 0;
-            $this->subtotal = $Purchase->OrderItem->subtotal ??0;
+            $this->subtotal = $Purchase->OrderItem->subtotal ?? 0;
             $this->discount_amount = $Purchase->OrderItem->discount_amount ?? 0;
-        }else{
+        } else {
             $this->purchaseReset();
         }
     }
@@ -132,11 +230,11 @@ class PurchasereturnDetails extends Component
     public function render()
     {
         $supplier = Contact::where('type', 2)->get();
-        $order = Order::where('type',4)->get();
+        $order = Order::where('type', 4)->get();
         $payment = OrderItem::all();
-        $product=Product::all();
+        $product = Product::all();
         $outlet = Outlet::all();
         $warehouse = Warehouse::all();
-        return view('pages.backend.order.purchasereturn-details',compact('payment','supplier','order','outlet','warehouse'));
+        return view('pages.backend.order.purchasereturn-details', compact('payment', 'supplier', 'order', 'outlet', 'warehouse'));
     }
 }
