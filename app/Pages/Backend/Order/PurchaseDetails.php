@@ -6,19 +6,15 @@ namespace App\Pages\Backend\Order;
 use App\Models\Order\Order;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
-use Livewire\WithFileUploads;
 use App\Http\Common\Component;
-use App\Models\Order\Purchase;
 use App\Models\Setting\Outlet;
 use App\Models\Contact\Contact;
 use App\Models\Order\OrderItem;
 use App\Models\Product\Product;
 use Livewire\Attributes\Layout;
 use App\Models\Setting\Warehouse;
-use App\Models\Contact\ContactInfo;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Accounting\Transaction;
-use Illuminate\Support\Facades\Storage;
 
 
 #[Layout('layouts.backend')]
