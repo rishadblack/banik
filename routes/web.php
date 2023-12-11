@@ -20,6 +20,7 @@ use App\Pages\Backend\Order\QuotationList;
 use App\Pages\Backend\Product\ProductList;
 use App\Pages\Backend\Product\UnitDetails;
 use App\Pages\Backend\Setting\PaymentList;
+use App\Http\Controllers\InvoiceController;
 use App\Pages\Backend\Contact\CustomerList;
 use App\Pages\Backend\Contact\GroupDetails;
 use App\Pages\Backend\Contact\StuffDetails;
@@ -68,6 +69,11 @@ use App\Pages\Backend\Reports\InventoryReports\StockAdjustmentReport;
 Route::get('login', Login::class)->name('login');
 Route::get('register', Register::class)->name('register');
 Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+
+Route::group(['prefix' => 'invoice', 'as' => 'invoice.'], function () {
+    Route::get('sales/{id}', [InvoiceController::class, 'salesInvoice'])->name('sales');
+});
 
 Route::permanentRedirect('/', 'admin');
 
@@ -136,7 +142,6 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth']]
             Route::get('sales-report', SalesReport::class)->name('sales_report');
             Route::get('sales-due-report', SalesDueReport::class)->name('sales_due_report');
             Route::get('purchase-report', PurchaseReport::class)->name('purchase_report');
-
         });
         Route::group(['prefix' => 'inventory', 'as' => 'inventory_reports.'], function () {
             Route::get('stock', StockReport::class)->name('stock_report');

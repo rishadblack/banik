@@ -165,17 +165,20 @@ class QuotationDetails extends Component
         $Quotation->sales_person = $this->sales_person;
         $Quotation->save();
 
-        $QuotationInfo = $Quotation->OrderItem()->firstOrNew();
-        $QuotationInfo->user_id =  $Quotation->user_id;
-        $QuotationInfo->order_id = $Quotation->id;
-        $QuotationInfo->product_id = $this->product_id;
-        $QuotationInfo->name = $this->name??0;
-        $QuotationInfo->amount = $this->amount??0;
-        $QuotationInfo->quantity = $this->quantity??0;
-        $QuotationInfo->discount_amount = $this->discount_amount??0;
-        $QuotationInfo->subtotal = $this->subtotal??0;
-        $QuotationInfo->received_quantity = $this->received_quantity??0;
-        $QuotationInfo->save();
+        foreach ($this->item_rows as $key => $value) {
+            $QuotationInfo = $Quotation->OrderItem()->where('product_id',$this->item_product_id[$value])->firstOrNew(['order_id' => $Quotation->id, 'product_id' => $this->item_product_id[$value]]);
+            $QuotationInfo->user_id = $Quotation->user_id;
+            $QuotationInfo->order_id = $Quotation->id;
+            $QuotationInfo->product_id = $value;
+            $QuotationInfo->name = $this->item_name[$value];
+            $QuotationInfo->amount = $this->item_price[$value];
+            $QuotationInfo->quantity = $this->item_quantity[$value];
+            $QuotationInfo->discount_amount = $this->item_discount[$value];
+            $QuotationInfo->subtotal = $this->item_subtotal[$value];
+            $QuotationInfo->save();
+        }
+
+
 
         if($storeType == 'new'){
             $this->quotationReset();

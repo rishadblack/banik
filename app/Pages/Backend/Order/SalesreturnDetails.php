@@ -170,17 +170,18 @@ class SalesreturnDetails extends Component
         $Sale->sales_person = $this->sales_person??0;
         $Sale->save();
 
-        $SaleInfo = $Sale->OrderItem()->firstOrNew();
-        $SaleInfo->user_id =  $Sale->user_id;
-        $SaleInfo->order_id = $Sale->id;
-        $SaleInfo->product_id = $this->product_id;
-        $SaleInfo->name = $this->name??0;
-        $SaleInfo->amount = $this->amount??0;
-        $SaleInfo->quantity = $this->quantity??0;
-        $SaleInfo->discount_amount = $this->discount_amount??0;
-        $SaleInfo->subtotal = $this->subtotal??0;
-        $SaleInfo->received_quantity = $this->received_quantity??0;
-        $SaleInfo->save();
+        foreach ($this->item_rows as $key => $value) {
+            $SaleInfo = $Sale->OrderItem()->where('product_id',$this->item_product_id[$value])->firstOrNew(['order_id' => $Sale->id, 'product_id' => $this->item_product_id[$value]]);
+            $SaleInfo->user_id = $Sale->user_id;
+            $SaleInfo->order_id = $Sale->id;
+            $SaleInfo->product_id = $value;
+            $SaleInfo->name = $this->item_name[$value];
+            $SaleInfo->amount = $this->item_price[$value];
+            $SaleInfo->quantity = $this->item_quantity[$value];
+            $SaleInfo->discount_amount = $this->item_discount[$value];
+            $SaleInfo->subtotal = $this->item_subtotal[$value];
+            $SaleInfo->save();
+        }
 
         if($storeType == 'new'){
             $this->salesReset();
