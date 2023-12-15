@@ -5,6 +5,7 @@ namespace App\Pages\Backend\Inventory;
 
 use Livewire\Attributes\Url;
 use App\Http\Common\Component;
+use App\Models\Product\Product;
 use Livewire\Attributes\Layout;
 use App\Models\Setting\Warehouse;
 use Illuminate\Support\Facades\Auth;
@@ -18,11 +19,82 @@ class StockMovementDetails extends Component
 {
     #[Url]
     public $stocktransfer_id;
+
+    public $search_product;
+
     public $code;
     public $warehouse_id;
     public $to_warehouse_id;
     public $ref;
     public $quantity;
+
+    public $item_rows = [];
+    public $item_product_id = [];
+    public $item_name = [];
+    public $item_code = [];
+    public $item_quantity = [];
+
+    public function updatedSearchProduct($value)
+    {
+        if (empty($value)) {
+            return true;
+        }
+
+        $Product = Product::find($value);
+
+        $item_rows = collect($this->item_rows);
+
+        if ($item_rows->contains($Product->id)) {
+            $this->alert('error', 'Product Already Added!');
+            return true;
+        }
+
+        $item_rows->push($Product->id);
+        $this->item_rows = $item_rows;
+
+        $this->item_product_id[$Product->id] = $Product->id;
+        $this->item_name[$Product->id] = $Product->name;
+        $this->item_code[$Product->id] = $Product->code;
+        $this->item_quantity[$Product->id] = 1;
+
+        $this->reset('search_product');
+        $this->dispatch('search_product_reset');
+    }
+
+    public function updatedItemQuantity($value, $productId)
+    {
+        $this->ItemRowsUpdate($productId);
+    }
+
+
+    public function ItemRowsUpdate($productId)
+    {
+
+        $item_quantity = isset($this->item_quantity[$productId]) && $this->item_quantity[$productId] > 0 ? $this->item_quantity[$productId] : 1;
+
+        $this->rowsUpdate();
+    }
+
+    public function rowsUpdate()
+    {
+        $item_quantity = collect($this->item_quantity)->sum();
+    }
+
+    public function removeItem($productId)
+    {
+        $item_rows = collect($this->item_rows);
+        $item_rows = $item_rows->filter(function ($value, $key) use ($productId) {
+            return $value != $productId;
+        });
+        $this->item_rows = $item_rows;
+
+        unset($this->item_product_id[$productId]);
+        unset($this->item_name[$productId]);
+        unset($this->item_code[$productId]);
+        unset($this->item_quantity[$productId]);
+
+        $this->rowsUpdate();
+    }
 
     public function storeStockTransfer($storeType = null)
     {
@@ -46,11 +118,15 @@ class StockMovementDetails extends Component
         $Transfer->ref = $this->ref;
         $Transfer->save();
 
-        $TransferItem =  $Transfer-> StockReceiptItem()->firstOrNew();
-        $TransferItem->user_id = $Transfer->user_id;
-        $TransferItem->stock_receipt_id = $Transfer->id;
-        $TransferItem->quantity = $this->quantity;
-        $TransferItem->save();
+        foreach ($this->item_rows as $key => $value) {
+            $TransferItem = $Transfer->StockReceiptItem()->where('product_id', $this->item_product_id[$value])->firstOrNew(['stockTransfer_id' => $Transfer->id, 'product_id' => $this->item_product_id[$value]]);
+            $TransferItem->user_id =  $Transfer->user_id;
+            $TransferItem->stock_receipt_id = $Transfer->id;
+            $TransferItem->product_id = $value;
+            $TransferItem->name = $this->item_name[$value];
+            $TransferItem->quantity = $this->item_quantity[$value];
+            $TransferItem->save();
+        }
 
 
         if ($storeType == 'new') {

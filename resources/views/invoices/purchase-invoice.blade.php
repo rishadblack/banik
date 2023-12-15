@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sales Invoice</title>
+    <title>Purchase Invoice</title>
     @push('css')
         <style>
 
@@ -53,7 +53,7 @@
 
                             <p class=MsoNormal align=right
                                 style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:5px'>
-                                <b><span style='font-size:10.0pt;font-family:"Arial",sans-serif'>Sales
+                                <b><span style='font-size:10.0pt;font-family:"Arial",sans-serif'>Purchase
                                         Invoice</span></b>
                             </p>
                         </td>
@@ -97,7 +97,7 @@
 
                         <td width=348 colspan=2 style='width:261.0pt;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
                             <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:5px'><span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $sales->contact_id }}</span></p>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $purchase->contact_id }}</span></p>
 
                         </td>
                         <td width=96 colspan=2 style='width:1.0in;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
@@ -139,7 +139,7 @@
 
                             <p class=MsoNormal
                                 style='margin-bottom:0in;line-height:normal;margin-top:5px;margin-top:5px'><b><span
-                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $sales->contact_id }}</span></b>
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $purchase->contact_id }}</span></b>
                             </p>
 
                         </td>
@@ -161,7 +161,7 @@
                         <td width=121 colspan=2 style='width:91.1pt;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
                             <p class=MsoNormal
                                 style='margin-bottom:0in;line-height:normal;margin-top:5px;margin-top:5px'><span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $sales->code }}</span>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $purchase->code }}</span>
                             </p>
 
                         </td>
@@ -249,7 +249,7 @@
 
                         <td width=121 colspan=2 style='width:91.1pt;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
                             <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:5px'><span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{$sales->warehouse_id}}</span></p>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{$purchase->warehouse_id}}</span></p>
 
                         </td>
 
@@ -290,13 +290,13 @@
                         <td width=121 colspan=2 style='width:91.1pt;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
                             <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:5px'><span
                                     style='font-size:8.0pt;font-family:"Arial",sans-serif'>
-                                    @if ($sales->payment_status == 1)
+                                    @if ($purchase->payment_status == 1)
                                         <span>Receipt</span>
-                                    @elseif ($sales->payment_status == 2)
+                                    @elseif ($purchase->payment_status == 2)
                                         <span>Pending</span>
-                                    @elseif ($sales->payment_status == 3)
+                                    @elseif ($purchase->payment_status == 3)
                                         <span> Hold</span>
-                                    @elseif ($sales->payment_status == 4)
+                                    @elseif ($purchase->payment_status == 4)
                                         <span>Cancel</span>
                                     @endif
                                 </span>
@@ -319,7 +319,7 @@
 
                         <td width=348 colspan=2 style='width:261.0pt;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
                             <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:5px'><span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{$sales->ref}}</span></p>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{$purchase->ref}}</span></p>
 
                         </td>
 
@@ -339,13 +339,13 @@
                         <td width=121 colspan=2 style='width:91.1pt;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
                             <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:5px'><span
                                     style='font-size:8.0pt;font-family:"Arial",sans-serif'>
-                                    @if ($sales->payment_status == 1)
+                                    @if ($purchase->payment_status == 1)
                                         <span>Receipt</span>
-                                    @elseif ($sales->payment_status == 2)
+                                    @elseif ($purchase->payment_status == 2)
                                         <span>Pending</span>
-                                    @elseif ($sales->payment_status == 3)
+                                    @elseif ($purchase->payment_status == 3)
                                         <span> Hold</span>
-                                    @elseif ($sales->payment_status == 4)
+                                    @elseif ($purchase->payment_status == 4)
                                         <span>Cancel</span>
                                     @endif
 
@@ -900,7 +900,7 @@
         </div>
     </div>
     <script>
-        // window.print()
+        window.print()
     </script>
 </body>
 

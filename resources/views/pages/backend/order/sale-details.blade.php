@@ -139,6 +139,9 @@
         .shadow {
             box-shadow: 0 .1rem 1rem rgba(var(--bs-black-rgb), .15) !important;
         }
+        .btn-warning{
+            background-color: var(--bs-btn-hover-bg);
+        }
     </style>
 @endpush
 <div>
@@ -360,8 +363,11 @@
                             class="btn-success">Save
                             & New
                         </x-button.default>
+                        <a href="{{ route('invoice.sales',['id' => $sales->id]) }}"
+                            wire:navigate="true" class="btn btn-warning btn-sm rounded">Print</a>
+
                         <a href="{{ route('backend.order.sale_list') }}"
-                            wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
+                            wire:navigate="true" class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>
                 <x-input.text wire:model="code" label="Code" />

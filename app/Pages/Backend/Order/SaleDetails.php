@@ -284,6 +284,8 @@ class SaleDetails extends Component
         $transaction = Transaction::all();
         $outlet = Outlet::all();
         $warehouse = Warehouse::all();
-        return view('pages.backend.order.sale-details', compact('customer', 'payment', 'order', 'product', 'transaction','outlet','warehouse'));
+        $sales = Order::where('type', 1)
+        ->firstOrFail();
+        return view('pages.backend.order.sale-details', compact('customer', 'payment', 'order', 'product', 'transaction','outlet','warehouse','sales'));
     }
 }

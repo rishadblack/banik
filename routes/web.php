@@ -73,6 +73,7 @@ Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])->name('
 
 Route::group(['prefix' => 'invoice', 'as' => 'invoice.'], function () {
     Route::get('sales/{id}', [InvoiceController::class, 'salesInvoice'])->name('sales');
+    Route::get('purchase/{id}', [InvoiceController::class, 'purchaseInvoice'])->name('purchase');
 });
 
 Route::permanentRedirect('/', 'admin');

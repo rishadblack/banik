@@ -125,6 +125,18 @@ class PurchaseTable extends DataTableComponent
 
                             ];
                         }),
+                        LinkColumn::make('Print')
+                        ->title(fn ($row) => 'Print')
+                        ->location(fn ($row) => route('invoice.purchase',['id' => $row->id]))
+                        ->attributes(function ($row) {
+                            return [
+                                'data-id' => $row->id,
+                                'class' => 'badge bg-warning me-1 p-2 ',
+                                'icon' => 'fa fa-print',
+                                'title' => 'Print',
+
+                            ];
+                        }),
                     LinkColumn::make(' Delete')
                         ->title(fn ($row) => 'Delete')
                         ->location(fn ($row) => 'javascript:void(0)')

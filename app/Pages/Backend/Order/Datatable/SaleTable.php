@@ -115,7 +115,7 @@ class SaleTable extends DataTableComponent
                             return [
                                 'data-id' => $row->id,
                                 'data-listener' => 'openPaymentModal',
-                                'class' => 'badge bg-warning me-1 p-2 ',
+                                'class' => 'badge bg-success me-1 p-2 ',
                                 'icon' => 'fa fa-edit',
                                 'title' => 'Payment',
 
@@ -130,6 +130,18 @@ class SaleTable extends DataTableComponent
                                 'class' => 'badge bg-success me-1 p-2 ',
                                 'icon' => 'fa fa-edit',
                                 'title' => 'Edit',
+
+                            ];
+                        }),
+                    LinkColumn::make('Print')
+                        ->title(fn ($row) => 'Print')
+                        ->location(fn ($row) => route('invoice.sales',['id' => $row->id]))
+                        ->attributes(function ($row) {
+                            return [
+                                'data-id' => $row->id,
+                                'class' => 'badge bg-warning me-1 p-2 ',
+                                'icon' => 'fa fa-print',
+                                'title' => 'Print',
 
                             ];
                         }),

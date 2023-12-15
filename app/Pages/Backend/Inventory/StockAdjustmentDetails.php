@@ -116,11 +116,15 @@ class StockAdjustmentDetails extends Component
         $Adjustment->quantity = $this->damage_quantity ?? 0;
         $Adjustment->save();
 
-        $AdjustmentItem = $Adjustment->StockReceiptItem()->firstOrNew();
-        $AdjustmentItem->user_id =  $Adjustment->user_id;
-        $AdjustmentItem->stock_receipt_id = $Adjustment->id;
-        $AdjustmentItem->quantity = $this->quantity ?? 0;
-        $AdjustmentItem->save();
+        foreach ($this->item_rows as $key => $value) {
+            $AdjustmentItem = $Adjustment->StockReceiptItem()->where('product_id', $this->item_product_id[$value])->firstOrNew(['stockAdjustment_id' => $Adjustment->id, 'product_id' => $this->item_product_id[$value]]);
+            $AdjustmentItem->user_id =  $Adjustment->user_id;
+            $AdjustmentItem->stock_receipt_id = $Adjustment->id;
+            $AdjustmentItem->product_id = $value;
+            $AdjustmentItem->name = $this->item_name[$value];
+            $AdjustmentItem->quantity = $this->item_quantity[$value];
+            $AdjustmentItem->save();
+        }
 
         if ($storeType == 'new') {
             $this->adjustmentReset();

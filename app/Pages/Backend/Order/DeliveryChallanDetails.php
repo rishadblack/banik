@@ -125,13 +125,15 @@ class DeliveryChallanDetails extends Component
     $DeliveryChallan->status = $this->status??0;
     $DeliveryChallan->save();
 
-    $DeliveryInfo = $DeliveryChallan->DeliveryItem()->firstOrCreate();
+    foreach ($this->item_rows as $key => $value) {
+    $DeliveryInfo = $DeliveryChallan->DeliveryItem()->where('product_id',$this->item_product_id[$value])->firstOrNew(['delivery_id' => $DeliveryChallan->id, 'product_id' => $this->item_product_id[$value]]);
     $DeliveryInfo->user_id =  $DeliveryChallan->user_id;
     $DeliveryInfo->delivery_id = $DeliveryChallan->id;
-    $DeliveryInfo->product_id = $this->product_id??0;
-    $DeliveryInfo->quantity = $this->quantity??0;
+    $DeliveryInfo->product_id = $value;
+    $DeliveryInfo->name = $this->item_name[$value];
+    $DeliveryInfo->quantity = $this->item_quantity[$value];
     $DeliveryInfo->save();
-
+    }
     if($storeType == 'new'){
         $this->challanReset();
     }else{
