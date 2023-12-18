@@ -21,4 +21,11 @@ class InvoiceController extends Controller
 
         return view('invoices.purchase-invoice',compact('purchase'));
     }
+    public function moneyReceipt(Request $request)
+    {
+        // $sale = Order::where('type', 1)
+        // ->firstOrFail();
+
+        return view('money-receipt');
+    }
 }

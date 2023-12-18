@@ -69,7 +69,7 @@ use App\Pages\Backend\Reports\InventoryReports\StockAdjustmentReport;
 Route::get('login', Login::class)->name('login');
 Route::get('register', Register::class)->name('register');
 Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-
+Route::get('pay-slip', [InvoiceController::class, 'moneyReceipt'])->name('money_receipt');
 
 Route::group(['prefix' => 'invoice', 'as' => 'invoice.'], function () {
     Route::get('sales/{id}', [InvoiceController::class, 'salesInvoice'])->name('sales');

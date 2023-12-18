@@ -171,9 +171,9 @@ class PurchaseDetails extends Component
         $Purchase->payment_status = $this->payment_status;
         $Purchase->payment_date = $this->payment_date;
         $Purchase->delivery_status = $this->delivery_status;
-        $Purchase->discount = $this->discount;
-        $Purchase->subtotal = $this->subtotal;
-        $Purchase->net_amount = $this->net_amount;
+        $Purchase->discount = $this->discount??0;
+        $Purchase->subtotal = $this->subtotal??0;
+        $Purchase->net_amount = $this->net_amount??0;
         $Purchase->additional_charge = $this->additional_charge ?? 0;
         $Purchase->save();
 
