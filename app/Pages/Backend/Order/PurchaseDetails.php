@@ -34,7 +34,7 @@ class PurchaseDetails extends Component
     public $delivery_status;
     public $name;
     public $warehouse_id;
-    public $payment_method_id;
+    // public $payment_method_id;
     public $payment_date;
     public $type;
     public $quantity;
@@ -58,6 +58,15 @@ class PurchaseDetails extends Component
     public $item_quantity = [];
     public $item_discount = [];
     public $item_subtotal = [];
+
+    public $payment_rows = [];
+    public $payment_transaction_id = [];
+    public $payment_method_id = [];
+    public $payment_ref = [];
+    public $payment_amount = [];
+    public $payment_charge = [];
+    public $payment_txn_date = [];
+    public $payment_net_amount = [];
 
     public function updatedSearchProduct($value)
     {
@@ -213,19 +222,19 @@ class PurchaseDetails extends Component
             'payment_method_id' => 'required',
         ]);
 
-        $Payment = Transaction::findOrNew($this->purchase_id);
-        $Payment->user_id = Auth::id();
-        $Payment->payment_method_id = $this->payment_method_id;
-        $Payment->net_amount = $this->net_amount;
-        $Payment->charge = $this->charge;
-        $Payment->ref = $this->ref;
-        $Payment->txn_date = $this->txn_date;
-        $Payment->save();
+        $Transaction = Transaction::findOrNew($this->purchase_id);
+        $Transaction->user_id = Auth::id();
+        $Transaction->payment_method_id = $this->payment_method_id;
+        $Transaction->amount = $this->amount??0;
+        $Transaction->charge = $this->charge;
+        $Transaction->ref = $this->ref;
+        $Transaction->txn_date = $this->txn_date;
+        $Transaction->save();
 
         if($storeType == 'new'){
             $this->reset();
         }else{
-            $this->purchase_id = $Payment-> id;
+            $this->purchase_id = $Transaction-> id;
         }
         if($this->purchase_id) {
             $message = 'Payment Updated Successfully!';
@@ -239,6 +248,7 @@ class PurchaseDetails extends Component
 
 
     }
+
 
     public function mount()
     {
@@ -288,4 +298,77 @@ class PurchaseDetails extends Component
         $warehouse = Warehouse::all();
         return view('pages.backend.order.purchase-details', compact('supplier','payment','order','product','transaction','outlet','warehouse'));
     }
+
+
+
+
+    // payment
+    public function updatedPayment($value)
+    {
+        if(empty($value)){
+            return true;
+        }
+
+        $Transaction = Transaction::find($value);
+
+        $payment_rows = collect($this->payment_rows);
+
+        if($payment_rows->contains($Transaction->id)){
+            $this->alert('error', 'Payment Already Added!');
+            return true;
+        }
+    }
+
+    // public function updatedItemPrice($value, $productId)
+    // {
+    //     $this->ItemRowsUpdate($productId);
+    // }
+
+    // public function updatedItemQuantity($value, $productId)
+    // {
+    //     $this->ItemRowsUpdate($productId);
+    // }
+
+    // public function updatedItemDiscount($value, $productId)
+    // {
+    //     $this->ItemRowsUpdate($productId);
+    // }
+
+    // public function ItemRowsUpdate($productId)
+    // {
+    //     $item_price = isset($this->item_price[$productId]) && $this->item_price[$productId] > 0 ? $this->item_price[$productId] : 0;
+    //     $item_quantity = isset($this->item_quantity[$productId]) && $this->item_quantity[$productId] > 0 ? $this->item_quantity[$productId] : 1;
+    //     $item_discount = isset($this->item_discount[$productId]) && $this->item_discount[$productId] > 0 ? $this->item_discount[$productId] : 0;
+
+    //     $this->item_subtotal[$productId] = ($item_price * $item_quantity) - $item_discount;
+
+    //     $this->rowsUpdate();
+    // }
+
+    // public function rowsUpdate()
+    // {
+    //     $payment_net_amount = collect($this->payment_net_amount)->sum();
+
+    //     $this->net_amount = $payment_net_amount;
+    // }
+
+    // public function removeItem($productId)
+    // {
+    //     $item_rows = collect($this->item_rows);
+    //     $item_rows = $item_rows->filter(function ($value, $key) use ($productId) {
+    //         return $value != $productId;
+    //     });
+    //     $this->item_rows = $item_rows;
+
+    //     unset($this->item_product_id[$productId]);
+    //     unset($this->item_name[$productId]);
+    //     unset($this->item_code[$productId]);
+    //     unset($this->item_price[$productId]);
+    //     unset($this->item_quantity[$productId]);
+    //     unset($this->item_discount[$productId]);
+    //     unset($this->item_subtotal[$productId]);
+
+    //     $this->rowsUpdate();
+    // }
+
 }

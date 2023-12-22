@@ -1,144 +1,146 @@
 @push('css')
-    <style>  .productSearch {
-        border-radius: 18px;
-        margin-left: 239px;
-        width: 280px;
-        font-size: 11px;
-        color: #736d6d;
-        height: 30px !important;
-    }
+    <style>
+        .productSearch {
+            border-radius: 18px;
+            margin-left: 239px;
+            width: 280px;
+            font-size: 11px;
+            color: #736d6d;
+            height: 30px !important;
+        }
 
-    .ts-control {
-        height: 32px !important;
-    }
+        .ts-control {
+            height: 32px !important;
+        }
 
-    .table>thead {
-        vertical-align: bottom;
-        background-color: #b0b4ef;
-        font-size: 12px;
-    }
+        .table>thead {
+            vertical-align: bottom;
+            background-color: #b0b4ef;
+            font-size: 12px;
+        }
 
-    .table> :not(caption)>*>th {
-        padding: .5rem .5rem;
-        color: #3939a8;
-    }
+        .table> :not(caption)>*>th {
+            padding: .5rem .5rem;
+            color: #3939a8;
+        }
 
-    .btn-info {
-        border-radius: 10px !important;
-        margin-left: 147px;
-        width: 90px;
-        background-color: rgb(54, 129, 242);
-        color: #fff;
-        margin-top: -55px;
-    }
+        .btn-info {
+            border-radius: 10px !important;
+            margin-left: 147px;
+            width: 90px;
+            background-color: rgb(54, 129, 242);
+            color: #fff;
+            margin-top: -55px;
+        }
 
-    .payment-info {
-        padding-bottom: 40px;
-    }
+        .payment-info {
+            padding-bottom: 40px;
+        }
 
-    .payment-table {
-        margin-top: 30px;
-    }
+        .payment-table {
+            margin-top: 30px;
+        }
 
-    .width {
-        width: 110px;
-        height: 21px;
-    }
+        .width {
+            width: 110px;
+            height: 21px;
+        }
 
-    .charges .widthtd {
-        margin-bottom: 5px;
-    }
+        .charges .widthtd {
+            margin-bottom: 5px;
+        }
 
-    .sub-width {
-        width: 54px;
-    }
+        .sub-width {
+            width: 54px;
+        }
 
-    .stock {
-        width: 80px !important;
-    }
+        .stock {
+            width: 80px !important;
+        }
 
-    .sl {
-        width: 5px;
-    }
+        .sl {
+            width: 5px;
+        }
 
-    .ps-6 {
-        padding-left: 3rem !important;
-    }
+        .ps-6 {
+            padding-left: 3rem !important;
+        }
 
-    .product-item .card-body {
-        padding: 0px;
-    }
+        .product-item .card-body {
+            padding: 0px;
+        }
 
-    .small {
-        font-size: 10px;
-    }
+        .small {
+            font-size: 10px;
+        }
 
-    .h-65px,
-    .w-65px {
-        height: 55px !important;
-    }
+        .h-65px,
+        .w-65px {
+            height: 55px !important;
+        }
 
-    .product-item .table> :not(caption)>*>td {
-        padding: .5rem .5rem 0 .5rem;
-    }
+        .product-item .table> :not(caption)>*>td {
+            padding: .5rem .5rem 0 .5rem;
+        }
 
-    .table-sm> :not(caption)>*>* {
-        padding: .1rem .25rem;
+        .table-sm> :not(caption)>*>* {
+            padding: .1rem .25rem;
 
-    }
+        }
 
-    .mb-1 {
-        margin-bottom: 2px;
-    }
+        .mb-1 {
+            margin-bottom: 2px;
+        }
 
-    .subtotal {
-        font-weight: 700;
-        color: #000 !important;
-        margin-top: 5px;
-        font-size: 12px;
-    }
+        .subtotal {
+            font-weight: 700;
+            color: #000 !important;
+            margin-top: 5px;
+            font-size: 12px;
+        }
 
-    .add-payment {
-        margin-bottom: 20px;
-        border-radius: 7px;
-        margin-right: 22px;
-        margin-top: -12px;
-    }
+        .add-payment {
+            margin-bottom: 20px;
+            border-radius: 7px;
+            margin-right: 22px;
+            margin-top: -12px;
+        }
 
-    b,
-    strong {
-        font-weight: 700;
-    }
+        b,
+        strong {
+            font-weight: 700;
+        }
 
-    .net-amount {
-        background-color: #cbccdb;
-        padding: 10px;
-        border-radius: 15px;
-        padding: 5px 10px;
-        margin-right: 0px;
-        width: 225px;
-    }
+        .net-amount {
+            background-color: #cbccdb;
+            padding: 10px;
+            border-radius: 15px;
+            padding: 5px 10px;
+            margin-right: 0px;
+            width: 225px;
+        }
 
-    .net-amount .sm {
-        font-size: 14px;
-        padding-bottom: 5px;
-    }
+        .net-amount .sm {
+            font-size: 14px;
+            padding-bottom: 5px;
+        }
 
-    .net-amount .value {
-        background-color: #91caf4;
-        padding: 0px 3px 2px;
-        margin-left: 5px;
-        font-weight: 700;
-        font-size: 20px;
-        display: inline;
-        border-radius: 15px;
-        margin-top: 2px !important;
-    }
+        .net-amount .value {
+            background-color: #91caf4;
+            padding: 0px 3px 2px;
+            margin-left: 5px;
+            font-weight: 700;
+            font-size: 20px;
+            display: inline;
+            border-radius: 15px;
+            margin-top: 2px !important;
+        }
 
-    .shadow {
-        box-shadow: 0 .1rem 1rem rgba(var(--bs-black-rgb), .15) !important;
-    }
-    .table>thead {
+        .shadow {
+            box-shadow: 0 .1rem 1rem rgba(var(--bs-black-rgb), .15) !important;
+        }
+
+        .table>thead {
             background-color: #acacde;
         }
     </style>
@@ -155,11 +157,13 @@
                     <x-layouts.backend.card class="product-item">
                         <x-slot:title>Products (2)</x-slot:title>
                         <x-slot:search>
-                            <x-search.products wire:model.live='search_product' class="productSearch" placeholder="Search Product Name" />
+                            <x-search.products wire:model.live='search_product' class="productSearch"
+                                placeholder="Search Product Name" />
                         </x-slot:search>
 
                         <x-slot:button>
-                            <x-button.default type="button" class="btn btn-sm rounded btn-info" x-data @click="$dispatch('openProductModal')">Add
+                            <x-button.default type="button" class="btn btn-sm rounded btn-info" x-data
+                                @click="$dispatch('openProductModal')">Add
                                 Product</x-button.default>
                         </x-slot:button>
 
@@ -176,32 +180,40 @@
                             </thead>
                             <tbody>
                                 @forelse ($item_rows as $item_row)
+                                    <tr class="shadow-none" wire:key="product-{{ $item_row }}">
+                                        <td class="text-center">{{ $loop->iteration }}</td>
 
-                                <tr class="shadow-none" wire:key="product-{{$item_row}}">
-                                    <td class="text-center">{{ $loop->iteration}}</td>
+                                        <td class="d-flex text-left">
+                                            <div class="flex-1 ">
+                                                <div><a href="#"
+                                                        class="text-decoration-none text-body">{{ $item_name[$item_row] }}</a>
+                                                </div>
+                                                <div class="text-body text-opacity-50 small ">
+                                                    SKU: {{ $item_code[$item_row] }}
+                                                </div>
+                                                <div class="text-body text-opacity-50 small">
+                                                    Stock : 0; Delivery product : 0
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><x-input.text-order
+                                                wire:model.live.debounce.500ms="item_price.{{ $item_row }}"
+                                                class="widthtd" placeholder="" /></td>
+                                        <td><x-input.text-order
+                                                wire:model.live.debounce.500ms="item_quantity.{{ $item_row }}"
+                                                class="widthtd" placeholder="" /></td>
+                                        <td class="text-center"><x-input.text-order
+                                                wire:model.live.debounce.500ms="item_discount.{{ $item_row }}"
+                                                class="widthtd" placeholder="" />
+                                        </td>
+                                        <td class="text-center">
+                                            {{ numberFormat($item_subtotal[$item_row], true) }}
+                                        </td>
+                                        <td> <button wire:click="removeItem('{{ $item_row }}')"
+                                                class="btn btn-danger btn-sm rounded" style="float:right"><i
+                                                    class="fa fa-close"></i></button></td>
 
-                                    <td class="d-flex text-left">
-                                        <div class="flex-1 ">
-                                            <div><a href="#" class="text-decoration-none text-body">{{ $item_name[$item_row]}}</a>
-                                            </div>
-                                            <div class="text-body text-opacity-50 small ">
-                                                SKU: {{ $item_code[$item_row]}}
-                                            </div>
-                                            <div class="text-body text-opacity-50 small">
-                                                Stock : 0; Delivery product : 0
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><x-input.text-order wire:model.live.debounce.500ms="item_price.{{$item_row}}" class="widthtd" placeholder="" /></td>
-                                    <td><x-input.text-order wire:model.live.debounce.500ms="item_quantity.{{$item_row}}" class="widthtd" placeholder="" /></td>
-                                    <td class="text-center"><x-input.text-order wire:model.live.debounce.500ms="item_discount.{{$item_row}}" class="widthtd" placeholder="" />
-                                    </td>
-                                    <td class="text-center">
-                                        {{ numberFormat($item_subtotal[$item_row], true) }}
-                                    </td>
-                                    <td> <button wire:click="removeItem('{{ $item_row }}')" class="btn btn-danger btn-sm rounded" style="float:right"><i class="fa fa-close"></i></button></td>
-
-                                </tr>
+                                    </tr>
                                 @empty
                                     <tr>
                                         <td colspan="7" class="text-center">No Data Found</td>
@@ -217,7 +229,7 @@
                     <x-layouts.backend.card class="shadow">
                         <div class="row mb-1">
                             <div class="col-7">Discount</div>
-                            <div class="col-5 text-end"><b>{{numberFormat($discount,true)}}</b></div>
+                            <div class="col-5 text-end"><b>{{ numberFormat($discount, true) }}</b></div>
                         </div>
                         <div class="row mb-1">
                             <div class="col-7">Tax</div>
@@ -236,7 +248,7 @@
                                 <tr class="mb-1">
                                     <td class="w-150px">Subtotal</td>
                                     <td></td>
-                                    <td class="text-end"><b>{{numberFormat($subtotal,true)}}</b></td>
+                                    <td class="text-end"><b>{{ numberFormat($subtotal, true) }}</b></td>
                                 </tr>
                                 {{-- <tr>
                                     <td colspan="3">
@@ -245,7 +257,8 @@
                                 </tr> --}}
                                 <tr>
                                     <td colspan="2"><b>Total</b></td>
-                                    <td class="text-end text-decoration-underline"><b>{{numberFormat($net_amount,true)}}</b></td>
+                                    <td class="text-end text-decoration-underline">
+                                        <b>{{ numberFormat($net_amount, true) }}</b></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Due</b></td>
@@ -261,8 +274,8 @@
             <x-layouts.backend.card class="payment-info">
                 <x-slot:title>Payment Info</x-slot:title>
                 <x-slot:button>
-                    <x-button.default type="button" href="#" wire:click="addPayment" wire:navigate
-                        class="btn btn-sm btn-theme"> Add
+                    <x-button.default wire:model.live='add_payment' type="button" href="#"
+                        wire:click="addPayment" wire:navigate class="btn btn-sm btn-theme"> Add
                         Payment</x-button.default>
                     <x-button.default type="button" href="#" wire:click="addPayment" wire:navigate
                         class="btn btn-sm btn-danger"> Reset</x-button.default>
@@ -310,11 +323,11 @@
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        @foreach ($transaction as $transaction)
-                            <tr>
-                                <td>{{ $transaction->id }}</td>
-                                <td class="py-1 align-middle">
-                                    @if ($transaction->payment_method_id == 1)
+                        @forelse ($payment_rows as $payment_row)
+                            <tr wire:key="payment-{{ $payment_row }}">
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td class="py-1 align-middle">{{ $payment_method_id[$payment_row] }}
+                                    {{-- @if ($transaction->payment_method_id == 1)
                                         <span
                                             class="badge bg-teal text-teal-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
                                                 class="fa fa-circle text-teal fs-9px fa-fw me-5px"></i>BKash</span>
@@ -331,18 +344,22 @@
                                                 class="badge bg-success text-success-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
                                                     class="fa fa-circle text-success fs-9px fa-fw me-5px"></i>
                                                 Nagad</span>
-                                    @endif
+                                    @endif --}}
 
                                 </td>
-                                <td>{{ $transaction->net_amount }}</td>
-                                <td>{{ $transaction->charge }}</td>
-                                <td>{{ $transaction->txn_date }}</td>
-                                <td> <a wire:click="delete({{ $transaction->id }})"
-                                        wire:navigate="true"class="btn btn-danger btn-sm rounded"><i
-                                            class="fa fa-close"></i></a></td>
+                                <td>{{ $payment_amount[$payment_row] }}</td>
+                                <td>{{ $payment_charge[$payment_row] }}</td>
+                                <td>{{ $payment_txn_date[$payment_row] }}</td>
+                                <td> <button wire:click="removeItem('{{ $payment_row }}')"
+                                    class="btn btn-danger btn-sm rounded" style="float:right"><i
+                                        class="fa fa-close"></i></button></td>
 
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center">No Data Found</td>
+                            </tr>
+                        @endforelse
 
                     </tbody>
                 </table>
@@ -379,12 +396,12 @@
                 <x-slot:title>Outlet & Warehouse</x-slot:title>
                 <x-input.select wire:model="outlet_id" label="Outlets">
                     @foreach ($outlet as $outlet)
-                    <option value="{{$outlet->id}}">{{$outlet->name}}</option>
+                        <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
                     @endforeach
                 </x-input.select>
                 <x-input.select wire:model="warehouse_id" label="Warehouse">
                     @foreach ($warehouse as $warehouse)
-                    <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
+                        <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
                     @endforeach
                 </x-input.select>
             </x-layouts.backend.card>
