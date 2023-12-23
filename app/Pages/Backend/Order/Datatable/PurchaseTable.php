@@ -88,11 +88,11 @@ class PurchaseTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-            Column::make('Quantity', 'OrderItem.quantity')
+            // Column::make('Quantity', 'OrderItem.quantity')
 
-                ->sortable()
-                ->searchable()
-                ->deselected(),
+            //     ->sortable()
+            //     ->searchable()
+            //     ->deselected(),
             Column::make('Create BY', 'User.name')
                 ->format(
                     fn ($value, $row, Column $column) => $value ? $value : '-'

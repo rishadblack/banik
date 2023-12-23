@@ -16,6 +16,11 @@ class Transaction extends Model
     protected $guarded = [];
     public $timestamps = true;
 
+    protected $casts = [
+        'txn_date' => 'datetime',
+    ];
+
+
     public function User(): BelongsTo
     {
         return $this->belongsTo(User::class);

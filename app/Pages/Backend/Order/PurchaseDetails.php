@@ -14,6 +14,7 @@ use App\Models\Product\Product;
 use Livewire\Attributes\Layout;
 use App\Models\Setting\Warehouse;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Setting\PaymentMethod;
 use App\Models\Accounting\Transaction;
 
 
@@ -31,7 +32,6 @@ class PurchaseDetails extends Component
     public $contact_id;
     public $product_id;
     public $ref;
-    public $purchase_ref;
     public $outlet_id;
     public $delivery_status;
     public $name;
@@ -48,13 +48,14 @@ class PurchaseDetails extends Component
     public $discount_amount;
     public $additional_charge;
     public $amount;
-    public $payment_amount;
     public $code;
-    public $txn_date;
     public $charge;
-    public $charges;
+    public $paid_amount;
+    public $due_amount;
 
+    //Purchase item
     public $item_rows = [];
+    public $item_deleted_rows = [];
     public $item_product_id = [];
     public $item_name = [];
     public $item_code = [];
@@ -63,7 +64,17 @@ class PurchaseDetails extends Component
     public $item_discount = [];
     public $item_subtotal = [];
 
-    public $payments = [];
+    //Payment Info
+    public $payment_method_id;
+    public $payment_ref;
+    public $payment_amount;
+    public $payment_charge;
+    public $payment_net_amount;
+    public $txn_date;
+
+    //Payment item
+    public $payment_item_rows = [];
+    public $payment_item_deleted_rows = [];
 
     public function updatedSearchProduct($value)
     {
@@ -86,11 +97,12 @@ class PurchaseDetails extends Component
         $this->item_product_id[$Product->id] = $Product->id;
         $this->item_name[$Product->id] = $Product->name;
         $this->item_code[$Product->id] = $Product->code;
-        $this->item_price[$Product->id] = $Product->net_purchase_price;
+        $this->item_price[$Product->id] = numberFormat($Product->net_purchase_price);
         $this->item_quantity[$Product->id] = 1;
         $this->item_discount[$Product->id] = 0;
-        $this->item_subtotal[$Product->id] = $Product->net_purchase_price;
+        $this->item_subtotal[$Product->id] = numberFormat($Product->net_purchase_price);
 
+        $this->rowsUpdate();
         $this->reset('search_product');
         $this->dispatch('search_product_reset');
     }
@@ -130,11 +142,14 @@ class PurchaseDetails extends Component
         $this->subtotal = $item_subtotal;
         $this->net_amount = $item_subtotal;
         $this->discount = $item_discount;
+        $this->paid_amount = collect($this->payment_item_rows)->sum('payment_amount');
+        $this->due_amount = $this->paid_amount > 0 ?  $this->net_amount - $this->paid_amount : $this->net_amount;
     }
 
     public function removeItem($productId)
     {
         $item_rows = collect($this->item_rows);
+        $this->item_deleted_rows[] = $productId;
         $item_rows = $item_rows->filter(function ($value, $key) use ($productId) {
             return $value != $productId;
         });
@@ -151,16 +166,8 @@ class PurchaseDetails extends Component
         $this->rowsUpdate();
     }
 
-    public function removePayment($index)
-    {
-        unset($this->payments[$index]);
-        $this->payments = array_values($this->payments);
-    }
-
-
     public function storePurchase($storeType = null)
     {
-
         $this->validate([
             'code' => 'required|string',
             'item_quantity' => 'required|min:1',
@@ -175,7 +182,7 @@ class PurchaseDetails extends Component
         }
 
         $Purchase->code = $this->code;
-        $Purchase->ref = $this->purchase_ref;
+        $Purchase->ref = $this->ref;
         $Purchase->warehouse_id = $this->warehouse_id;
         $Purchase->outlet_id = $this->outlet_id;
         $Purchase->type = 3;
@@ -187,35 +194,56 @@ class PurchaseDetails extends Component
         $Purchase->subtotal = $this->subtotal ?? 0;
         $Purchase->net_amount = $this->net_amount ?? 0;
         $Purchase->additional_charge = $this->additional_charge ?? 0;
+        $Purchase->paid_amount = $this->paid_amount ?? 0;
+        $Purchase->due_amount = $this->due_amount ?? 0;
         $Purchase->save();
 
-        foreach ($this->item_rows as $key => $value) {
-            $PurchaseInfo = $Purchase->OrderItem()->where('product_id', $this->item_product_id[$value])->firstOrNew(['order_id' => $Purchase->id, 'product_id' => $this->item_product_id[$value]]);
-            $PurchaseInfo->user_id = $Purchase->user_id;
-            $PurchaseInfo->order_id = $Purchase->id;
-            $PurchaseInfo->product_id = $value;
-            $PurchaseInfo->name = $this->item_name[$value];
-            $PurchaseInfo->amount = $this->item_price[$value];
-            $PurchaseInfo->quantity = $this->item_quantity[$value];
-            $PurchaseInfo->discount_amount = $this->item_discount[$value];
-            $PurchaseInfo->subtotal = $this->item_subtotal[$value];
-            $PurchaseInfo->save();
+        if (count($this->item_deleted_rows) > 0) {
+            OrderItem::where('order_id',$Purchase->id)->whereIn('product_id', $this->item_deleted_rows)->delete();
         }
 
-        //     $transaction = new Transaction();
-        //     $transaction->user_id = $Purchase->user_id;
-        //     $transaction->order_id = $Purchase->id;
-        //     $transaction->payment_method_id = $payment['payment_method_id'];
-        //     $transaction->amount = $payment['amount'];
-        //     $transaction->charge = $payment['charge'];
-        //     $transaction->purchase_ref = $payment['ref'];
-        //     $transaction->txn_date = $payment['txn_date'];
-        //     $transaction->save();
+        foreach ($this->item_rows as $key => $item) {
+            $PurchaseItem = $Purchase->OrderItem()->where('product_id', $this->item_product_id[$item])->firstOrNew(['order_id' => $Purchase->id, 'product_id' => $this->item_product_id[$item]]);
+            $PurchaseItem->user_id = $Purchase->user_id;
+            $PurchaseItem->order_id = $Purchase->id;
+            $PurchaseItem->product_id = $item;
+            $PurchaseItem->name = $this->item_name[$item];
+            $PurchaseItem->amount = $this->item_price[$item];
+            $PurchaseItem->quantity = $this->item_quantity[$item];
+            $PurchaseItem->discount_amount = $this->item_discount[$item];
+            $PurchaseItem->subtotal = $this->item_subtotal[$item];
+            $PurchaseItem->save();
+        }
 
-        // $this->payments = [];
+        $payment_item_rows = collect($this->payment_item_rows);
 
+        if (count($this->payment_item_deleted_rows) > 0) {
+            Transaction::whereIn('id', $this->payment_item_deleted_rows)->delete();
+        }
 
-        if ($storeType == 'new') {
+        foreach ($payment_item_rows as $key => $payment_item) {
+            if(isset($payment_item['transaction_id']) && $payment_item['transaction_id']){
+                $PurchasePayment = Transaction::find($payment_item['transaction_id']);
+            }else{
+                $PurchasePayment = new Transaction();
+            }
+
+            $PurchasePayment->user_id = $Purchase->user_id;
+            $PurchasePayment->order_id = $Purchase->id;
+            $PurchasePayment->payment_method_id = $payment_item['payment_method_id'];
+            $PurchasePayment->amount = $payment_item['payment_amount'];
+            $PurchasePayment->charge = $payment_item['payment_charge'];
+            $PurchasePayment->net_amount = $payment_item['payment_net_amount'];
+            $PurchasePayment->ref = $payment_item['payment_ref'];
+            $PurchasePayment->txn_date = $payment_item['txn_date'];
+            $PurchasePayment->save();
+            $payment_item['transaction_id'] = $PurchasePayment->id;
+
+            $payment_item_rows->put($key, $payment_item);
+            $this->payment_item_rows = $payment_item_rows;
+        }
+
+       if ($storeType == 'new') {
             $this->purchaseReset();
         } else {
             $this->purchase_id = $Purchase->id;
@@ -232,74 +260,142 @@ class PurchaseDetails extends Component
         $this->code = str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
+    #[On('openProductModal')]
+    public function openProductModal($data = [])
+    {
+        $this->dispatch('modalOpen', 'productModal');
+    }
 
-    // public function addPayment($storeType = null){
-    //     $this->validate([
-    //         'payment_method_id' => 'required',
-    //     ]);
-    //     $Purchase = Order::findOrNew($this->purchase_id);
-    //     $Transaction = Transaction::findOrNew($this->purchase_id);
-    //     $Transaction->user_id = Auth::id();
-    //     $Transaction->order_id = $Purchase->id;
-    //     $Transaction->payment_method_id = $this->payment_method_id;
-    //     $Transaction->amount = $this->amount??0;
-    //     $Transaction->charge = $this->charge;
-    //     $Transaction->ref = $this->ref;
-    //     $Transaction->txn_date = $this->txn_date;
-    //     $Transaction->save();
+    public function addPayment()
+    {
+        $this->validate([
+            'txn_date' => 'required',
+            'payment_amount' => 'required',
+            'payment_ref' => 'nullable|string',
+            'payment_method_id' => 'required',
+        ]);
 
-    //     if($storeType == 'new'){
-    //         $this->reset();
-    //     }else{
-    //         $this->purchase_id = $Transaction-> id;
-    //     }
-    //     if($this->purchase_id) {
-    //         $message = 'Payment Updated Successfully!';
-    //     } else {
-    //         $message = 'Payment Added Successfully!';
-    //     }
+        $payment_item_rows = collect($this->payment_item_rows);
+
+        if($this->due_amount <= 0 || $this->due_amount < $this->payment_amount){
+            $this->alert('error', 'Payment Amount is greater than Due Amount!');
+            return true;
+        }
+
+        $payment_item_rows->push([
+            'transaction_id' => null,
+            'payment_method_id' => $this->payment_method_id,
+            'payment_method_name' => $this->payment_method_id ? PaymentMethod::find($this->payment_method_id)->name : null,
+            'payment_ref' => $this->payment_ref,
+            'payment_amount' => $this->payment_amount,
+            'payment_charge' => $this->payment_charge,
+            'payment_net_amount' => $this->payment_net_amount,
+            'txn_date' => $this->txn_date,
+        ]);
+
+        $this->payment_item_rows = $payment_item_rows;
+
+        $this->paymentReset();
+        $this->paymentAmountUpdate();
+        $this->rowsUpdate();
+    }
 
 
-    //     $this->alert('success', $message);
-    //     // $this->dispatch('refreshDatatable');
+    public function removePaymentItem($index)
+    {
+        $payment_item_rows = collect($this->payment_item_rows);
+        $this->payment_item_deleted_rows[] = $payment_item_rows[$index]['transaction_id'];
+        $payment_item_rows->forget($index);
+        $this->payment_item_rows = array_values($payment_item_rows->toArray());
 
+        $this->paymentAmountUpdate();
+        $this->rowsUpdate();
+    }
 
-    // }
+    public function paymentReset()
+    {
+        $this->reset([
+            'payment_method_id',
+            'payment_ref',
+            'payment_amount',
+            'payment_charge',
+            'payment_net_amount',
+            'txn_date',
+        ]);
 
+        $this->resetValidation();
+        $this->txn_date = now()->format('Y-m-d');
+    }
+
+    public function updatedPaymentAmount($value)
+    {
+        $this->paymentAmountUpdate();
+    }
+
+    public function updatedPaymentCharge($value)
+    {
+        $this->paymentAmountUpdate();
+    }
+
+    public function paymentAmountUpdate()
+    {
+        $payment_amount = $this->payment_amount > 0 ? $this->payment_amount : 0;
+        $payment_charge = $this->payment_charge > 0 ? $this->payment_charge : 0;
+        $this->payment_net_amount = $payment_amount + $payment_charge;
+    }
 
     public function mount()
     {
         if ($this->purchase_id) {
             $Purchase = Order::find($this->purchase_id);
-            $this->code = $Purchase->code;
-            $this->ref = $Purchase->ref;
-            $this->warehouse_id = $Purchase->warehouse_id;
-            $this->outlet_id = $Purchase->outlet_id;
-            $this->contact_id = $Purchase->contact_id;
-            $this->payment_status = $Purchase->payment_status;
-            $this->payment_date = $Purchase->payment_date;
-            $this->pmid = $Purchase->pmid;
-            $this->delivery_status = $Purchase->delivery_status;
-            $this->discount = $Purchase->discount;
+            if($Purchase){
+                $this->code = $Purchase->code;
+                $this->ref = $Purchase->ref;
+                $this->warehouse_id = $Purchase->warehouse_id;
+                $this->outlet_id = $Purchase->outlet_id;
+                $this->contact_id = $Purchase->contact_id;
+                $this->payment_status = $Purchase->payment_status;
+                $this->payment_date = $Purchase->payment_date;
+                $this->pmid = $Purchase->pmid;
+                $this->delivery_status = $Purchase->delivery_status;
+                $this->discount = $Purchase->discount;
+                $this->subtotal = $Purchase->subtotal;
+                $this->net_amount = $Purchase->net_amount;
+                $this->additional_charge = $Purchase->additional_charge;
+                $this->paid_amount = $Purchase->paid_amount;
+                $this->due_amount = $Purchase->due_amount;
 
-            $this->name = $Purchase->OrderItem->name;
-            $this->amount = $Purchase->OrderItem->amount;
-            $this->quantity = $Purchase->OrderItem->quantity;
-            $this->received_quantity = $Purchase->OrderItem->received_quantity;
-            $this->subtotal = $Purchase->OrderItem->subtotal;
-            $this->discount_amount = $Purchase->OrderItem->discount_amount;
-        } else {
-            $this->purchaseReset();
+                foreach ($Purchase->OrderItem as $key => $OrderItem) {
+                    $item_rows = collect($this->item_rows);
+                    $item_rows->push($OrderItem->product_id);
+                    $this->item_rows = $item_rows;
+                    $this->item_product_id[$OrderItem->product_id] = $OrderItem->product_id;
+                    $this->item_name[$OrderItem->product_id] = $OrderItem->name;
+                    $this->item_code[$OrderItem->product_id] = $OrderItem->Product->code;
+                    $this->item_price[$OrderItem->product_id] = numberFormat($OrderItem->amount);
+                    $this->item_quantity[$OrderItem->product_id] = $OrderItem->quantity;
+                    $this->item_discount[$OrderItem->product_id] = $OrderItem->discount_amount;
+                    $this->item_subtotal[$OrderItem->product_id] = numberFormat($OrderItem->subtotal);
+                }
+
+                foreach ($Purchase->Transaction as $key => $Transaction) {
+                    $payment_item_rows = collect($this->payment_item_rows);
+                    $payment_item_rows->push([
+                        'transaction_id' => $Transaction->id,
+                        'payment_method_id' => $Transaction->payment_method_id,
+                        'payment_method_name' => $Transaction->payment_method_id ? PaymentMethod::find($Transaction->payment_method_id)->name : null,
+                        'payment_ref' => $Transaction->ref,
+                        'payment_amount' => $Transaction->amount,
+                        'payment_charge' => $Transaction->charge,
+                        'payment_net_amount' => $Transaction->net_amount,
+                        'txn_date' => $Transaction->txn_date ? $Transaction->txn_date->format('Y-m-d') : null,
+                    ]);
+
+                    $this->payment_item_rows = $payment_item_rows;
+                }
+
+            }
         }
-    }
-
-
-
-    #[On('openProductModal')]
-    public function openProductModal($data = [])
-    {
-
-        $this->dispatch('modalOpen', 'productModal');
     }
 
     public function render()
@@ -312,36 +408,5 @@ class PurchaseDetails extends Component
         $outlet = Outlet::all();
         $warehouse = Warehouse::all();
         return view('pages.backend.order.purchase-details', compact('supplier', 'payment', 'order', 'product', 'transaction', 'outlet', 'warehouse'));
-    }
-
-
-
-
-    public function addPayment()
-    {
-        $this->payments[] = [
-            'date' => $this->txn_date,
-            'ref' => $this->purchase_ref,
-            'amount' => $this->payment_amount,
-            'charge' => $this->charges,
-            'payment_method_id' => $this->pmid,
-        ];
-
-            $this->txn_date = "";
-            $this->payment_amount = "";
-            $this->purchase_ref = "";
-            $this->charges = "";
-            $this->pmid = "";
-
-            $this->netAmountUpdate();
-
-    }
-
-
-    public function netAmountUpdate()
-    {
-        // $payment_amount = collect($this->payment_amount)->sum();
-
-        // $this->net_amount = $payment_amount;
     }
 }

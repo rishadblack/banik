@@ -155,7 +155,7 @@
             <div class="row">
                 <div class="col-12">
                     <x-layouts.backend.card class="product-item">
-                        <x-slot:title>Products (2)</x-slot:title>
+                        <x-slot:title>Products ({{count($item_rows)}})</x-slot:title>
                         <x-slot:search>
                             <x-search.products wire:model.live='search_product' class="productSearch"
                                 placeholder="Search Product Name" />
@@ -261,8 +261,12 @@
                                         <b>{{ numberFormat($net_amount, true) }}</b></td>
                                 </tr>
                                 <tr>
+                                    <td colspan="2"><b>Paid Amount</b></td>
+                                    <td class="text-end  text-decoration-underline"><b>{{ numberFormat($paid_amount, true) }}</b></td>
+                                </tr>
+                                <tr>
                                     <td colspan="2"><b>Due</b></td>
-                                    <td class="text-end  text-decoration-underline"><b>00.80 ৳</b></td>
+                                    <td class="text-end  text-decoration-underline"><b>{{ numberFormat($due_amount, true) }}</b></td>
                                 </tr>
 
                             </tbody>
@@ -274,42 +278,36 @@
             <x-layouts.backend.card class="payment-info">
                 <x-slot:title>Payment Info</x-slot:title>
                 <x-slot:button>
-                    <x-button.default wire:click='addPayment' type="button"
-                         class="btn btn-sm btn-theme"> Add
-                        Payment</x-button.default>
-                    <x-button.default type="button" wire:click="addPayment"
-                        class="btn btn-sm btn-danger"> Reset</x-button.default>
+                    <x-button.default wire:click='addPayment' class="btn btn-sm btn-theme"> Add Payment</x-button.default>
+                    <x-button.default wire:click="addPayment" class="btn btn-sm btn-danger"> Reset</x-button.default>
                 </x-slot:button>
                 <div class="row ">
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.select wire:model="pmid" label="Payment Method">
-                            <option value="1">BKash</option>
-                            <option value="2">Rocket</option>
-                            <option value="3">Bank</option>
-                            <option value="4">Nagad</option>
-                        </x-input.select>
+                        <x-search.payment-methods wire:model="payment_method_id" label="Payment Method" />
                     </div>
 
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.text wire:model="purchase_ref" label="Reference" />
+                        <x-input.text wire:model="payment_ref" label="Reference" />
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
                         <x-input.date wire:model="txn_date" label="Date" placeholder="Enter Date" />
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.text-group wire:model="payment_amount" label="Amount">
+                        <x-input.text-group wire:model.live.debounce.500ms="payment_amount" label="Amount">
                             <x-slot:suffix>
                                 <span class="btn btn-default price">৳</span>
                             </x-slot:suffix>
                         </x-input.text-group>
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.text wire:model="charges" label="Charge" />
+                        <x-input.text wire:model.live.debounce.500ms="payment_charge" label="Charge" />
                     </div>
 
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <div class="mt-3 mt-4 float-end fs-4 net-amount text-center shadow"><span class="sm">Net
-                                Amount</span> <span class="value"> {{ numberFormat($net_amount, true)}}</span></div>
+                        <div class="mt-3 mt-4 float-end fs-4 net-amount text-center shadow">
+                            <span class="sm">Net Amount</span>
+                            <span class="value"> {{ numberFormat($payment_net_amount, true)}}</span>
+                        </div>
                     </div>
 
                 </div>
@@ -318,25 +316,25 @@
                     <thead>
                         <th>SL</th>
                         <th>Payment Method</th>
-                        <th>Amount</th>
+                        <th>Ref</th>
                         <th>Charge</th>
                         <th>Date</th>
 
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        @forelse ($payments as $payment)
+                        @forelse ($payment_item_rows as $key => $payment_item)
                             <tr>
                                 <td class="text-center">{{ $loop->iteration }}</td>
-                                <td class="py-1 align-middle">{{ $payment['payment_method_id'] }}
+                                <td class="py-1 align-middle">{{ $payment_item['payment_method_name'] }}
 
                                 </td>
-                                <td>{{ numberFormat($payment['amount'], true)}}</td>
-                                <td>{{ numberFormat($payment['charge'], true)}}</td>
-                                <td>{{ $payment['date'] }}</td>
-                                <td> <button
-                                    class="btn btn-danger btn-sm rounded" style="float:right"><i
-                                        class="fa fa-close"></i></button></td>
+                                <td>{{ $payment_item['payment_ref']}}</td>
+                                <td>{{ numberFormat($payment_item['payment_net_amount'], true)}}</td>
+                                <td>{{ $payment_item['txn_date'] }}</td>
+                                <td> <button wire:click="removePaymentItem('{{ $key }}')" class="btn btn-danger btn-sm rounded" style="float:right">
+                                    <i class="fa fa-close"></i></button>
+                                </td>
 
                             </tr>
                         @empty
@@ -356,14 +354,10 @@
                 <x-slot:title>Purchase Info</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
-                        <x-button.default wire:click="storePurchase" wire:target="storePurchase"
-                            class="btn-success">Save</x-button.default>
-                        <x-button.default wire:click="storePurchase('new')" wire:target="storePurchase"
-                            class="btn-success">Save
-                            & New
+                        <x-button.default wire:click="storePurchase" wire:target="storePurchase" class="btn-success">Save</x-button.default>
+                        <x-button.default wire:click="storePurchase('new')" wire:target="storePurchase" class="btn-success">Save & New
                         </x-button.default>
-                        <a href="{{ route('backend.order.purchase_list') }}"
-                            wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
+                        <a href="{{ route('backend.order.purchase_list') }}" wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>
                 <x-input.text wire:model="code" label="Code" />
