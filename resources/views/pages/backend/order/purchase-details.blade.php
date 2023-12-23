@@ -180,7 +180,7 @@
                             </thead>
                             <tbody>
                                 @forelse ($item_rows as $item_row)
-                                    <tr class="shadow-none" wire:key="product-{{ $item_row }}">
+                                    <tr class="shadow-none" wire:key="payment-{{ $item_row }}">
                                         <td class="text-center">{{ $loop->iteration }}</td>
 
                                         <td class="d-flex text-left">
@@ -274,15 +274,15 @@
             <x-layouts.backend.card class="payment-info">
                 <x-slot:title>Payment Info</x-slot:title>
                 <x-slot:button>
-                    <x-button.default wire:model.live='add_payment' type="button" href="#"
-                        wire:click="addPayment" wire:navigate class="btn btn-sm btn-theme"> Add
+                    <x-button.default wire:click='addPayment' type="button"
+                         class="btn btn-sm btn-theme"> Add
                         Payment</x-button.default>
-                    <x-button.default type="button" href="#" wire:click="addPayment" wire:navigate
+                    <x-button.default type="button" wire:click="addPayment"
                         class="btn btn-sm btn-danger"> Reset</x-button.default>
                 </x-slot:button>
                 <div class="row ">
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.select wire:model="payment_method_id" label="Payment Method">
+                        <x-input.select wire:model="pmid" label="Payment Method">
                             <option value="1">BKash</option>
                             <option value="2">Rocket</option>
                             <option value="3">Bank</option>
@@ -297,19 +297,21 @@
                         <x-input.date wire:model="txn_date" label="Date" placeholder="Enter Date" />
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.text-group wire:model="net_amount" label="Amount">
+                        <x-input.text-group wire:model="payment_amount" label="Amount">
                             <x-slot:suffix>
                                 <span class="btn btn-default price">৳</span>
                             </x-slot:suffix>
                         </x-input.text-group>
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <x-input.text wire:model="charge" label="Charge" />
+                        <x-input.text wire:model="charges" label="Charge" />
                     </div>
+
                     <div class="col-sm-12 col-md-4 col-lg-4">
                         <div class="mt-3 mt-4 float-end fs-4 net-amount text-center shadow"><span class="sm">Net
-                                Amount</span> <span class="value"> $0.00</span></div>
+                                Amount</span> <span class="value"> {{ numberFormat($net_amount, true)}}</span></div>
                     </div>
+
                 </div>
 
                 <table class="table table-striped payment-table shadow">
@@ -323,34 +325,16 @@
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        @forelse ($payment_rows as $payment_row)
-                            <tr wire:key="payment-{{ $payment_row }}">
+                        @forelse ($payments as $payment)
+                            <tr>
                                 <td class="text-center">{{ $loop->iteration }}</td>
-                                <td class="py-1 align-middle">{{ $payment_method_id[$payment_row] }}
-                                    {{-- @if ($transaction->payment_method_id == 1)
-                                        <span
-                                            class="badge bg-teal text-teal-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
-                                                class="fa fa-circle text-teal fs-9px fa-fw me-5px"></i>BKash</span>
-                                    @elseif ($transaction->payment_method_id == 2)
-                                        <span
-                                            class="badge bg-orange text-orange-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
-                                                class="fa fa-circle text-orange fs-9px fa-fw me-5px"></i>Rocket</span>
-                                    @elseif ($transaction->payment_method_id == 3)
-                                        <span
-                                            class="badge bg-primary text-primary-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
-                                                class="fa fa-circle text-primary fs-9px fa-fw me-5px"></i> Bank</i>
-                                        @elseif ($transaction->payment_method_id == 4)
-                                            <span
-                                                class="badge bg-success text-success-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
-                                                    class="fa fa-circle text-success fs-9px fa-fw me-5px"></i>
-                                                Nagad</span>
-                                    @endif --}}
+                                <td class="py-1 align-middle">{{ $payment['payment_method_id'] }}
 
                                 </td>
-                                <td>{{ $payment_amount[$payment_row] }}</td>
-                                <td>{{ $payment_charge[$payment_row] }}</td>
-                                <td>{{ $payment_txn_date[$payment_row] }}</td>
-                                <td> <button wire:click="removeItem('{{ $payment_row }}')"
+                                <td>{{ numberFormat($payment['amount'], true)}}</td>
+                                <td>{{ numberFormat($payment['charge'], true)}}</td>
+                                <td>{{ $payment['date'] }}</td>
+                                <td> <button
                                     class="btn btn-danger btn-sm rounded" style="float:right"><i
                                         class="fa fa-close"></i></button></td>
 
