@@ -15,11 +15,12 @@ use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 class ProductTable extends DataTableComponent
 {
     protected $index = 0;
+    public $alwaysShowBulkActions = true;
 
     public function configure(): void
     {
         $this->setPrimaryKey('id');
-        // $this->setAdditionalSelects(['users.id as id']);
+        $this->setAdditionalSelects(['products.id as id']);
         $this->setSearchPlaceholder('Enter Search Product');
         $this->setSearchDebounce(1000);
         $this->setFilterLayoutSlideDown();
@@ -27,6 +28,26 @@ class ProductTable extends DataTableComponent
             'default' => true,
             'class' => 'custom-dt-thead',
           ]);
+    }
+
+    public array $bulkActions = [
+        'export' => 'Excel',
+        'export("pdf")' => 'PDF',
+    ];
+
+    public function exportConfigure(): void
+    {
+        $exportHeaders = [];
+        // if($this->getAppliedFilterWithValue('districts')) {
+        //     $exportHeaders = array_merge($exportHeaders, [
+        //         'District : ' . District::find($this->getAppliedFilterWithValue('districts'))->name,
+        //     ]);
+        // }
+
+        $this->setExportHeaders($exportHeaders);
+        $this->setExportTitle('Product List');
+        $this->setExportPrimaryKey('products.id');
+        // $this->setExportPdfLocation('core::vesselinfo_pdf');
     }
 
     public function builder(): Builder

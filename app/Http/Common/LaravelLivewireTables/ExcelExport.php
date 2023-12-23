@@ -55,7 +55,7 @@ class ExcelExport implements FromQuery, ShouldQueue, WithStyles, WithEvents, Wit
         $drawing = new Drawing();
         $drawing->setName('Logo');
         $drawing->setDescription('This is my logo');
-        $drawing->setPath(public_path('storage/photos/G838d1mETGciswtzI9YKDeENndHSZRtGZJIN4xeK.jpg'));
+        $drawing->setPath(public_path('images/logo.png'));
         $drawing->setHeight(100);
         $drawing->setCoordinates('A1');
 
@@ -281,14 +281,14 @@ class ExcelExport implements FromQuery, ShouldQueue, WithStyles, WithEvents, Wit
                 $event->sheet->mergeCells(sprintf('A3:%s3', $last_column));
                 $event->sheet->mergeCells(sprintf('A4:%s4', $last_column));
 
-                $drawing = new Drawing();
-                $drawing->setName('Logo');
-                $drawing->setDescription('This is my logo');
-                $drawing->setPath(storage_path('photos/logo.jpg'));
-                $drawing->setHeight(40);
-                $drawing->setWidth(60);
-                $drawing->setCoordinates('A1');
-                $drawing->setWorksheet($event->sheet->getDelegate());
+                // $drawing = new Drawing();
+                // $drawing->setName('Logo');
+                // $drawing->setDescription('This is my logo');
+                // $drawing->setPath(public_path('images/logo.png'));
+                // $drawing->setHeight(40);
+                // $drawing->setWidth(60);
+                // $drawing->setCoordinates('A1');
+                // $drawing->setWorksheet($event->sheet->getDelegate());
 
                 // assign cell values
                 $event->sheet->setCellValue('A1', '');

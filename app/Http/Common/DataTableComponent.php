@@ -22,6 +22,7 @@ abstract class DataTableComponent extends BaseDataTableComponent
     use WithSweetAlert;
 
     public $exportTitle;
+    public $exportPrimaryKey;
     public $exportHeaders = [];
     public $exportPaperSize;
     public $exportOrientation;
@@ -73,9 +74,6 @@ abstract class DataTableComponent extends BaseDataTableComponent
             $this->exportFileName = Str::kebab($this->getTableName());
         }
 
-
-
-
         if ($this->exportPdfLocation && $format == 'pdf') {
             $pdf = PDF::loadView($this->exportPdfLocation, [
                 'title' => $this->exportTitle,
@@ -94,13 +92,14 @@ abstract class DataTableComponent extends BaseDataTableComponent
 
         $class = new ExcelExport();
         $class->setTitleText($this->exportTitle);
-        $class->setQuery($this->getExportQuery($this->getPrimaryKey()));
+        $class->setQuery($this->getExportQuery($this->exportPrimaryKey??$this->getPrimaryKey()));
         $class->setHeaderText($this->exportHeaders);
         $class->setPaperSize($this->exportPaperSize);
         $class->setOrientation($this->exportOrientation);
         $class->setColumns($this->getExportColumn());
 
-        return Excel::download($class, $this->exportFileName . '-' . now()->format('d-m-y-h-i') . '.' . $format, $formarLoader);
+        // return Excel::download($class, $this->exportFileName . '-' . now()->format('d-m-y-h-i') . '.' . $format, $formarLoader);
+        return Excel::store($class, $this->exportFileName . '-' . now()->format('d-m-y-h-i') . '.' . $format, 'local', $formarLoader);
     }
 
     public function getExportColumn($blockColumn = [])
@@ -139,6 +138,12 @@ abstract class DataTableComponent extends BaseDataTableComponent
     public function exportConfigure()
     {
         //
+    }
+
+    public function setExportPrimaryKey($PrimaryKey)
+    {
+        $this->exportPrimaryKey = $PrimaryKey;
+        return $this;
     }
 
     public function setExportTitle($title)
