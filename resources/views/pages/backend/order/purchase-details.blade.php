@@ -159,11 +159,11 @@
                                 placeholder="Search Product Name" />
                         </x-slot:search>
 
-                        <x-slot:button>
+                        {{-- <x-slot:button>
                             <x-button.default type="button" class="btn btn-sm rounded btn-info" x-data
                                 @click="$dispatch('openProductModal')">Add
                                 Product</x-button.default>
-                        </x-slot:button>
+                        </x-slot:button> --}}
 
 
                         <table class="table table-striped ">
