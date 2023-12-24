@@ -142,73 +142,63 @@
                     <x-layouts.backend.card class="product-item">
                         <x-slot:title>Products (2)</x-slot:title>
                         <x-slot:search>
-                            <x-input.select class="productSearch" placeholder="Search Product Name">
-
-                            </x-input.select>
+                            <x-search.products wire:model.live='search_product' class="productSearch" placeholder="Search Product Name" />
                         </x-slot:search>
 
                         <x-slot:button>
-                            <x-button.default type="button" class="btn btn-sm rounded btn-info" data-bs-toggle="modal"
-                                data-bs-target="#openProductAddModal">Add
+                            <x-button.default type="button" class="btn btn-sm rounded btn-info" x-data @click="$dispatch('openProductModal')">Add
                                 Product</x-button.default>
                         </x-slot:button>
 
-
                         <table class="table table-striped ">
-                            <thead class="text-center">
-                                <th class="sl">SL</th>
-                                <th class="text-center">Product Name</th>
-                                {{-- <th class="widthtd">Purchase Price</th> --}}
-                                <th class="widthtd">Quantity</th>
-                                {{-- <th class="widthtd">Discount</th> --}}
+                            <thead>
+                                <th>SL</th>
+                                <th>Product Name</th>
+                                <th class="width text-center">Quantity</th>
+                                {{-- <th class="width text-center">Discount</th> --}}
+                                <th class="text-end" >Action</th>
                             </thead>
                             <tbody>
-                                <tr class="shadow-none">
-                                    <td class="text-center">1</td>
-                                    <td class="d-flex">
-                                        <div
-                                            class="h-65px w-65px d-flex align-items-center position-relative bg-body rounded p-2">
-                                            <img src="{{ asset('backend/assets/img/product/product-2.png') }}" alt
-                                                class="mw-100 mh-100">
-                                            <span
-                                                class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">1</span>
-                                        </div>
-                                        <div class="ps-6 flex-1 ">
-                                            <div><a href="#" class="text-decoration-none text-body">iPhone 14 Pro
-                                                    Max</a>
+                                @forelse ($item_rows as $item_row)
+
+                                <tr class="shadow-none" wire:key="product-{{$item_row}}">
+                                    <td class="text-center">{{ $loop->iteration}}</td>
+
+                                    <td class="d-flex text-left">
+                                        <div class="flex-1 ">
+                                            <div><a href="#" class="text-decoration-none text-body">{{ $item_name[$item_row]}}</a>
                                             </div>
                                             <div class="text-body text-opacity-50 small ">
-                                                SKU: IP14PROMAX-512
+                                                SKU: {{ $item_code[$item_row]}}
                                             </div>
                                             <div class="text-body text-opacity-50 small">
-                                                Stock : 0 , Receive product : 0
+                                                Stock : 0; Delivery product : 0
                                             </div>
                                         </div>
                                     </td>
-                                    {{-- <td><x-input.text-order wire:model="amount" class="widthtd" placeholder="" /></td> --}}
-                                    <td><x-input.text-order wire:model="quantity" class="widthtd" placeholder="" />
-                                        <div class="text-body text-opacity-50 small d-flex float-end subtotal">
-                                            Subtotal : 0
-                                        </div>
-                                    </td>
-                                    {{-- <td class="text-center"><x-input.text-order wire:model="discount" class="widthtd"
-                                            placeholder="" />
-                                        <div class="text-body text-opacity-50 small d-flex float-end subtotal">
-                                            Subtotal : 0
-                                        </div>
+                                    {{-- <td><x-input.text-order wire:model.live.debounce.500ms="item_price.{{$item_row}}" class="widthtd" placeholder="" /></td> --}}
+                                    <td><x-input.text-order wire:model.live.debounce.500ms="item_quantity.{{$item_row}}" class="widthtd" placeholder="" /></td>
+                                    {{-- <td class="text-center"><x-input.text-order wire:model.live.debounce.500ms="item_discount.{{$item_row}}" class="widthtd" placeholder="" />
                                     </td> --}}
+                                    {{-- <td class="text-center">
+                                        {{ numberFormat($item_subtotal[$item_row], true) }}
+                                    </td> --}}
+                                    <td> <button wire:click="removeItem('{{ $item_row }}')" class="btn btn-danger btn-sm rounded" style="float:right"><i class="fa fa-close"></i></button></td>
 
                                 </tr>
-
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">No Data Found</td>
+                                    </tr>
+                                @endforelse
 
                             </tbody>
                         </table>
                     </x-layouts.backend.card>
                 </div>
 
-                <div class="col-lg-5 offset-lg-7">
+                {{-- <div class="col-lg-5 offset-lg-7">
                     <x-layouts.backend.card>
-                        {{-- <x-slot:title>Payment Records</x-slot:title> --}}
                         <x-slot:button>
                             <a href="#" class="ms-auto text-decoration-none fs-13px text-body text-opacity-50"><i
                                     class="fab fa-paypal me-1 fa-lg"></i> View paypal records</a>
@@ -222,7 +212,6 @@
                                 </tr>
                                 <tr class="mb-1">
                                     <td class="w-150px">Discount</td>
-                                    {{-- <td><x-input.text wire:model="discount" class="width" placeholder="" /></td> --}}
                                     <td></td>
                                     <td class="text-end">$3,496.00</td>
                                 </tr>
@@ -234,7 +223,6 @@
                                 <tr class="mb-1">
                                     <td class="w-150px">Additional Charge</td>
                                     <td></td>
-                                    {{-- <td><x-input.text wire:model="additional_charge" class="width" placeholder="" /></td> --}}
                                     <td class="text-end">$3,496.00</td>
                                 </tr>
                                 <tr>
@@ -258,7 +246,7 @@
                             </tbody>
                         </table>
                     </x-layouts.backend.card>
-                </div>
+                </div> --}}
             </div>
 
 

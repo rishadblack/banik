@@ -21,6 +21,8 @@ class QuotationDetails extends Component
 
     #[Url]
     public $quotation_id;
+    public $search_product;
+
     public $contact_id;
     public $product_id;
     public $ref;
@@ -40,6 +42,102 @@ class QuotationDetails extends Component
     public $payment_method_id;
     public $delivery_charge;
     public $payment_date;
+    public $net_amount;
+
+    public $item_rows = [];
+    public $item_product_id = [];
+    public $item_name = [];
+    public $item_code = [];
+    public $item_price = [];
+    public $item_quantity = [];
+    public $item_discount = [];
+    public $item_subtotal = [];
+
+    public function updatedSearchProduct($value)
+    {
+        if(empty($value)){
+            return true;
+        }
+
+        $Product = Product::find($value);
+
+        $item_rows = collect($this->item_rows);
+
+        if($item_rows->contains($Product->id)){
+            $this->alert('error', 'Product Already Added!');
+            return true;
+        }
+
+        $item_rows->push($Product->id);
+        $this->item_rows = $item_rows;
+
+        $this->item_product_id[$Product->id] = $Product->id;
+        $this->item_name[$Product->id] = $Product->name;
+        $this->item_code[$Product->id] = $Product->code;
+        $this->item_price[$Product->id] = $Product->net_purchase_price;
+        $this->item_quantity[$Product->id] = 1;
+        $this->item_discount[$Product->id] = 0;
+        $this->item_subtotal[$Product->id] = $Product->net_purchase_price;
+
+        $this->reset('search_product');
+        $this->dispatch('search_product_reset');
+    }
+
+    public function updatedItemPrice($value, $productId)
+    {
+        $this->ItemRowsUpdate($productId);
+    }
+
+    public function updatedItemQuantity($value, $productId)
+    {
+        $this->ItemRowsUpdate($productId);
+    }
+
+    public function updatedItemDiscount($value, $productId)
+    {
+        $this->ItemRowsUpdate($productId);
+    }
+
+    public function ItemRowsUpdate($productId)
+    {
+        $item_price = isset($this->item_price[$productId]) && $this->item_price[$productId] > 0 ? $this->item_price[$productId] : 0;
+        $item_quantity = isset($this->item_quantity[$productId]) && $this->item_quantity[$productId] > 0 ? $this->item_quantity[$productId] : 1;
+        $item_discount = isset($this->item_discount[$productId]) && $this->item_discount[$productId] > 0 ? $this->item_discount[$productId] : 0;
+
+        $this->item_subtotal[$productId] = ($item_price * $item_quantity) - $item_discount;
+
+        $this->rowsUpdate();
+    }
+
+    public function rowsUpdate()
+    {
+        $item_subtotal = collect($this->item_subtotal)->sum();
+        $item_quantity = collect($this->item_quantity)->sum();
+        $item_discount = collect($this->item_discount)->sum();
+
+        $this->subtotal = $item_subtotal;
+        $this->net_amount = $item_subtotal;
+        $this->discount = $item_discount;
+    }
+
+    public function removeItem($productId)
+    {
+        $item_rows = collect($this->item_rows);
+        $item_rows = $item_rows->filter(function ($value, $key) use ($productId) {
+            return $value != $productId;
+        });
+        $this->item_rows = $item_rows;
+
+        unset($this->item_product_id[$productId]);
+        unset($this->item_name[$productId]);
+        unset($this->item_code[$productId]);
+        unset($this->item_price[$productId]);
+        unset($this->item_quantity[$productId]);
+        unset($this->item_discount[$productId]);
+        unset($this->item_subtotal[$productId]);
+
+        $this->rowsUpdate();
+    }
 
     public function storeQuotation($storeType = null)
     {
@@ -67,17 +165,20 @@ class QuotationDetails extends Component
         $Quotation->sales_person = $this->sales_person;
         $Quotation->save();
 
-        $QuotationInfo = $Quotation->OrderItem()->firstOrNew();
-        $QuotationInfo->user_id =  $Quotation->user_id;
-        $QuotationInfo->order_id = $Quotation->id;
-        $QuotationInfo->product_id = $this->product_id;
-        $QuotationInfo->name = $this->name??0;
-        $QuotationInfo->amount = $this->amount??0;
-        $QuotationInfo->quantity = $this->quantity??0;
-        $QuotationInfo->discount_amount = $this->discount_amount??0;
-        $QuotationInfo->subtotal = $this->subtotal??0;
-        $QuotationInfo->received_quantity = $this->received_quantity??0;
-        $QuotationInfo->save();
+        foreach ($this->item_rows as $key => $value) {
+            $QuotationInfo = $Quotation->OrderItem()->where('product_id',$this->item_product_id[$value])->firstOrNew(['order_id' => $Quotation->id, 'product_id' => $this->item_product_id[$value]]);
+            $QuotationInfo->user_id = $Quotation->user_id;
+            $QuotationInfo->order_id = $Quotation->id;
+            $QuotationInfo->product_id = $value;
+            $QuotationInfo->name = $this->item_name[$value];
+            $QuotationInfo->amount = $this->item_price[$value];
+            $QuotationInfo->quantity = $this->item_quantity[$value];
+            $QuotationInfo->discount_amount = $this->item_discount[$value];
+            $QuotationInfo->subtotal = $this->item_subtotal[$value];
+            $QuotationInfo->save();
+        }
+
+
 
         if($storeType == 'new'){
             $this->quotationReset();

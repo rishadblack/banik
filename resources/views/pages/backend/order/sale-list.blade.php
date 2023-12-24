@@ -58,6 +58,9 @@
             color: #fff;
             margin-left: 10px;
         }
+        .btn-warning{
+            background-color: var(--bs-btn-hover-bg);
+        }
     </style>
 @endpush
 <div>

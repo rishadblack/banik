@@ -14,6 +14,9 @@ class ChartOfAccount extends Model
     use SoftDeletes;
     protected $guarded = [];
     public $timestamps = true;
+    protected $casts = [
+        'is_admin' => 'boolean',
+    ];
 
     public function scopeActive($query)
     {

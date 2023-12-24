@@ -88,11 +88,11 @@ class PurchaseTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-            Column::make('Quantity', 'OrderItem.quantity')
+            // Column::make('Quantity', 'OrderItem.quantity')
 
-                ->sortable()
-                ->searchable()
-                ->deselected(),
+            //     ->sortable()
+            //     ->searchable()
+            //     ->deselected(),
             Column::make('Create BY', 'User.name')
                 ->format(
                     fn ($value, $row, Column $column) => $value ? $value : '-'
@@ -104,7 +104,7 @@ class PurchaseTable extends DataTableComponent
             Column::make('Payment Status', 'payment_status')
                 ->format(
                     fn ($value, $row, Column $column) => $value ? '<span class="badge bg-primary text-primary-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
-                    class="fa fa-circle text-primary fs-9px fa-fw me-5px"></i>' . config("status.delivery_status.{$value}.name") . '</span>' : ''
+                    class="fa fa-circle text-primary fs-9px fa-fw me-5px"></i>' . config("status.payment_status.{$value}.name") . '</span>' : ''
                 )->sortable()->html(),
             Column::make('Delivery Status', 'delivery_status')
                 ->format(
@@ -122,6 +122,18 @@ class PurchaseTable extends DataTableComponent
                                 'class' => 'badge bg-success me-1 p-2 ',
                                 'icon' => 'fa fa-edit',
                                 'title' => 'Edit',
+
+                            ];
+                        }),
+                        LinkColumn::make('Print')
+                        ->title(fn ($row) => 'Print')
+                        ->location(fn ($row) => route('invoice.purchase',['id' => $row->id]))
+                        ->attributes(function ($row) {
+                            return [
+                                'data-id' => $row->id,
+                                'class' => 'badge bg-warning me-1 p-2 ',
+                                'icon' => 'fa fa-print',
+                                'title' => 'Print',
 
                             ];
                         }),

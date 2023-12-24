@@ -154,6 +154,8 @@ class SaleList extends Component
     public function render()
     {
         $transaction = Transaction::all();
-        return view('pages.backend.order.sale-list',compact('transaction'));
+        $sales = Order::where('type', 1)
+        ->firstOrFail();
+        return view('pages.backend.order.sale-list',compact('transaction','sales'));
     }
 }
