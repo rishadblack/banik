@@ -160,8 +160,8 @@
 
                         <td width=121 colspan=2 style='width:91.1pt;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
                             <p class=MsoNormal
-                                style='margin-bottom:0in;line-height:normal;margin-top:5px;margin-top:5px'><span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $purchase->code }}</span>
+                                style='margin-bottom:0in;line-height:normal;margin-top:5px;margin-top:5px'>{{ $purchase->code }}<span
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'></span>
                             </p>
 
                         </td>
@@ -470,7 +470,7 @@
                         <td width=421 colspan=4
                             style='width:315.4pt;border-top:none;border-left: solid windowtext 1.0pt;border-bottom:none;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
                             <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:5px'><span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>Sale Note : [Note]</span>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>Purchase Note : {{$purchase->ref}}</span>
                             </p>
 
                         </td>
@@ -488,7 +488,7 @@
                             style='width:72.15pt;border:none;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
                             <p class=MsoNormal align=right
                                 style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:5px'>
-                                <span style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Subtotal]</span>
+                                <span style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{$purchase->subtotal}}</span>
                             </p>
 
                         </td>
@@ -532,7 +532,7 @@
                             style='width:72.15pt;border:none;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
                             <p class=MsoNormal align=right
                                 style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:5px'>
-                                <span style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Discount]</span>
+                                <span style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{$purchase->discount}}</span>
                             </p>
 
                         </td>
@@ -558,7 +558,7 @@
                             style='width:72.65pt;border-top:none;border-left:none; border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
                             <p class=MsoNormal align=right
                                 style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:5px'>
-                                <span style='font-size:8.0pt;font-family:"Arial",sans-serif'>[This_Bill]</span>
+                                <span style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{$purchase->amount}}</span>
                             </p>
 
                         </td>
@@ -604,7 +604,7 @@
                             <p class=MsoNormal align=right
                                 style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:5px'>
                                 <b><span
-                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Current_Due]</span></b>
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{$purchase->due_amount}}</span></b>
                             </p>
 
                         </td>
@@ -623,7 +623,7 @@
                             <p class=MsoNormal align=right
                                 style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:5px'>
                                 <b><span
-                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Total_Amount]</span></b>
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{$purchase->net_amount}}</span></b>
                             </p>
 
                         </td>
@@ -665,7 +665,7 @@
                             style='width:72.15pt;border-top:none;border-left:none; border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
                             <p class=MsoNormal align=right
                                 style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:5px'>
-                                <span style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Payment]</span>
+                                <span style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{$purchase->paid_amount}}</span>
                             </p>
 
                         </td>
@@ -693,7 +693,7 @@
                             style='width:72.15pt;border-top:none;border-left:none; border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
                             <p class=MsoNormal align=right
                                 style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:5px'>
-                                <b><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Due_amount]</span></b>
+                                <b><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{$purchase->due_amount}}</span></b>
                             </p>
 
                         </td>

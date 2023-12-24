@@ -24,6 +24,11 @@
             color: #3939a8;
         }
 
+        .widthtd {
+            width: 90px!important;
+            height: 27px;
+        }
+
         .btn-info {
             border-radius: 10px !important;
             margin-left: 147px;
@@ -120,20 +125,13 @@
             width: 225px;
         }
 
-        .net-amount .sm {
-            font-size: 14px;
-            padding-bottom: 5px;
+        .sm {
+            font-size: 12;
         }
 
-        .net-amount .value {
-            background-color: #91caf4;
-            padding: 0px 3px 2px;
-            margin-left: 5px;
-            font-weight: 700;
-            font-size: 20px;
-            display: inline;
-            border-radius: 15px;
-            margin-top: 2px !important;
+        .smvalue {
+            font-weight: 600;
+            font-size: 17px;
         }
 
         .shadow {
@@ -155,7 +153,7 @@
             <div class="row">
                 <div class="col-12">
                     <x-layouts.backend.card class="product-item">
-                        <x-slot:title>Products ({{count($item_rows)}})</x-slot:title>
+                        <x-slot:title>Products ({{ count($item_rows) }})</x-slot:title>
                         <x-slot:search>
                             <x-search.products wire:model.live='search_product' class="productSearch"
                                 placeholder="Search Product Name" />
@@ -228,16 +226,21 @@
                 <div class="col-lg-7 charges">
                     <x-layouts.backend.card class="shadow">
                         <div class="row mb-1">
-                            <div class="col-7">Discount</div>
-                            <div class="col-5 text-end"><b>{{ numberFormat($discount, true) }}</b></div>
+                            <div class="col-8">Discount</div>
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="discount"
+                                    class="widthtd"
+                                    placeholder=""><b>{{ numberFormat($discount, true) }}</b></x-input.text-order>
+                            </div>
                         </div>
                         <div class="row mb-1">
-                            <div class="col-7">Tax</div>
-                            <div class="col-5 text-end"><b>0.00 ৳</b></div>
+                            <div class="col-8">Tax</div>
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms=""
+                                    class="widthtd" placeholder=""><b>0</b></x-input.text-order></div>
                         </div>
                         <div class="row">
-                            <div class="col-7">Shipping Charge</div>
-                            <div class="col-5 text-end"><b>0.00 ৳</b></div>
+                            <div class="col-8">Shipping Charge</div>
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms=""
+                                    class="widthtd" placeholder=""><b>0</b></x-input.text-order></div>
                         </div>
                     </x-layouts.backend.card>
                 </div>
@@ -258,15 +261,18 @@
                                 <tr>
                                     <td colspan="2"><b>Total</b></td>
                                     <td class="text-end text-decoration-underline">
-                                        <b>{{ numberFormat($net_amount, true) }}</b></td>
+                                        <b>{{ numberFormat($net_amount, true) }}</b>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Paid Amount</b></td>
-                                    <td class="text-end  text-decoration-underline"><b>{{ numberFormat($paid_amount, true) }}</b></td>
+                                    <td class="text-end  text-decoration-underline">
+                                        <b>{{ numberFormat($paid_amount, true) }}</b></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Due</b></td>
-                                    <td class="text-end  text-decoration-underline"><b>{{ numberFormat($due_amount, true) }}</b></td>
+                                    <td class="text-end  text-decoration-underline">
+                                        <b>{{ numberFormat($due_amount, true) }}</b></td>
                                 </tr>
 
                             </tbody>
@@ -278,7 +284,8 @@
             <x-layouts.backend.card class="payment-info">
                 <x-slot:title>Payment Info</x-slot:title>
                 <x-slot:button>
-                    <x-button.default wire:click='addPayment' class="btn btn-sm btn-theme"> Add Payment</x-button.default>
+                    <x-button.default wire:click='addPayment' class="btn btn-sm btn-theme"> Add
+                        Payment</x-button.default>
                     <x-button.default wire:click="addPayment" class="btn btn-sm btn-danger"> Reset</x-button.default>
                 </x-slot:button>
                 <div class="row ">
@@ -304,9 +311,9 @@
                     </div>
 
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <div class="mt-3 mt-4 float-end fs-4 net-amount text-center shadow">
+                        <div class="mt-3 mt-4 float-end form-control text-center shadow">
                             <span class="sm">Net Amount</span>
-                            <span class="value"> {{ numberFormat($payment_net_amount, true)}}</span>
+                            <span class="smvalue"> {{ numberFormat($payment_net_amount, true) }}</span>
                         </div>
                     </div>
 
@@ -317,7 +324,7 @@
                         <th>SL</th>
                         <th>Payment Method</th>
                         <th>Ref</th>
-                        <th>Charge</th>
+                        <th>Amount</th>
                         <th>Date</th>
 
                         <th>Action</th>
@@ -329,11 +336,12 @@
                                 <td class="py-1 align-middle">{{ $payment_item['payment_method_name'] }}
 
                                 </td>
-                                <td>{{ $payment_item['payment_ref']}}</td>
-                                <td>{{ numberFormat($payment_item['payment_net_amount'], true)}}</td>
+                                <td>{{ $payment_item['payment_ref'] }}</td>
+                                <td>{{ numberFormat($payment_item['payment_net_amount'], true) }}</td>
                                 <td>{{ $payment_item['txn_date'] }}</td>
-                                <td> <button wire:click="removePaymentItem('{{ $key }}')" class="btn btn-danger btn-sm rounded" style="float:right">
-                                    <i class="fa fa-close"></i></button>
+                                <td> <button wire:click="removePaymentItem('{{ $key }}')"
+                                        class="btn btn-danger btn-sm rounded" style="float:right">
+                                        <i class="fa fa-close"></i></button>
                                 </td>
 
                             </tr>
@@ -354,10 +362,13 @@
                 <x-slot:title>Purchase Info</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
-                        <x-button.default wire:click="storePurchase" wire:target="storePurchase" class="btn-success">Save</x-button.default>
-                        <x-button.default wire:click="storePurchase('new')" wire:target="storePurchase" class="btn-success">Save & New
+                        <x-button.default wire:click="storePurchase" wire:target="storePurchase"
+                            class="btn-success">Save</x-button.default>
+                        <x-button.default wire:click="storePurchase('new')" wire:target="storePurchase"
+                            class="btn-success">Save & New
                         </x-button.default>
-                        <a href="{{ route('backend.order.purchase_list') }}" wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
+                        <a href="{{ route('backend.order.purchase_list') }}"
+                            wire:navigate="true"class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>
                 <x-input.text wire:model="code" label="Code" />
@@ -385,12 +396,13 @@
             </x-layouts.backend.card>
             <x-layouts.backend.card>
                 <x-slot:title>Status</x-slot:title>
-                <x-input.select wire:model="payment_status" label="Payment Status">
+                {{-- <x-input.select wire:model="payment_status" label="Payment Status">
                     <option value="1">Receipt</option>
                     <option value="2">Pending</option>
                     <option value="3">Hold</option>
                     <option value="4">Cancle</option>
-                </x-input.select>
+                </x-input.select> --}}
+                <x-input.select wire:model="payment_status" label="Payment Status" :options="config('status.payment_status')"/>
                 <x-input.select wire:model="delivery_status" label="Delivery Status">
                     <option value="1">Receipt</option>
                     <option value="2">Pending</option>

@@ -17,25 +17,25 @@ return [
             'icon' => '',
         ],
     ],
-    'delivery_status' => [
+    'payment_status' => [
         1 => [
             'id' => 1,
-            'name' => 'Complete',
-            'value' => 'complete',
+            'name' => 'Paid',
+            'value' => 'paid',
             'class' => 'success',
             'icon' => '',
         ],
         2 => [
             'id' => 2,
-            'name' => 'Incomplete',
-            'value' => 'incomplete',
+            'name' => 'Due',
+            'value' => 'due',
             'class' => 'danger',
             'icon' => '',
         ],
         3 => [
             'id' => 3,
-            'name' => 'Pending',
-            'value' => 'pending',
+            'name' => 'Cancle',
+            'value' => 'cancle',
             'class' => 'danger',
             'icon' => '',
         ],

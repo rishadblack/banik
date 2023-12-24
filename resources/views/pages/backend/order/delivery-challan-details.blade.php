@@ -149,7 +149,7 @@
             <div class="row">
                 <div class="col-12">
                     <x-layouts.backend.card class="product-item">
-                        <x-slot:title>Products (2)</x-slot:title>
+                        <x-slot:title>Products ({{ count($item_rows) }})</x-slot:title>
                         <x-slot:search>
                             <x-search.products wire:model.live='search_product' class="productSearch" placeholder="Search Product Name" />
                         </x-slot:search>
