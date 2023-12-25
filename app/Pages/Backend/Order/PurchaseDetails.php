@@ -249,6 +249,9 @@ class PurchaseDetails extends Component
             $this->purchase_id = $Purchase->id;
         }
 
+        $this->dispatch('print', [
+            'url' => route('invoice.purchase',['id' => $Purchase->id]),
+        ]);
 
         $this->alert('success', $message);
         $this->dispatch('refreshDatatable');

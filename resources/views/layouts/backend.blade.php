@@ -350,6 +350,9 @@
         </div>
 
         <a href="#" data-click="scroll-top" class="btn-scroll-top fade"><i class="fa fa-arrow-up"></i></a>
+        <div class="d-none">
+            <iframe src="" id="printInvoice" name="printf" frameborder="0"></iframe>
+        </div>
     </div>
 
     <script src="{{ asset('backend/assets/js/vendor.min.js') }}?v={{ now() }}" type="text/javascript"></script>
@@ -394,6 +397,16 @@
             Livewire.dispatch($(this).data('listener'), {
                 data: $(this).data()
             });
+        });
+
+        window.addEventListener('print', event => {
+            if(typeof event.detail.url !== 'undefined' ){
+                $('iframe#printInvoice').attr('src', event.detail.url);
+            }else if(typeof event.detail.data !== 'undefined'){
+                $('iframe#printInvoice').attr('src', event.detail.data.url);
+            }else{
+                $('iframe#printInvoice').attr('src', event.detail[0].url);
+            }
         });
     </script>
     @stack('js')

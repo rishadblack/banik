@@ -142,14 +142,16 @@ class PurchaseTable extends DataTableComponent
                         }),
                         LinkColumn::make('Print')
                         ->title(fn ($row) => 'Print')
-                        ->location(fn ($row) => route('invoice.purchase',['id' => $row->id]))
+                        ->location(fn ($row) => 'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
+                                'data-listener' => 'print',
+                                'data-url' => route('invoice.purchase',['id' => $row->id]),
                                 'class' => 'badge bg-warning me-1 p-2 ',
                                 'icon' => 'fa fa-print',
                                 'title' => 'Print',
-                                'target'=>"_blank",
+                                // 'target'=>"_blank",
                             ];
                         }),
                     LinkColumn::make(' Delete')
@@ -162,7 +164,6 @@ class PurchaseTable extends DataTableComponent
                                 'class' => 'badge bg-danger me-1 p-2 ',
                                 'icon' => 'fa fa-trash',
                                 'title' => 'Delete',
-
                             ];
                         }),
                 ]),

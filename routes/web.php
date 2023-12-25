@@ -76,9 +76,9 @@ Route::group(['prefix' => 'invoice', 'as' => 'invoice.'], function () {
     Route::get('purchase/{id}', [InvoiceController::class, 'purchaseInvoice'])->name('purchase');
 });
 
-Route::permanentRedirect('/', 'admin');
+Route::permanentRedirect('/', 'member');
 
-Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'member', 'as' => 'backend.', 'middleware' => ['auth']], function () {
     Route::get('/', Dashboard::class)->name('dashboard');
     Route::get('profile', Profile::class)->name('profile');
     Route::get('change-password', ChangePassword::class)->name('change_password');

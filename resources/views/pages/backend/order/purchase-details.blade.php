@@ -364,8 +364,9 @@
                 <x-slot:title>Purchase Info</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
-                        <x-button.default wire:click="storePurchase" wire:target="storePurchase"
-                            class="btn-success">Save</x-button.default>
+
+                        <x-button.default wire:click="$dispatch('print', { url:'{{route('invoice.purchase',['id' => $purchase_id])}}' })" class="btn-success">Print</x-button.default>
+                        <x-button.default wire:click="storePurchase" wire:target="storePurchase" class="btn-success">Save</x-button.default>
                         <x-button.default wire:click="storePurchase('new')" wire:target="storePurchase"
                             class="btn-success">Save & New
                         </x-button.default>

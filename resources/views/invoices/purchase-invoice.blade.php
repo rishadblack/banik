@@ -676,8 +676,7 @@
                         <td width=421 colspan=4
                             style='width:315.4pt;border:solid windowtext 1.0pt; border-top:none;padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
                             <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:0px'><span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>Amount in Word :
-                                    [Amount_in_Word]</span></p>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>Amount in Word : {{numberToWord($order->net_amount)}}</span></p>
 
                         </td>
                         <td width=180 colspan=2
@@ -900,7 +899,7 @@
         </div>
     </div>
     <script>
-        // window.print()
+        window.print();
     </script>
 </body>
 
