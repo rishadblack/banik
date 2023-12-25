@@ -208,13 +208,13 @@
                         </div>
                         <div class="row mb-1">
                             <div class="col-8">Tax</div>
-                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms=""
-                                    class="widthtd" placeholder=""><b>0</b></x-input.text-order></div>
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="vat"
+                                    class="widthtd" placeholder=""></x-input.text-order></div>
                         </div>
                         <div class="row">
                             <div class="col-8">Shipping Charge</div>
-                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms=""
-                                    class="widthtd" placeholder=""><b>0</b></x-input.text-order></div>
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="shipping_date"
+                                    class="widthtd" placeholder=""></x-input.text-order></div>
                         </div>
                     </x-layouts.backend.card>
                 </div>
@@ -350,6 +350,7 @@
                     </div>
                 </x-slot:button>
                 <x-input.text wire:model="code" label="Code" />
+                <x-input.date wire:model="order_date" label="Order Date" placeholder="Order Date"/>
                 <x-input.text wire:model="ref" label="Reference" />
 
                 <x-input.text wire:model="sales_person" label="Sales Person" />

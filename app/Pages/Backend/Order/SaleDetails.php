@@ -51,6 +51,9 @@ class SaleDetails extends Component
     public $charge;
     public $paid_amount;
     public $due_amount;
+    public $order_date;
+    public $vat;
+    public $shipping_charge;
 
     //Purchase item
     public $item_rows = [];
@@ -179,7 +182,6 @@ class SaleDetails extends Component
             $Sale->user_id = Auth::id();
         }
 
-
         $Sale->code = $this->code;
         $Sale->ref = $this->ref;
         $Sale->warehouse_id = $this->warehouse_id;
@@ -189,6 +191,15 @@ class SaleDetails extends Component
         $Sale->payment_status = $this->payment_status;
         $Sale->delivery_status = $this->delivery_status;
         $Sale->sales_person = $this->sales_person??0;
+        $Sale->discount = $this->discount ?? 0;
+        $Sale->subtotal = $this->subtotal ?? 0;
+        $Sale->net_amount = $this->net_amount ?? 0;
+        $Sale->additional_charge = $this->additional_charge ?? 0;
+        $Sale->vat = $this->vat ?? 0;
+        $Sale->order_date = $this->order_date ?? 0;
+        $Sale->shipping_charge = $this->shipping_charge ?? 0;
+        $Sale->paid_amount = $this->paid_amount ?? 0;
+        $Sale->due_amount = $this->due_amount ?? 0;
         $Sale->save();
 
         foreach ($this->item_rows as $key => $value) {

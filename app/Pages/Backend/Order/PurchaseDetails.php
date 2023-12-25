@@ -52,6 +52,9 @@ class PurchaseDetails extends Component
     public $charge;
     public $paid_amount;
     public $due_amount;
+    public $shipping_charge;
+    public $vat;
+    public $order_date;
 
     //Purchase item
     public $item_rows = [];
@@ -194,6 +197,9 @@ class PurchaseDetails extends Component
         $Purchase->subtotal = $this->subtotal ?? 0;
         $Purchase->net_amount = $this->net_amount ?? 0;
         $Purchase->additional_charge = $this->additional_charge ?? 0;
+        $Purchase->vat = $this->vat ?? 0;
+        $Purchase->order_date = $this->order_date;
+        $Purchase->shipping_charge = $this->shipping_charge ?? 0;
         $Purchase->paid_amount = $this->paid_amount ?? 0;
         $Purchase->due_amount = $this->due_amount ?? 0;
         $Purchase->save();
@@ -367,8 +373,11 @@ class PurchaseDetails extends Component
                 $this->payment_status = $Purchase->payment_status;
                 $this->payment_date = $Purchase->payment_date;
                 $this->pmid = $Purchase->pmid;
+                $this->order_date = $Purchase->order_date;
                 $this->delivery_status = $Purchase->delivery_status;
-                $this->discount = $Purchase->discount;
+                $this->discount = numberFormat($Purchase->discount);
+                $this->vat = numberFormat($Purchase->vat);
+                $this->shipping_charge = numberFormat($Purchase->shipping_charge);
                 $this->subtotal = $Purchase->subtotal;
                 $this->net_amount = $Purchase->net_amount;
                 $this->additional_charge = $Purchase->additional_charge;
@@ -384,7 +393,7 @@ class PurchaseDetails extends Component
                     $this->item_code[$OrderItem->product_id] = $OrderItem->Product->code;
                     $this->item_price[$OrderItem->product_id] = numberFormat($OrderItem->amount);
                     $this->item_quantity[$OrderItem->product_id] = $OrderItem->quantity;
-                    $this->item_discount[$OrderItem->product_id] = $OrderItem->discount_amount;
+                    $this->item_discount[$OrderItem->product_id] = numberFormat($OrderItem->discount_amount);
                     $this->item_subtotal[$OrderItem->product_id] = numberFormat($OrderItem->subtotal);
                 }
 
@@ -395,9 +404,9 @@ class PurchaseDetails extends Component
                         'payment_method_id' => $Transaction->payment_method_id,
                         'payment_method_name' => $Transaction->payment_method_id ? PaymentMethod::find($Transaction->payment_method_id)->name : null,
                         'payment_ref' => $Transaction->ref,
-                        'payment_amount' => $Transaction->amount,
-                        'payment_charge' => $Transaction->charge,
-                        'payment_net_amount' => $Transaction->net_amount,
+                        'payment_amount' => numberFormat($Transaction->amount),
+                        'payment_charge' => numberFormat($Transaction->charge),
+                        'payment_net_amount' => numberFormat($Transaction->net_amount),
                         'txn_date' => $Transaction->txn_date ? $Transaction->txn_date->format('Y-m-d') : null,
                     ]);
 
