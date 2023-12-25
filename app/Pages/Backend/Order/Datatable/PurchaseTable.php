@@ -88,6 +88,20 @@ class PurchaseTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->deselected(),
+            Column::make('Total Amount', 'net_amount')
+            ->format(
+                fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+            )
+                ->sortable()
+                ->searchable()
+                ->deselected(),
+            Column::make('Paid Amount', 'paid_amount')
+            ->format(
+                fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+            )
+                ->sortable()
+                ->searchable()
+                ->deselected(),
             // Column::make('Quantity', 'OrderItem.quantity')
 
             //     ->sortable()
@@ -105,12 +119,13 @@ class PurchaseTable extends DataTableComponent
                 ->format(
                     fn ($value, $row, Column $column) => $value ? '<span class="badge bg-primary text-primary-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
                     class="fa fa-circle text-primary fs-9px fa-fw me-5px"></i>' . config("status.payment_status.{$value}.name") . '</span>' : ''
-                )->sortable()->html(),
-            Column::make('Delivery Status', 'delivery_status')
-                ->format(
-                    fn ($value, $row, Column $column) => $value ? '<span class="badge bg-danger text-danger-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
-                    class="fa fa-circle text-danger fs-9px fa-fw me-5px"></i>' . config("status.delivery_status.{$value}.name") . '</span>' : ''
-                )->sortable()->html(),
+                ) ->deselected()
+                ->sortable()->html(),
+            // Column::make('Delivery Status', 'delivery_status')
+            //     ->format(
+            //         fn ($value, $row, Column $column) => $value ? '<span class="badge bg-danger text-danger-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
+            //         class="fa fa-circle text-danger fs-9px fa-fw me-5px"></i>' . config("status.delivery_status.{$value}.name") . '</span>' : ''
+            //     )->sortable()->html(),
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')
