@@ -134,7 +134,7 @@ class PurchaseTable extends DataTableComponent
                                 'class' => 'badge bg-warning me-1 p-2 ',
                                 'icon' => 'fa fa-print',
                                 'title' => 'Print',
-
+                                'target'=>"_blank",
                             ];
                         }),
                     LinkColumn::make(' Delete')
