@@ -168,12 +168,10 @@ class PurchaseDetails extends Component
 
     public function storePurchase($storeType = null)
     {
-
         $this->validate([
             'code' => 'required|string',
             'item_quantity' => 'required|min:1',
         ]);
-
 
         $Purchase = Order::findOrNew($this->purchase_id);
         if ($this->purchase_id) {
@@ -182,15 +180,8 @@ class PurchaseDetails extends Component
             $message = 'Purchase Added Successfully!';
             $Purchase->user_id = Auth::id();
         }
-        if ($storeType == 'new') {
-            $this->purchaseReset();
-        } else {
-            $this->purchase_id = $Purchase->id;
-        }
 
-
-
-        $Purchase->code = $this->code= str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
+        $Purchase->code = $this->code;
         $Purchase->ref = $this->ref;
         $Purchase->warehouse_id = $this->warehouse_id;
         $Purchase->outlet_id = $this->outlet_id;
@@ -246,11 +237,16 @@ class PurchaseDetails extends Component
             $PurchasePayment->ref = $payment_item['payment_ref'];
             $PurchasePayment->txn_date = $payment_item['txn_date'];
             $PurchasePayment->save();
-
             $payment_item['transaction_id'] = $PurchasePayment->id;
 
             $payment_item_rows->put($key, $payment_item);
             $this->payment_item_rows = $payment_item_rows;
+        }
+
+       if ($storeType == 'new') {
+            $this->purchaseReset();
+        } else {
+            $this->purchase_id = $Purchase->id;
         }
 
 
@@ -350,6 +346,16 @@ class PurchaseDetails extends Component
 
     public function mount()
     {
+        $lastPurchase = Order::latest()->orderByDesc('id')->first();
+
+    if ($lastPurchase) {
+        $lastCode = $lastPurchase->code;
+        $newCodeNumber = intval($lastCode) + 1;
+        $this->code = str_pad($newCodeNumber, strlen($lastCode), '0', STR_PAD_LEFT);
+    } else {
+        $this->code = '001';
+    }
+
         if ($this->purchase_id) {
             $Purchase = Order::find($this->purchase_id);
             if($Purchase){

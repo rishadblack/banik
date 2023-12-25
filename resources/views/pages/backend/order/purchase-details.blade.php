@@ -319,12 +319,13 @@
 
                 </div>
 
-                <table class="table table-striped payment-table shadow">
+                <table class="table table-striped payment-table shadow text-center">
                     <thead>
                         <th>SL</th>
                         <th>Payment Method</th>
                         <th>Ref</th>
                         <th>Amount</th>
+                        <th>Charge</th>
                         <th>Date</th>
 
                         <th>Action</th>
@@ -338,6 +339,7 @@
                                 </td>
                                 <td>{{ $payment_item['payment_ref'] }}</td>
                                 <td>{{ numberFormat($payment_item['payment_net_amount'], true) }}</td>
+                                <td>{{ numberFormat($payment_item['payment_charge'], true) }}</td>
                                 <td>{{ $payment_item['txn_date'] }}</td>
                                 <td> <button wire:click="removePaymentItem('{{ $key }}')"
                                         class="btn btn-danger btn-sm rounded" style="float:right">

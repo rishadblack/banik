@@ -224,6 +224,16 @@ class SaleDetails extends Component
 
     public function mount()
     {
+        $lastSale = Order::latest()->orderByDesc('id')->first();
+
+    if ($lastSale) {
+        $lastCode = $lastSale->code;
+        $newCodeNumber = intval($lastCode) + 1;
+        $this->code = str_pad($newCodeNumber, strlen($lastCode), '0', STR_PAD_LEFT);
+    } else {
+        // If there are no existing purchases, start with a default code.
+        $this->code = '001'; // Modify this as needed for your default starting code.
+    }
         if ($this->sale_id) {
             $Sale = Order::find($this->sale_id);
             $this->code = $Sale->code;
