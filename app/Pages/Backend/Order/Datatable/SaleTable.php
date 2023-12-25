@@ -142,7 +142,7 @@ class SaleTable extends DataTableComponent
                                 'class' => 'badge bg-warning me-1 p-2 ',
                                 'icon' => 'fa fa-print',
                                 'title' => 'Print',
-
+                                'target'=>"_blank",
                             ];
                         }),
                     LinkColumn::make(' Delete')
@@ -155,6 +155,7 @@ class SaleTable extends DataTableComponent
                                 'class' => 'badge bg-danger me-1 p-2 ',
                                 'icon' => 'fa fa-trash',
                                 'title' => 'Delete',
+
 
                             ];
                         }),

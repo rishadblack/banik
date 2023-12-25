@@ -7,19 +7,22 @@ use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
-    public function salesInvoice(Request $request)
+    public function salesInvoice($id)
     {
-        $sales = Order::where('type', 1)
-        ->firstOrFail();
+        $order = Order::find($id);
+        if (!$order) {
+            abort(404);
+        }
+        return view('invoices.sales-invoice', ['order' => $order]);
 
-        return view('invoices.sales-invoice',compact('sales'));
     }
-    public function purchaseInvoice(Request $request)
+    public function purchaseInvoice($id)
     {
-        $purchase = Order::where('type', 3)
-        ->firstOrFail();
-
-        return view('invoices.purchase-invoice',compact('purchase'));
+        $order = Order::find($id);
+        if (!$order) {
+            abort(404);
+        }
+        return view('invoices.purchase-invoice', ['order' => $order]);
     }
     public function moneyReceipt(Request $request)
     {
