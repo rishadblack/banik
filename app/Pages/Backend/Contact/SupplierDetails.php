@@ -90,7 +90,8 @@ class SupplierDetails extends Component
     {
         $this->reset();
         $this->resetValidation();
-        $this->code = str_pad((Contact::latest()->orderByDesc('id')->first()->code + 1), 3, '0', STR_PAD_LEFT);
+        $Contact = Contact::latest()->orderByDesc('id')->first();
+        $this->code = str_pad(($Contact ? $Contact->code + 1 : 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()
