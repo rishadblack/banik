@@ -422,13 +422,11 @@ class PurchaseDetails extends Component
 
     public function render()
     {
-        $supplier = Contact::where('type', 2)->get();
-        $order = Order::where('type', 3)->get();
         $payment = OrderItem::all();
         $product = Product::all();
         $transaction = Transaction::all();
         $outlet = Outlet::all();
         $warehouse = Warehouse::all();
-        return view('pages.backend.order.purchase-details', compact('supplier', 'payment', 'order', 'product', 'transaction', 'outlet', 'warehouse'));
+        return view('pages.backend.order.purchase-details', compact( 'payment',  'product', 'transaction', 'outlet', 'warehouse'));
     }
 }

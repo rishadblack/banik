@@ -33,19 +33,19 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    public function Transaction(): HasMany
+    public function transaction(): HasMany
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class,'order_id');
     }
 
-    public function Contact(): BelongsTo
+    public function contact(): BelongsTo
     {
-        return $this->belongsTo(Contact::class);
+        return $this->belongsTo(Contact::class,'contact_id');
     }
 
-    public function ContactInfo(): BelongsTo
+    public function contactinfo(): BelongsTo
     {
-        return $this->belongsTo(ContactInfo::class);
+        return $this->belongsTo(ContactInfo::class,'contact_id');
     }
 
     public function Outlet(): BelongsTo

@@ -115,7 +115,7 @@
 
                         <td width=121 colspan=2 style='width:91.1pt;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
                             <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:0px'><span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Today]</span></p>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->order_date }}</span></p>
 
                         </td>
                     </tr>
@@ -139,7 +139,7 @@
 
                             <p class=MsoNormal
                                 style='margin-bottom:0in;line-height:normal;margin-top:0px;margin-top:0px'><b><span
-                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->contact_id }}</span></b>
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->contactinfo->name }}</span></b>
                             </p>
 
                         </td>
@@ -187,7 +187,7 @@
                         <td width=348 colspan=2 style='width:261.0pt;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
                             <p class=MsoNormal
                                 style='margin-bottom:0in;line-height:normal;margin-top:0px;margin-top:0px'><span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Business_Name]</span></p>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->Contact->company_name }}</span></p>
 
                         </td>
                         <td width=96 colspan=2 style='width:1.0in;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
@@ -206,7 +206,7 @@
 
                         <td width=121 colspan=2 style='width:91.1pt;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
                             <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:0px'><span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Biller]</span></p>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ auth()->user()->name }}</span></p>
 
                         </td>
 
@@ -229,7 +229,7 @@
 
                         <td width=348 colspan=2 style='width:261.0pt;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
                             <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:0px'><span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Address]</span></p>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->Contact->address }}</span></p>
 
                         </td>
 
@@ -740,7 +740,7 @@
                             style='width:81.15pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:13.05pt'>
                             <p class=MsoNormal align=center
                                 style='margin-bottom:0in;text-align:center; line-height:normal;margin-top:0px'><span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>[User]</span></p>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ auth()->user()->name }}</span></p>
 
                         </td>
 

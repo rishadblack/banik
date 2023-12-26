@@ -341,7 +341,11 @@
                                 <td>{{ numberFormat($payment_item['payment_net_amount'], true) }}</td>
                                 <td>{{ numberFormat($payment_item['payment_charge'], true) }}</td>
                                 <td>{{ $payment_item['txn_date'] }}</td>
-                                <td> <button wire:click="removePaymentItem('{{ $key }}')"
+                                <td>
+                                    {{-- <a href="{{route('money_receipt',['id' => $purchase_id->id])}}"
+                                        class="btn btn-success btn-sm rounded" >
+                                        <span>Money Receipt</span></a> --}}
+                                    <button wire:click="removePaymentItem('{{ $key }}')"
                                         class="btn btn-danger btn-sm rounded" style="float:right">
                                         <i class="fa fa-close"></i></button>
                                 </td>
@@ -365,7 +369,7 @@
                 <x-slot:button>
                     <div class="dropdown">
 
-                        <x-button.default wire:click="$dispatch('print', { url:'{{route('invoice.purchase',['id' => $purchase_id])}}' })" class="btn-success">Print</x-button.default>
+                        {{-- <x-button.default wire:click="$dispatch('print', { url:'{{route('invoice.purchase',['id' => $purchase_id])}}' })" class="btn-success">Print</x-button.default> --}}
                         <x-button.default wire:click="storePurchase" wire:target="storePurchase" class="btn-success">Save</x-button.default>
                         <x-button.default wire:click="storePurchase('new')" wire:target="storePurchase"
                             class="btn-success">Save & New

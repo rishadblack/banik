@@ -217,16 +217,21 @@
                 <div class="col-lg-7 charges">
                     <x-layouts.backend.card class="shadow">
                         <div class="row mb-1">
-                            <div class="col-7">Discount</div>
-                            <div class="col-5 text-end"><b>{{numberFormat($discount,true)}}</b></div>
+                            <div class="col-8">Discount</div>
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="discount"
+                                    class="widthtd"
+                                    placeholder="">{{ numberFormat($discount, true) }}</x-input.text-order>
+                            </div>
                         </div>
                         <div class="row mb-1">
-                            <div class="col-7">Tax</div>
-                            <div class="col-5 text-end"><b>0.00 ৳</b></div>
+                            <div class="col-8">Tax</div>
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="vat"
+                                    class="widthtd" placeholder=""></x-input.text-order></div>
                         </div>
                         <div class="row">
-                            <div class="col-7">Shipping Charge</div>
-                            <div class="col-5 text-end"><b>0.00 ৳</b></div>
+                            <div class="col-8">Shipping Charge</div>
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="shipping_charge"
+                                    class="widthtd" placeholder=""></x-input.text-order></div>
                         </div>
                     </x-layouts.backend.card>
                 </div>

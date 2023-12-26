@@ -79,7 +79,7 @@
             </td>
             <td width=232 colspan=2 style='width:174.15pt;border-top:none;border-left: none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:14.15pt'>
 
-                <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Customer_Name]</span></p>
+                <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->contactinfo->name }}</span></p>
 
             </td>
             <td width=116 style='width:87.05pt;border-top:none;border-left:none; border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:14.15pt'>
@@ -97,12 +97,12 @@
 
             <td width=116 style='width:86.95pt;border:solid windowtext 1.0pt;border-top: none;padding:0in 5.4pt 0in 5.4pt;height:14.15pt'>
 
-                <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>Address</span></p>
+                <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>Customer Address</span></p>
 
             </td>
             <td width=232 colspan=2 style='width:174.15pt;border-top:none;border-left: none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:14.15pt'>
 
-                <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Customer_Address]</span></p>
+                <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->contact->address }}</span></p>
 
             </td>
             <td width=116 style='width:87.05pt;border-top:none;border-left:none; border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:14.15pt'>
@@ -125,7 +125,7 @@
             </td>
             <td width=232 colspan=2 style='width:174.15pt;border-top:none;border-left: none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:14.15pt'>
 
-                <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Customer_Contact]</span></p>
+                <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->contact->mobile }}</span></p>
 
             </td>
             <td width=116 style='width:87.05pt;border-top:none;border-left:none; border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:14.15pt'>
@@ -186,7 +186,7 @@
             </td>
             <td width=232 rowspan=2 style='width:174.2pt;border-top:none;border-left: none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:14.15pt'>
 
-                <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center; line-height:normal'><span style='font-family:"Arial",sans-serif'>[Amount]</span></p>
+                <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center; line-height:normal'><span style='font-family:"Arial",sans-serif'>{{ numberFormat($order->paid_amount) }}</span></p>
 
             </td>
         </tr>
@@ -194,24 +194,24 @@
         <tr style='height:14.15pt'>
             <td width=116 style='width:86.95pt;border:solid windowtext 1.0pt;border-top: none;padding:0in 5.4pt 0in 5.4pt;height:14.15pt'>
 
-                <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Prev_Due]</span></p>
+                <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>[prev_due]</span></p>
 
             </td>
             <td width=116 style='width:87.05pt;border-top:none;border-left:none; border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:14.15pt'>
 
-                <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Amount]</span></p>
+                <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{numberFormat($order->net_amount)}}</span></p>
 
             </td>
             <td width=116 style='width:87.1pt;border-top:none;border-left:none; border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:14.15pt'>
 
-                <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>[Current_Due]</span></p>
+                <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($order->due_amount )}}</span></p>
 
             </td>
         </tr>
 
         <tr style='height:13.55pt'>
             <td width=696 colspan=5 style='width:522.35pt;border:solid windowtext 1.0pt; border-top:none;padding:0in 5.4pt 0in 5.4pt;height:13.55pt'>
-                <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>Amount in word : [Amount_Word]</span></p>
+                <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>Amount in word : {{numberToWord($order->net_amount)}}</span></p>
 
             </td>
         </tr>
@@ -247,7 +247,7 @@
                 </td>
 
                 <td width=108 style='width:81.15pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:13.05pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>[User]</span></p>
+                    <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center; line-height:normal'><span style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ auth()->user()->name }}</span></p>
 
                 </td>
 
