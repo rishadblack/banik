@@ -69,16 +69,16 @@ use App\Pages\Backend\Reports\InventoryReports\StockAdjustmentReport;
 Route::get('login', Login::class)->name('login');
 Route::get('register', Register::class)->name('register');
 Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-Route::get('pay-slip', [InvoiceController::class, 'moneyReceipt'])->name('money_receipt');
+Route::get('pay-slip/{id}', [InvoiceController::class, 'moneyReceipt'])->name('money_receipt');
 
 Route::group(['prefix' => 'invoice', 'as' => 'invoice.'], function () {
     Route::get('sales/{id}', [InvoiceController::class, 'salesInvoice'])->name('sales');
     Route::get('purchase/{id}', [InvoiceController::class, 'purchaseInvoice'])->name('purchase');
 });
 
-Route::permanentRedirect('/', 'admin');
+Route::permanentRedirect('/', 'member');
 
-Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'member', 'as' => 'backend.', 'middleware' => ['auth']], function () {
     Route::get('/', Dashboard::class)->name('dashboard');
     Route::get('profile', Profile::class)->name('profile');
     Route::get('change-password', ChangePassword::class)->name('change_password');

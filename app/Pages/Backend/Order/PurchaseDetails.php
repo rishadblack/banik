@@ -52,6 +52,9 @@ class PurchaseDetails extends Component
     public $charge;
     public $paid_amount;
     public $due_amount;
+    public $shipping_charge;
+    public $vat_amount;
+    public $order_date;
 
     //Purchase item
     public $item_rows = [];
@@ -133,15 +136,32 @@ class PurchaseDetails extends Component
         $this->rowsUpdate();
     }
 
+    public function updatedDiscountAmount($value)
+    {
+        $this->rowsUpdate();
+    }
+
+    public function updatedVatAmount($value)
+    {
+        $this->rowsUpdate();
+    }
+
+    public function updatedShippingCharge($value)
+    {
+        $this->rowsUpdate();
+    }
+
     public function rowsUpdate()
     {
         $item_subtotal = collect($this->item_subtotal)->sum();
         $item_quantity = collect($this->item_quantity)->sum();
         $item_discount = collect($this->item_discount)->sum();
+        $discount_amount = $this->discount_amount > 0 ? $this->discount_amount : 0;
+        $vat_amount = $this->vat_amount > 0 ? $this->vat_amount : 0;
+        $shipping_charge = $this->shipping_charge > 0 ? $this->shipping_charge : 0;
 
         $this->subtotal = $item_subtotal;
-        $this->net_amount = $item_subtotal;
-        $this->discount = $item_discount;
+        $this->net_amount = ($item_subtotal + $vat_amount + $shipping_charge) -  $discount_amount;
         $this->paid_amount = collect($this->payment_item_rows)->sum('payment_amount');
         $this->due_amount = $this->paid_amount > 0 ?  $this->net_amount - $this->paid_amount : $this->net_amount;
     }
@@ -194,6 +214,9 @@ class PurchaseDetails extends Component
         $Purchase->subtotal = $this->subtotal ?? 0;
         $Purchase->net_amount = $this->net_amount ?? 0;
         $Purchase->additional_charge = $this->additional_charge ?? 0;
+        $Purchase->vat = $this->vat ?? 0;
+        $Purchase->order_date = $this->order_date;
+        $Purchase->shipping_charge = $this->shipping_charge ?? 0;
         $Purchase->paid_amount = $this->paid_amount ?? 0;
         $Purchase->due_amount = $this->due_amount ?? 0;
         $Purchase->save();
@@ -230,6 +253,10 @@ class PurchaseDetails extends Component
 
             $PurchasePayment->user_id = $Purchase->user_id;
             $PurchasePayment->order_id = $Purchase->id;
+            $PurchasePayment->warehouse_id = $Purchase->warehouse_id;
+            $PurchasePayment->outlet_id = $Purchase->outlet_id;
+            $PurchasePayment->contact_id = $Purchase->contact_id;
+            $PurchasePayment->flow = 2;
             $PurchasePayment->payment_method_id = $payment_item['payment_method_id'];
             $PurchasePayment->amount = $payment_item['payment_amount'];
             $PurchasePayment->charge = $payment_item['payment_charge'];
@@ -249,6 +276,9 @@ class PurchaseDetails extends Component
             $this->purchase_id = $Purchase->id;
         }
 
+        $this->dispatch('print', [
+            'url' => route('invoice.purchase',['id' => $Purchase->id]),
+        ]);
 
         $this->alert('success', $message);
         $this->dispatch('refreshDatatable');
@@ -367,8 +397,11 @@ class PurchaseDetails extends Component
                 $this->payment_status = $Purchase->payment_status;
                 $this->payment_date = $Purchase->payment_date;
                 $this->pmid = $Purchase->pmid;
+                $this->order_date = $Purchase->order_date;
                 $this->delivery_status = $Purchase->delivery_status;
-                $this->discount = $Purchase->discount;
+                $this->discount_amount = numberFormat($Purchase->discount_amount)??0;
+                $this->vat_amount = numberFormat($Purchase->vat_amount);
+                $this->shipping_charge = numberFormat($Purchase->shipping_charge);
                 $this->subtotal = $Purchase->subtotal;
                 $this->net_amount = $Purchase->net_amount;
                 $this->additional_charge = $Purchase->additional_charge;
@@ -384,7 +417,7 @@ class PurchaseDetails extends Component
                     $this->item_code[$OrderItem->product_id] = $OrderItem->Product->code;
                     $this->item_price[$OrderItem->product_id] = numberFormat($OrderItem->amount);
                     $this->item_quantity[$OrderItem->product_id] = $OrderItem->quantity;
-                    $this->item_discount[$OrderItem->product_id] = $OrderItem->discount_amount;
+                    $this->item_discount[$OrderItem->product_id] = numberFormat($OrderItem->discount)??0;
                     $this->item_subtotal[$OrderItem->product_id] = numberFormat($OrderItem->subtotal);
                 }
 
@@ -395,9 +428,9 @@ class PurchaseDetails extends Component
                         'payment_method_id' => $Transaction->payment_method_id,
                         'payment_method_name' => $Transaction->payment_method_id ? PaymentMethod::find($Transaction->payment_method_id)->name : null,
                         'payment_ref' => $Transaction->ref,
-                        'payment_amount' => $Transaction->amount,
-                        'payment_charge' => $Transaction->charge,
-                        'payment_net_amount' => $Transaction->net_amount,
+                        'payment_amount' => numberFormat($Transaction->amount),
+                        'payment_charge' => numberFormat($Transaction->charge),
+                        'payment_net_amount' => numberFormat($Transaction->net_amount),
                         'txn_date' => $Transaction->txn_date ? $Transaction->txn_date->format('Y-m-d') : null,
                     ]);
 
@@ -410,13 +443,11 @@ class PurchaseDetails extends Component
 
     public function render()
     {
-        $supplier = Contact::where('type', 2)->get();
-        $order = Order::where('type', 3)->get();
         $payment = OrderItem::all();
         $product = Product::all();
         $transaction = Transaction::all();
         $outlet = Outlet::all();
         $warehouse = Warehouse::all();
-        return view('pages.backend.order.purchase-details', compact('supplier', 'payment', 'order', 'product', 'transaction', 'outlet', 'warehouse'));
+        return view('pages.backend.order.purchase-details', compact( 'payment',  'product', 'transaction', 'outlet', 'warehouse'));
     }
 }

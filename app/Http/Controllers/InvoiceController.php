@@ -3,32 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order\Order;
-use Illuminate\Http\Request;
+use App\Models\Order\OrderItem;
+use App\Models\Product\Product;
+use App\Models\Accounting\Transaction;
 
 class InvoiceController extends Controller
 {
+
     public function salesInvoice($id)
     {
-        $order = Order::find($id);
-        if (!$order) {
-            abort(404);
-        }
+        $order = Order::where('type','1')->with('contact','contactinfo','OrderItem')->find($id);
         return view('invoices.sales-invoice', ['order' => $order]);
-
     }
     public function purchaseInvoice($id)
     {
-        $order = Order::find($id);
-        if (!$order) {
-            abort(404);
-        }
+
+        $order = Order::where('type','3')->with('contact','contactinfo','OrderItem')->find($id);
         return view('invoices.purchase-invoice', ['order' => $order]);
     }
-    public function moneyReceipt(Request $request)
-    {
-        // $sale = Order::where('type', 1)
-        // ->firstOrFail();
 
-        return view('money-receipt');
+    public function moneyReceipt($id)
+    {
+        $Transaction = Transaction::find($id);
+
+        return view('money-receipt', ['transaction' => $Transaction]);
     }
 }

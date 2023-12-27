@@ -70,11 +70,27 @@ class SaleTable extends DataTableComponent
                 )
                 ->eagerLoadRelations()
                 ->searchable(),
-            Column::make('Discount', 'discount_amount')
-
-                ->sortable()
-                ->searchable()
-                ->deselected(),
+                Column::make('Discount', 'discount')
+                ->format(
+                    fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+                )
+                    ->sortable()
+                    ->searchable()
+                    ->deselected(),
+                Column::make('Total Amount', 'net_amount')
+                ->format(
+                    fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+                )
+                    ->sortable()
+                    ->searchable()
+                    ->deselected(),
+                Column::make('Paid Amount', 'paid_amount')
+                ->format(
+                    fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+                )
+                    ->sortable()
+                    ->searchable()
+                    ->deselected(),
             Column::make('Create BY', 'User.name')
                 ->format(
                     fn ($value, $row, Column $column) => $value ? $value : '-'

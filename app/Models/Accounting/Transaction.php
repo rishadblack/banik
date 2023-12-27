@@ -3,9 +3,11 @@
 namespace App\Models\Accounting;
 
 use App\Models\User;
+use App\Models\Order\Order;
 use App\Models\Setting\PaymentMethod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -28,6 +30,10 @@ class Transaction extends Model
     public function PaymentMethod(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class);
+    }
+    public function order(): HasMany
+    {
+        return $this->hasMany(Order::class,'order_id');
     }
     public function scopeActive($query)
     {

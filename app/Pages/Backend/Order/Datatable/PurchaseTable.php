@@ -81,7 +81,21 @@ class PurchaseTable extends DataTableComponent
                 ->eagerLoadRelations()
                 ->sortable()
                 ->searchable(),
-            Column::make('Discount', 'discount_amount')
+            Column::make('Discount', 'discount')
+            ->format(
+                fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+            )
+                ->sortable()
+                ->searchable()
+                ->deselected(),
+            Column::make('Total Amount', 'net_amount')
+            ->format(
+                fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+            )
+                ->sortable()
+                ->searchable()
+                ->deselected(),
+            Column::make('Paid Amount', 'paid_amount')
             ->format(
                 fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
             )
@@ -105,12 +119,13 @@ class PurchaseTable extends DataTableComponent
                 ->format(
                     fn ($value, $row, Column $column) => $value ? '<span class="badge bg-primary text-primary-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
                     class="fa fa-circle text-primary fs-9px fa-fw me-5px"></i>' . config("status.payment_status.{$value}.name") . '</span>' : ''
-                )->sortable()->html(),
-            Column::make('Delivery Status', 'delivery_status')
-                ->format(
-                    fn ($value, $row, Column $column) => $value ? '<span class="badge bg-danger text-danger-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
-                    class="fa fa-circle text-danger fs-9px fa-fw me-5px"></i>' . config("status.delivery_status.{$value}.name") . '</span>' : ''
-                )->sortable()->html(),
+                ) ->deselected()
+                ->sortable()->html(),
+            // Column::make('Delivery Status', 'delivery_status')
+            //     ->format(
+            //         fn ($value, $row, Column $column) => $value ? '<span class="badge bg-danger text-danger-800 bg-opacity-25 px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i
+            //         class="fa fa-circle text-danger fs-9px fa-fw me-5px"></i>' . config("status.delivery_status.{$value}.name") . '</span>' : ''
+            //     )->sortable()->html(),
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')
@@ -127,14 +142,16 @@ class PurchaseTable extends DataTableComponent
                         }),
                         LinkColumn::make('Print')
                         ->title(fn ($row) => 'Print')
-                        ->location(fn ($row) => route('invoice.purchase',['id' => $row->id]))
+                        ->location(fn ($row) => 'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
+                                'data-listener' => 'print',
+                                'data-url' => route('invoice.purchase',['id' => $row->id]),
                                 'class' => 'badge bg-warning me-1 p-2 ',
                                 'icon' => 'fa fa-print',
                                 'title' => 'Print',
-                                'target'=>"_blank",
+                                // 'target'=>"_blank",
                             ];
                         }),
                     LinkColumn::make(' Delete')
@@ -147,7 +164,6 @@ class PurchaseTable extends DataTableComponent
                                 'class' => 'badge bg-danger me-1 p-2 ',
                                 'icon' => 'fa fa-trash',
                                 'title' => 'Delete',
-
                             ];
                         }),
                 ]),

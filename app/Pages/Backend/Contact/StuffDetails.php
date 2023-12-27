@@ -25,6 +25,7 @@ class StuffDetails extends Component
     public $address;
     public $contact_group_id;
     public $name;
+    public $email;
     public $code;
     public $company_name;
     public $mobile;
