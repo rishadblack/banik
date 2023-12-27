@@ -32,6 +32,7 @@ class CustomerDetails extends Component
     public $code;
     public $company_name;
     public $mobile;
+    public $email;
     public $country_id;
     public $postcode;
     public $state_id;
@@ -68,6 +69,7 @@ class CustomerDetails extends Component
         $Customer->country_id = $this->country_id;
         $Customer->state_id = $this->state_id;
         $Customer->postcode = $this->postcode;
+        $Customer->email = $this->email;
         $Customer->address = $this->address;
         $Customer->opening_balance = $this->opening_balance;
         $Customer->credit_limit = $this->credit_limit;
@@ -79,6 +81,8 @@ class CustomerDetails extends Component
         $CustomerInfo->contact_id = $Customer->id;
         $CustomerInfo->name = $this->name;
         $CustomerInfo->mobile = $this->mobile;
+        $CustomerInfo->email = $this->email;
+        $CustomerInfo->status = $this->status;
         $CustomerInfo->save();
 
 
@@ -113,12 +117,14 @@ class CustomerDetails extends Component
             $this->postcode = $Customer->postcode;
             $this->state_id = $Customer->state_id;
             $this->address = $Customer->address;
-            $this->opening_balance = $Customer->opening_balance;
-            $this->credit_limit = $Customer->credit_limit;
+            $this->opening_balance = numberFormat($Customer->opening_balance);
+            $this->credit_limit =numberFormat($Customer->credit_limit);
+            $this->email = $Customer->email;
 
 
             $this->name = $Customer->ContactInfo->name;
             $this->mobile =$Customer->ContactInfo->mobile;
+            $this->email =$Customer->ContactInfo->email;
 
         }else{
             $this->customerReset();

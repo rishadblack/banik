@@ -110,6 +110,7 @@
         strong {
             font-weight: 700;
         }
+
         .sm {
             font-size: 12;
         }
@@ -122,8 +123,11 @@
         .shadow {
             box-shadow: 0 .1rem 1rem rgba(var(--bs-black-rgb), .15) !important;
         }
-        .btn-warning{
-            background-color: var(--bs-btn-hover-bg);
+
+        .bg-warning {
+            --bs-bg-opacity: 1;
+            color: #fff;
+            background-color: rgba(var(--bs-warning-rgb), var(--bs-bg-opacity)) !important;
         }
     </style>
 @endpush
@@ -139,7 +143,8 @@
                     <x-layouts.backend.card class="product-item">
                         <x-slot:title>Products (2)</x-slot:title>
                         <x-slot:search>
-                            <x-search.products wire:model.live='search_product' class="productSearch" placeholder="Search Product Name" />
+                            <x-search.products wire:model.live='search_product' class="productSearch"
+                                placeholder="Search Product Name" />
                         </x-slot:search>
 
                         {{-- <x-slot:button>
@@ -152,7 +157,7 @@
                             <thead>
                                 <th>SL</th>
                                 <th>Product Name</th>
-                                <th class="width text-center">Purchase Price</th>
+                                <th class="width text-center">Sale Price</th>
                                 <th class="width text-center">Quantity</th>
                                 <th class="width text-center">Discount</th>
                                 <th class="text-center">Subtotal</th>
@@ -160,32 +165,40 @@
                             </thead>
                             <tbody>
                                 @forelse ($item_rows as $item_row)
+                                    <tr class="shadow-none" wire:key="product-{{ $item_row }}">
+                                        <td class="text-center">{{ $loop->iteration }}</td>
 
-                                <tr class="shadow-none" wire:key="product-{{$item_row}}">
-                                    <td class="text-center">{{ $loop->iteration}}</td>
+                                        <td class="d-flex text-left">
+                                            <div class="flex-1 ">
+                                                <div><a href="#"
+                                                        class="text-decoration-none text-body">{{ $item_name[$item_row] }}</a>
+                                                </div>
+                                                <div class="text-body text-opacity-50 small ">
+                                                    SKU: {{ $item_code[$item_row] }}
+                                                </div>
+                                                <div class="text-body text-opacity-50 small">
+                                                    Stock : 0; Delivery product : 0
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><x-input.text-order
+                                                wire:model.live.debounce.500ms="item_price.{{ $item_row }}"
+                                                class="widthtd" placeholder="" /></td>
+                                        <td><x-input.text-order
+                                                wire:model.live.debounce.500ms="item_quantity.{{ $item_row }}"
+                                                class="widthtd" placeholder="" /></td>
+                                        <td class="text-center"><x-input.text-order
+                                                wire:model.live.debounce.500ms="item_discount.{{ $item_row }}"
+                                                class="widthtd" placeholder="" />
+                                        </td>
+                                        <td class="text-center">
+                                            {{ numberFormat($item_subtotal[$item_row], true) }}
+                                        </td>
+                                        <td> <button wire:click="removeItem('{{ $item_row }}')"
+                                                class="btn btn-danger btn-sm rounded" style="float:right"><i
+                                                    class="fa fa-close"></i></button></td>
 
-                                    <td class="d-flex text-left">
-                                        <div class="flex-1 ">
-                                            <div><a href="#" class="text-decoration-none text-body">{{ $item_name[$item_row]}}</a>
-                                            </div>
-                                            <div class="text-body text-opacity-50 small ">
-                                                SKU: {{ $item_code[$item_row]}}
-                                            </div>
-                                            <div class="text-body text-opacity-50 small">
-                                                Stock : 0; Delivery product : 0
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><x-input.text-order wire:model.live.debounce.500ms="item_price.{{$item_row}}" class="widthtd" placeholder="" /></td>
-                                    <td><x-input.text-order wire:model.live.debounce.500ms="item_quantity.{{$item_row}}" class="widthtd" placeholder="" /></td>
-                                    <td class="text-center"><x-input.text-order wire:model.live.debounce.500ms="item_discount.{{$item_row}}" class="widthtd" placeholder="" />
-                                    </td>
-                                    <td class="text-center">
-                                        {{ numberFormat($item_subtotal[$item_row], true) }}
-                                    </td>
-                                    <td> <button wire:click="removeItem('{{ $item_row }}')" class="btn btn-danger btn-sm rounded" style="float:right"><i class="fa fa-close"></i></button></td>
-
-                                </tr>
+                                    </tr>
                                 @empty
                                     <tr>
                                         <td colspan="7" class="text-center">No Data Found</td>
@@ -201,20 +214,21 @@
                     <x-layouts.backend.card class="shadow">
                         <div class="row mb-1">
                             <div class="col-8">Discount</div>
-                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="discount"
-                                    class="widthtd"
-                                    placeholder=""><b>{{ numberFormat($discount, true) }}</b></x-input.text-order>
+                            <div class="col-4 text-end"><x-input.text-order
+                                    wire:model.live.debounce.500ms="discount_amount" class="widthtd"
+                                    placeholder=""><b>{{ numberFormat($discount_amount, true) }}</b></x-input.text-order>
                             </div>
                         </div>
                         <div class="row mb-1">
                             <div class="col-8">Tax</div>
-                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="vat"
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="vat_amount"
                                     class="widthtd" placeholder=""></x-input.text-order></div>
                         </div>
                         <div class="row">
                             <div class="col-8">Shipping Charge</div>
-                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="shipping_date"
-                                    class="widthtd" placeholder=""></x-input.text-order></div>
+                            <div class="col-4 text-end"><x-input.text-order
+                                    wire:model.live.debounce.500ms="shipping_date" class="widthtd"
+                                    placeholder=""></x-input.text-order></div>
                         </div>
                     </x-layouts.backend.card>
                 </div>
@@ -241,12 +255,14 @@
                                 <tr>
                                     <td colspan="2"><b>Paid Amount</b></td>
                                     <td class="text-end  text-decoration-underline">
-                                        <b>{{ numberFormat($paid_amount, true) }}</b></td>
+                                        <b>{{ numberFormat($paid_amount, true) }}</b>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Due</b></td>
                                     <td class="text-end  text-decoration-underline">
-                                        <b>{{ numberFormat($due_amount, true) }}</b></td>
+                                        <b>{{ numberFormat($due_amount, true) }}</b>
+                                    </td>
                                 </tr>
 
                             </tbody>
@@ -292,13 +308,13 @@
                     </div>
 
                 </div>
-
-                <table class="table table-striped payment-table shadow">
+                <table class="table table-striped payment-table shadow text-center">
                     <thead>
                         <th>SL</th>
                         <th>Payment Method</th>
                         <th>Ref</th>
                         <th>Amount</th>
+                        <th>Charge</th>
                         <th>Date</th>
 
                         <th>Action</th>
@@ -312,8 +328,15 @@
                                 </td>
                                 <td>{{ $payment_item['payment_ref'] }}</td>
                                 <td>{{ numberFormat($payment_item['payment_net_amount'], true) }}</td>
+                                <td>{{ numberFormat($payment_item['payment_charge'], true) }}</td>
                                 <td>{{ $payment_item['txn_date'] }}</td>
-                                <td> <button wire:click="removePaymentItem('{{ $key }}')"
+                                <td>
+                                    @if (isset($payment_item['transaction_id']) && $payment_item['transaction_id'])
+                                    <a href="{{route('money_receipt',['id' => $payment_item['transaction_id']])}}"  class="btn btn-success btn-sm rounded" >
+                                        <span>Money Receipt</span>
+                                    </a>
+                                @endif
+                                    <button wire:click="removePaymentItem('{{ $key }}')"
                                         class="btn btn-danger btn-sm rounded" style="float:right">
                                         <i class="fa fa-close"></i></button>
                                 </td>
@@ -336,21 +359,26 @@
                 <x-slot:title>Sale Info</x-slot:title>
                 <x-slot:button>
                     <div class="dropdown">
+                        @if ($sale_id && !empty($sale_id))
+                            <x-button.default
+                                wire:click="$dispatch('print', { url:'{{ route('invoice.purchase', ['id' => $sale_id]) }}' })"
+                                class="btn-warning bg-warning">Print</x-button.default>
+                        @endif
                         <x-button.default wire:click="storeSale" wire:target="storeSale"
                             class="btn-success">Save</x-button.default>
                         <x-button.default wire:click="storeSale('new')" wire:target="storeSale"
                             class="btn-success">Save
                             & New
                         </x-button.default>
-                        {{-- <a href="{{ route('invoice.sales',['id' => $order->id ? null]) }}"
+                        {{-- <a href="{{ route('invoice.sales',['id' => $order->id]) }}"
                             wire:navigate="true" class="btn btn-warning btn-sm rounded">Print</a> --}}
 
-                        <a href="{{ route('backend.order.sale_list') }}"
-                            wire:navigate="true" class="btn btn-danger btn-sm rounded">Close</a>
+                        <a href="{{ route('backend.order.sale_list') }}" wire:navigate="true"
+                            class="btn btn-danger btn-sm rounded">Close</a>
                     </div>
                 </x-slot:button>
                 <x-input.text wire:model="code" label="Code" />
-                <x-input.date wire:model="order_date" label="Order Date" placeholder="Order Date"/>
+                <x-input.date wire:model="order_date" label="Order Date" placeholder="Order Date" />
                 <x-input.text wire:model="ref" label="Reference" />
 
                 <x-input.text wire:model="sales_person" label="Sales Person" />
@@ -377,12 +405,7 @@
 
             <x-layouts.backend.card>
                 <x-slot:title>Status</x-slot:title>
-                <x-input.select wire:model="payment_status" label="Payment Status">
-                    <option value="1">Receipt</option>
-                    <option value="2">Pending</option>
-                    <option value="3">Hold</option>
-                    <option value="4">Cancle</option>
-                </x-input.select>
+                <x-input.select wire:model="payment_status" label="Payment Status" :options="config('status.payment_status')" />
                 <x-input.select wire:model="delivery_status" label="Delivery Status">
                     <option value="1">Receipt</option>
                     <option value="2">Pending</option>

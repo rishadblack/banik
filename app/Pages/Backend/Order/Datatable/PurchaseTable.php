@@ -81,7 +81,7 @@ class PurchaseTable extends DataTableComponent
                 ->eagerLoadRelations()
                 ->sortable()
                 ->searchable(),
-            Column::make('Discount', 'discount_amount')
+            Column::make('Discount', 'discount')
             ->format(
                 fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
             )

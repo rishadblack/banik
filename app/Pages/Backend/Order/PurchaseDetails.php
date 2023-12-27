@@ -53,7 +53,7 @@ class PurchaseDetails extends Component
     public $paid_amount;
     public $due_amount;
     public $shipping_charge;
-    public $vat;
+    public $vat_amount;
     public $order_date;
 
     //Purchase item
@@ -136,15 +136,32 @@ class PurchaseDetails extends Component
         $this->rowsUpdate();
     }
 
+    public function updatedDiscountAmount($value)
+    {
+        $this->rowsUpdate();
+    }
+
+    public function updatedVatAmount($value)
+    {
+        $this->rowsUpdate();
+    }
+
+    public function updatedShippingCharge($value)
+    {
+        $this->rowsUpdate();
+    }
+
     public function rowsUpdate()
     {
         $item_subtotal = collect($this->item_subtotal)->sum();
         $item_quantity = collect($this->item_quantity)->sum();
         $item_discount = collect($this->item_discount)->sum();
+        $discount_amount = $this->discount_amount > 0 ? $this->discount_amount : 0;
+        $vat_amount = $this->vat_amount > 0 ? $this->vat_amount : 0;
+        $shipping_charge = $this->shipping_charge > 0 ? $this->shipping_charge : 0;
 
         $this->subtotal = $item_subtotal;
-        $this->net_amount = $item_subtotal;
-        $this->discount = $item_discount;
+        $this->net_amount = ($item_subtotal + $vat_amount + $shipping_charge) -  $discount_amount;
         $this->paid_amount = collect($this->payment_item_rows)->sum('payment_amount');
         $this->due_amount = $this->paid_amount > 0 ?  $this->net_amount - $this->paid_amount : $this->net_amount;
     }
@@ -236,6 +253,10 @@ class PurchaseDetails extends Component
 
             $PurchasePayment->user_id = $Purchase->user_id;
             $PurchasePayment->order_id = $Purchase->id;
+            $PurchasePayment->warehouse_id = $Purchase->warehouse_id;
+            $PurchasePayment->outlet_id = $Purchase->outlet_id;
+            $PurchasePayment->contact_id = $Purchase->contact_id;
+            $PurchasePayment->flow = 2;
             $PurchasePayment->payment_method_id = $payment_item['payment_method_id'];
             $PurchasePayment->amount = $payment_item['payment_amount'];
             $PurchasePayment->charge = $payment_item['payment_charge'];
@@ -378,8 +399,8 @@ class PurchaseDetails extends Component
                 $this->pmid = $Purchase->pmid;
                 $this->order_date = $Purchase->order_date;
                 $this->delivery_status = $Purchase->delivery_status;
-                $this->discount = numberFormat($Purchase->discount);
-                $this->vat = numberFormat($Purchase->vat);
+                $this->discount_amount = numberFormat($Purchase->discount_amount)??0;
+                $this->vat_amount = numberFormat($Purchase->vat_amount);
                 $this->shipping_charge = numberFormat($Purchase->shipping_charge);
                 $this->subtotal = $Purchase->subtotal;
                 $this->net_amount = $Purchase->net_amount;
@@ -396,7 +417,7 @@ class PurchaseDetails extends Component
                     $this->item_code[$OrderItem->product_id] = $OrderItem->Product->code;
                     $this->item_price[$OrderItem->product_id] = numberFormat($OrderItem->amount);
                     $this->item_quantity[$OrderItem->product_id] = $OrderItem->quantity;
-                    $this->item_discount[$OrderItem->product_id] = numberFormat($OrderItem->discount_amount);
+                    $this->item_discount[$OrderItem->product_id] = numberFormat($OrderItem->discount)??0;
                     $this->item_subtotal[$OrderItem->product_id] = numberFormat($OrderItem->subtotal);
                 }
 

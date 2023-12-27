@@ -141,6 +141,11 @@
         .table>thead {
             background-color: #acacde;
         }
+        .bg-warning {
+            --bs-bg-opacity: 1;
+            color: #fff;
+            background-color: rgba(var(--bs-warning-rgb), var(--bs-bg-opacity)) !important;
+        }
     </style>
 @endpush
 <div>
@@ -227,14 +232,14 @@
                     <x-layouts.backend.card class="shadow">
                         <div class="row mb-1">
                             <div class="col-8">Discount</div>
-                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="discount"
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="discount_amount"
                                     class="widthtd"
-                                    placeholder="">{{ numberFormat($discount, true) }}</x-input.text-order>
+                                    placeholder="">{{ numberFormat($discount_amount, true) }}</x-input.text-order>
                             </div>
                         </div>
                         <div class="row mb-1">
                             <div class="col-8">Tax</div>
-                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="vat"
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="vat_amount"
                                     class="widthtd" placeholder=""></x-input.text-order></div>
                         </div>
                         <div class="row">
@@ -342,9 +347,11 @@
                                 <td>{{ numberFormat($payment_item['payment_charge'], true) }}</td>
                                 <td>{{ $payment_item['txn_date'] }}</td>
                                 <td>
-                                    {{-- <a href="{{route('money_receipt',['id' => $purchase_id->id])}}"
-                                        class="btn btn-success btn-sm rounded" >
-                                        <span>Money Receipt</span></a> --}}
+                                    @if (isset($payment_item['transaction_id']) && $payment_item['transaction_id'])
+                                        <a href="{{route('money_receipt',['id' => $payment_item['transaction_id']])}}"  class="btn btn-success btn-sm rounded" >
+                                            <span>Money Receipt</span>
+                                        </a>
+                                    @endif
                                     <button wire:click="removePaymentItem('{{ $key }}')"
                                         class="btn btn-danger btn-sm rounded" style="float:right">
                                         <i class="fa fa-close"></i></button>
@@ -369,7 +376,9 @@
                 <x-slot:button>
                     <div class="dropdown">
 
-                        {{-- <x-button.default wire:click="$dispatch('print', { url:'{{route('invoice.purchase',['id' => $purchase_id])}}' })" class="btn-success">Print</x-button.default> --}}
+                        @if ($purchase_id && !empty($purchase_id))
+                            <x-button.default wire:click="$dispatch('print', { url:'{{route('invoice.purchase',['id' => $purchase_id])}}' })" class="btn bg-warning">Print</x-button.default>
+                        @endif
                         <x-button.default wire:click="storePurchase" wire:target="storePurchase" class="btn-success">Save</x-button.default>
                         <x-button.default wire:click="storePurchase('new')" wire:target="storePurchase"
                             class="btn-success">Save & New
