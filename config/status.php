@@ -96,52 +96,22 @@ return [
         ],
 
     ],
-    'gender' => [
+    'flow' => [
         1 => [
             'id' => 1,
-            'name' => 'Male',
-            'value' => 'male',
+            'name' => 'In',
+            'value' => 'in',
             'class' => 'success',
             'icon' => '',
         ],
         2 => [
             'id' => 2,
-            'name' => 'Female',
-            'value' => 'female',
+            'name' => 'Out',
+            'value' => 'out',
             'class' => 'warning',
             'icon' => '',
         ],
 
     ],
-    'country' => [
-        1 => [
-            'id' => 1,
-            'name' => 'Bangladesh',
-            'value' => 'bangladesh',
-            'class' => 'success',
-            'icon' => '',
-        ],
-        2 => [
-            'id' => 2,
-            'name' => 'United States',
-            'value' => 'united_states',
-            'class' => 'warning',
-            'icon' => '',
-        ],
-        3 => [
-            'id' => 3,
-            'name' => 'India',
-            'value' => 'india',
-            'class' => 'warning',
-            'icon' => '',
-        ],
-        4 => [
-            'id' => 4,
-            'name' => 'Malayasia',
-            'value' => 'malayasia',
-            'class' => 'warning',
-            'icon' => '',
-        ],
 
-    ],
 ];

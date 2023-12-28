@@ -5,6 +5,7 @@ namespace App\Pages\Backend\Inventory;
 
 use Livewire\Attributes\Url;
 use App\Http\Common\Component;
+use App\Models\Order\OrderItem;
 use App\Models\Product\Product;
 use Livewire\Attributes\Layout;
 use App\Models\Setting\Warehouse;
@@ -25,10 +26,17 @@ class StockMovementDetails extends Component
     public $code;
     public $warehouse_id;
     public $to_warehouse_id;
+    public $outlet_id;
+    public $to_outlet_id;
     public $ref;
     public $quantity;
+    public $stock_receipt_date;
+    public $flow;
 
+
+    //Stock item
     public $item_rows = [];
+    public $item_deleted_rows = [];
     public $item_product_id = [];
     public $item_name = [];
     public $item_code = [];
@@ -57,6 +65,7 @@ class StockMovementDetails extends Component
         $this->item_code[$Product->id] = $Product->code;
         $this->item_quantity[$Product->id] = 1;
 
+        $this->rowsUpdate();
         $this->reset('search_product');
         $this->dispatch('search_product_reset');
     }
@@ -115,7 +124,11 @@ class StockMovementDetails extends Component
         $Transfer->warehouse_id = $this->warehouse_id;
         $Transfer->type = 2;
         $Transfer->to_warehouse_id = $this->to_warehouse_id;
+        $Transfer->outlet_id = $this->outlet_id;
+        $Transfer->to_outlet_id = $this->to_outlet_id;
         $Transfer->ref = $this->ref;
+        $Transfer->stock_receipt_date = $this->stock_receipt_date;
+        $Transfer->flow = $this->flow;
         $Transfer->save();
 
         foreach ($this->item_rows as $key => $value) {
@@ -150,19 +163,32 @@ class StockMovementDetails extends Component
     {
         if ($this->stocktransfer_id) {
             $Transfer = StockReceipt::find($this->stocktransfer_id);
-            $this->code = $Transfer->code;
-            $this->warehouse_id = $Transfer->warehouse_id;
-            $this->to_warehouse_id = $Transfer->to_warehouse_id;
-            $this->ref = $Transfer->ref;
+            if ($Transfer) {
+                $this->code = $Transfer->code;
+                $this->warehouse_id = $Transfer->warehouse_id;
+                $this->to_warehouse_id = $Transfer->to_warehouse_id;
+                $this->outlet_id = $Transfer->outlet_id;
+                $this->to_outlet_id = $Transfer->to_outlet_id;
+                $this->ref = $Transfer->ref;
+                $this->stock_receipt_date = $Transfer->stock_receipt_date;
+                $this->flow = $Transfer->flow;
 
-            $this->quantity = $Transfer->StockReceiptItem->quantity;
-        } else {
-            $this->transferReset();
+
+                foreach ($Transfer->StockReceiptItem as $key => $StockReceiptItem) {
+                    $item_rows = collect($this->item_rows);
+                    $item_rows->push($StockReceiptItem->product_id);
+                    $this->item_rows = $item_rows;
+                    $this->item_product_id[$StockReceiptItem->product_id] = $StockReceiptItem->product_id;
+                    $this->item_name[$StockReceiptItem->product_id] = $StockReceiptItem->name;
+                    $this->item_code[$StockReceiptItem->product_id] = $StockReceiptItem->product_code;
+                    $this->item_quantity[$StockReceiptItem->product_id] = $StockReceiptItem->quantity;
+                }
+            }
         }
     }
     public function render()
     {
-        $warehouse = Warehouse::all();
-        return view('pages.backend.inventory.stock-movement-details',compact('warehouse'));
+        $OrderItem = OrderItem::all();
+        return view('pages.backend.inventory.stock-movement-details', compact('OrderItem'));
     }
 }

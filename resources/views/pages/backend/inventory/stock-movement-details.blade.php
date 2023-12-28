@@ -145,10 +145,10 @@
                             <x-search.products wire:model.live='search_product' class="productSearch" placeholder="Search Product Name" />
                         </x-slot:search>
 
-                        <x-slot:button>
+                        {{-- <x-slot:button>
                             <x-button.default type="button" class="btn btn-sm rounded btn-info" x-data @click="$dispatch('openProductModal')">Add
                                 Product</x-button.default>
-                        </x-slot:button>
+                        </x-slot:button> --}}
 
                         <table class="table table-striped ">
                             <thead>
@@ -262,16 +262,12 @@
                     </div>
                 </x-slot:button>
                 <x-input.text wire:model.live="code" label="Code" />
-                <x-input.select wire:model="warehouse_id" label=" From Warehouse">
-                    @foreach ($warehouse as $warehouse)
-                    <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
-                    @endforeach
-                </x-input.select>
-                <x-input.select wire:model="to_warehouse_id" label="To Warehouse">
-                    <option value="1">Sonargau</option>
-                    <option value="2">Paltan</option>
-                </x-input.select>
-
+                <x-input.select wire:model="flow" label="Flow Type" :options="config('status.flow')"/>
+                <x-search.warehouses wire:model="warehouse_id" label=" From Warehouse"/>
+                <x-search.warehouses wire:model="to_warehouse_id" label="To Warehouse"/>
+                <x-search.outlets wire:model="outlet_id" label="From Outlet"/>
+                <x-search.outlets wire:model="to_outlet_id" label="To Outlet"/>
+                <x-input.date wire:model="stock_receipt_date" label="Receipt Date"/>
                 <x-input.text wire:model="ref" label="Reference" />
             </x-layouts.backend.card>
             <x-layouts.backend.card>

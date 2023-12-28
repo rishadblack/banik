@@ -24,7 +24,7 @@ class InvoiceController extends Controller
 
     public function moneyReceipt($id)
     {
-        $Transaction = Transaction::find($id);
+        $Transaction = Transaction::with('PaymentMethod','contact','contactInfo')->find($id);
 
         return view('money-receipt', ['transaction' => $Transaction]);
     }

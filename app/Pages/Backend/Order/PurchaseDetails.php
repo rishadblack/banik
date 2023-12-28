@@ -161,6 +161,7 @@ class PurchaseDetails extends Component
         $shipping_charge = $this->shipping_charge > 0 ? $this->shipping_charge : 0;
 
         $this->subtotal = $item_subtotal;
+        $this->discount_amount = $item_discount;
         $this->net_amount = ($item_subtotal + $vat_amount + $shipping_charge) -  $discount_amount;
         $this->paid_amount = collect($this->payment_item_rows)->sum('payment_amount');
         $this->due_amount = $this->paid_amount > 0 ?  $this->net_amount - $this->paid_amount : $this->net_amount;
@@ -210,7 +211,7 @@ class PurchaseDetails extends Component
         $Purchase->payment_status = $this->payment_status;
         $Purchase->payment_date = $this->payment_date;
         $Purchase->delivery_status = $this->delivery_status;
-        $Purchase->discount = $this->discount ?? 0;
+        $Purchase->discount_amount = $this->discount_amount ?? 0;
         $Purchase->subtotal = $this->subtotal ?? 0;
         $Purchase->net_amount = $this->net_amount ?? 0;
         $Purchase->additional_charge = $this->additional_charge ?? 0;
@@ -233,7 +234,7 @@ class PurchaseDetails extends Component
             $PurchaseItem->name = $this->item_name[$item];
             $PurchaseItem->amount = $this->item_price[$item];
             $PurchaseItem->quantity = $this->item_quantity[$item];
-            $PurchaseItem->discount_amount = $this->item_discount[$item];
+            $PurchaseItem->discount = $this->item_discount[$item];
             $PurchaseItem->subtotal = $this->item_subtotal[$item];
             $PurchaseItem->save();
         }

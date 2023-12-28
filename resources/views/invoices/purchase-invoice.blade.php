@@ -254,7 +254,7 @@
 
                         <td width=121 colspan=2 style='width:91.1pt;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
                             <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:0px'><span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->warehouse_id }}</span>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->Warehouse->name }}</span>
                             </p>
 
                         </td>
@@ -377,7 +377,7 @@
 
             </div>
 
-            <p class=MsoNormal style='margin-bottom:0in;margin-top:0.5px;'><span
+            <p class=MsoNormal style='margin-bottom:0in;margin-top:0.px;'><span
                     style='font-size:5.0pt; line-height:107%;font-family:"Arial",sans-serif'>&nbsp;</span></p>
 
             <div align=center>
@@ -460,7 +460,7 @@
                                 <p class=MsoNormal align=right
                                     style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:0px'>
                                     <span
-                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($order->orderItem['0']->subtotal )}}</span>
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($order->orderItem['0']->amount )}}</span>
                                 </p>
 
                             </td>
@@ -479,7 +479,7 @@
                                 <p class=MsoNormal align=right
                                     style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:0px'>
                                     <span
-                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($order->orderItem['0']->amount) }}</span>
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($order->orderItem['0']->subtotal) }}</span>
                                 </p>
 
                             </td>

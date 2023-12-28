@@ -23,7 +23,7 @@ class Customers extends Component
     public function render(): View|Closure|string
     {
         return view('components.search.customers',[
-            'customers' => Contact::active()->limit(10)->get()
+            'customers' => Contact::active()->where('type','1')->limit(10)->get()
         ]);
     }
 }

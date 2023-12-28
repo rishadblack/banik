@@ -226,8 +226,7 @@
                         </div>
                         <div class="row">
                             <div class="col-8">Shipping Charge</div>
-                            <div class="col-4 text-end"><x-input.text-order
-                                    wire:model.live.debounce.500ms="shipping_date" class="widthtd"
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="shipping_charge" class="widthtd"
                                     placeholder=""></x-input.text-order></div>
                         </div>
                     </x-layouts.backend.card>
@@ -391,16 +390,8 @@
             </x-layouts.backend.card>
             <x-layouts.backend.card>
                 <x-slot:title>Outlet & Warehouse</x-slot:title>
-                <x-input.select wire:model="outlet_id" label="Outlet">
-                    @foreach ($outlet as $outlet)
-                        <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
-                    @endforeach
-                </x-input.select>
-                <x-input.select wire:model="warehouse_id" label="Warehouse">
-                    @foreach ($warehouse as $warehouse)
-                        <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
-                    @endforeach
-                </x-input.select>
+                <x-search.outlets wire:model="outlet_id" label="Outlets"/>
+                <x-search.warehouses wire:model="warehouse_id" label="Warehouse"/>
             </x-layouts.backend.card>
 
             <x-layouts.backend.card>

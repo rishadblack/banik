@@ -460,7 +460,7 @@
                             <p class=MsoNormal align=right
                                 style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:0px'>
                                 <span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($order->orderItem['0']->subtotal) }}</span>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($order->orderItem['0']->amount) }}</span>
                             </p>
 
                         </td>
@@ -479,7 +479,7 @@
                             <p class=MsoNormal align=right
                                 style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:0px'>
                                 <span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($order->orderItem['0']->amount) }}</span>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($order->orderItem['0']->subtotal) }}</span>
                             </p>
 
                         </td>

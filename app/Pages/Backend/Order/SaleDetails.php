@@ -162,6 +162,7 @@ class SaleDetails extends Component
         $shipping_charge = $this->shipping_charge > 0 ? $this->shipping_charge : 0;
 
         $this->subtotal = $item_subtotal;
+        $this->discount_amount = $item_discount;
         $this->net_amount = ($item_subtotal + $vat_amount + $shipping_charge) -  $discount_amount;
         $this->paid_amount = collect($this->payment_item_rows)->sum('payment_amount');
         $this->due_amount = $this->paid_amount > 0 ?  $this->net_amount - $this->paid_amount : $this->net_amount;
