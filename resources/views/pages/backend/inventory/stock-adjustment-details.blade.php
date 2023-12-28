@@ -3,7 +3,7 @@
         .productSearch {
             border-radius: 18px;
             margin-left: 239px;
-            width: 240px;
+            width: 260px;
             font-size: 11px;
             color: #736d6d;
         }
@@ -145,15 +145,16 @@
                             <x-search.products wire:model.live='search_product' class="productSearch" placeholder="Search Product Name" />
                         </x-slot:search>
 
-                        <x-slot:button>
+                        {{-- <x-slot:button>
                             <x-button.default type="button" class="btn btn-sm rounded btn-info" x-data @click="$dispatch('openProductModal')">Add
                                 Product</x-button.default>
-                        </x-slot:button>
+                        </x-slot:button> --}}
 
                         <table class="table table-striped ">
                             <thead>
                                 <th>SL</th>
                                 <th>Product Name</th>
+                                <th class="text-center">Current Stock</th>
                                 <th class="width text-center">Quantity</th>
                                 {{-- <th class="width text-center">Discount</th> --}}
                                 <th class="text-end" >Action</th>
@@ -176,7 +177,10 @@
                                             </div>
                                         </div>
                                     </td>
-                                    {{-- <td><x-input.text-order wire:model.live.debounce.500ms="item_price.{{$item_row}}" class="widthtd" placeholder="" /></td> --}}
+                                    <td class="text-center">
+                                        {{$item_current_stock[$item_row], true}}
+
+                                    </td>
                                     <td><x-input.text-order wire:model.live.debounce.500ms="item_quantity.{{$item_row}}" class="widthtd" placeholder="" /></td>
                                     {{-- <td class="text-center"><x-input.text-order wire:model.live.debounce.500ms="item_discount.{{$item_row}}" class="widthtd" placeholder="" />
                                     </td> --}}
@@ -264,12 +268,10 @@
                     </div>
                 </x-slot:button>
                 <x-input.text wire:model.live="code" label="Code" />
-                <x-input.select wire:model="warehouse_id" label="Warehouse">
-                    @foreach ($warehouse as $warehouse)
-                    <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
-                    @endforeach
-                </x-input.select>
-                <x-input.text wire:model="damage_quantity" label="Damage/Adjust" />
+                <x-search.warehouses wire:model="warehouse_id" label="Warehouse"/>
+                <x-search.outlets wire:model="outlet_id" label="Outlet"/>
+                <x-input.date wire:model="stock_receipt_date" label="Receipt Date"/>
+                {{-- <x-input.text wire:model="damage_quantity" label="Damage/Adjust" /> --}}
                 <x-input.text wire:model="ref" label="Reference" />
             </x-layouts.backend.card>
             <x-layouts.backend.card>

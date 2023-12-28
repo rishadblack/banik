@@ -4,11 +4,14 @@ namespace App\Models\Product;
 
 use App\Models\User;
 use App\Models\Product\Brand;
+use App\Models\Order\OrderItem;
 use App\Models\Product\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
@@ -37,6 +40,10 @@ class Product extends Model
     public function Unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
+    }
+    public function OrderItem(): HasMany
+    {
+        return $this->hasMany(OrderItem::class,'id');
     }
 
     public function scopeSearch($query, $term)

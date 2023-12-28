@@ -3,6 +3,7 @@
 namespace App\Models\Setting;
 
 use App\Models\User;
+use App\Models\Order\Order;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +18,10 @@ class Outlet extends Model
     public function User(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    public function Order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class,'outlet_id','id');
     }
     public function scopeActive($query)
     {

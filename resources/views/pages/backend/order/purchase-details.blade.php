@@ -400,25 +400,11 @@
             </x-layouts.backend.card>
             <x-layouts.backend.card>
                 <x-slot:title>Outlet & Warehouse</x-slot:title>
-                <x-input.select wire:model="outlet_id" label="Outlets">
-                    @foreach ($outlet as $outlet)
-                        <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
-                    @endforeach
-                </x-input.select>
-                <x-input.select wire:model="warehouse_id" label="Warehouse">
-                    @foreach ($warehouse as $warehouse)
-                        <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
-                    @endforeach
-                </x-input.select>
+                <x-search.outlets wire:model="outlet_id" label="Outlets"/>
+                <x-search.warehouses wire:model="warehouse_id" label="Warehouse"/>
             </x-layouts.backend.card>
             <x-layouts.backend.card>
                 <x-slot:title>Status</x-slot:title>
-                {{-- <x-input.select wire:model="payment_status" label="Payment Status">
-                    <option value="1">Receipt</option>
-                    <option value="2">Pending</option>
-                    <option value="3">Hold</option>
-                    <option value="4">Cancle</option>
-                </x-input.select> --}}
                 <x-input.select wire:model="payment_status" label="Payment Status" :options="config('status.payment_status')"/>
                 <x-input.select wire:model="delivery_status" label="Delivery Status">
                     <option value="1">Receipt</option>

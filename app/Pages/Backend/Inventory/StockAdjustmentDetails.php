@@ -5,6 +5,7 @@ namespace App\Pages\Backend\Inventory;
 
 use Livewire\Attributes\Url;
 use App\Http\Common\Component;
+use App\Models\Order\OrderItem;
 use App\Models\Product\Product;
 use Livewire\Attributes\Layout;
 use App\Models\Setting\Warehouse;
@@ -20,18 +21,28 @@ class StockAdjustmentDetails extends Component
     public $stockadjustment_id;
 
     public $search_product;
+
+    public $product_id;
     public $code;
     public $ref;
     public $warehouse_id;
     public $quantity;
     public $damage_quantity;
-    public $amount;
+    public $outlet_id;
+    public $stock_receipt_date;
 
+
+    //Stock item
     public $item_rows = [];
+    public $item_deleted_rows = [];
     public $item_product_id = [];
     public $item_name = [];
     public $item_code = [];
     public $item_quantity = [];
+    public $item_current_stock = [];
+
+    //Stock item
+    public $current_item_rows = [];
 
     public function updatedSearchProduct($value)
     {
@@ -48,6 +59,7 @@ class StockAdjustmentDetails extends Component
             return true;
         }
 
+
         $item_rows->push($Product->id);
         $this->item_rows = $item_rows;
 
@@ -55,12 +67,20 @@ class StockAdjustmentDetails extends Component
         $this->item_name[$Product->id] = $Product->name;
         $this->item_code[$Product->id] = $Product->code;
         $this->item_quantity[$Product->id] = 1;
+        // $this->item_current_stock[$Product->id] = $Product->OrderItem['0']->quantity;
+        $this->item_current_stock[$Product->id] = 5;
+
+
 
         $this->reset('search_product');
         $this->dispatch('search_product_reset');
     }
 
     public function updatedItemQuantity($value, $productId)
+    {
+        $this->ItemRowsUpdate($productId);
+    }
+    public function updatedItemCurrentStock($value, $productId)
     {
         $this->ItemRowsUpdate($productId);
     }
@@ -78,10 +98,10 @@ class StockAdjustmentDetails extends Component
     {
         $item_quantity = collect($this->item_quantity)->sum();
     }
-
     public function removeItem($productId)
     {
         $item_rows = collect($this->item_rows);
+        $this->item_deleted_rows[] = $productId;
         $item_rows = $item_rows->filter(function ($value, $key) use ($productId) {
             return $value != $productId;
         });
@@ -113,16 +133,22 @@ class StockAdjustmentDetails extends Component
         $Adjustment->code = $this->code;
         $Adjustment->ref = $this->ref;
         $Adjustment->warehouse_id = $this->warehouse_id;
+        $Adjustment->outlet_id = $this->outlet_id;
+        $Adjustment->stock_receipt_date  = $this->stock_receipt_date;
         $Adjustment->quantity = $this->damage_quantity ?? 0;
         $Adjustment->save();
 
-        foreach ($this->item_rows as $key => $value) {
-            $AdjustmentItem = $Adjustment->StockReceiptItem()->where('product_id', $this->item_product_id[$value])->firstOrNew(['stockAdjustment_id' => $Adjustment->id, 'product_id' => $this->item_product_id[$value]]);
-            $AdjustmentItem->user_id =  $Adjustment->user_id;
+        if (count($this->item_deleted_rows) > 0) {
+            StockReceiptItem::where('stock_receipt_id', $Adjustment->id)->whereIn('product_id', $this->item_deleted_rows)->delete();
+        }
+
+        foreach ($this->item_rows as $key => $item) {
+            $AdjustmentItem = $Adjustment->StockReceiptItem()->where('product_id', $this->item_product_id[$item])->firstOrNew(['stock_receipt_id' => $Adjustment->id, 'product_id' => $this->item_product_id[$item]]);
+            $AdjustmentItem->user_id = $Adjustment->user_id;
             $AdjustmentItem->stock_receipt_id = $Adjustment->id;
-            $AdjustmentItem->product_id = $value;
-            $AdjustmentItem->name = $this->item_name[$value];
-            $AdjustmentItem->quantity = $this->item_quantity[$value];
+            $AdjustmentItem->product_id = $item;
+            $AdjustmentItem->name = $this->item_name[$item];
+            $AdjustmentItem->quantity = $this->item_quantity[$item];
             $AdjustmentItem->save();
         }
 
@@ -143,24 +169,44 @@ class StockAdjustmentDetails extends Component
         $this->code = str_pad((StockReceipt::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
+
     public function mount()
     {
+        $lastStock = StockReceipt::latest()->orderByDesc('id')->first();
+
+        if ($lastStock) {
+            $lastCode = $lastStock->code;
+            $newCodeNumber = intval($lastCode) + 1;
+            $this->code = str_pad($newCodeNumber, strlen($lastCode), '0', STR_PAD_LEFT);
+        } else {
+            $this->code = '001';
+        }
+
         if ($this->stockadjustment_id) {
             $Adjustment = StockReceipt::find($this->stockadjustment_id);
-            $this->code = $Adjustment->code;
-            $this->ref = $Adjustment->ref;
-            $this->warehouse_id = $Adjustment->warehouse_id;
-            $this->quantity = $Adjustment->quantity ?? 0;
+            if ($Adjustment) {
+                $this->code = $Adjustment->code;
+                $this->ref = $Adjustment->ref;
+                $this->warehouse_id = $Adjustment->warehouse_id;
+                $this->outlet_id = $Adjustment->outlet_id;
+                $this->stock_receipt_date = $Adjustment->stock_receipt_date;
 
-            $this->quantity = $Adjustment->StockReceiptItem->quantity ?? 0;
-        } else {
-            $this->adjustmentReset();
+
+                foreach ($Adjustment->StockReceiptItem as $key => $StockReceiptItem) {
+                    $item_rows = collect($this->item_rows);
+                    $item_rows->push($StockReceiptItem->product_id);
+                    $this->item_rows = $item_rows;
+                    $this->item_product_id[$StockReceiptItem->product_id] = $StockReceiptItem->product_id;
+                    $this->item_name[$StockReceiptItem->product_id] = $StockReceiptItem->name;
+                    $this->item_code[$StockReceiptItem->product_id] = $StockReceiptItem->product_code;
+                    $this->item_quantity[$StockReceiptItem->product_id] = $StockReceiptItem->quantity;
+                }
+            }
         }
     }
 
     public function render()
     {
-        $warehouse = Warehouse::all();
-        return view('pages.backend.inventory.stock-adjustment-details', compact('warehouse'));
+        return view('pages.backend.inventory.stock-adjustment-details');
     }
 }

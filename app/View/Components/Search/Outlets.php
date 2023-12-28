@@ -4,10 +4,10 @@ namespace App\View\Components\Search;
 
 use Closure;
 use Illuminate\View\Component;
-use App\Models\Contact\Contact;
 use Illuminate\Contracts\View\View;
+use App\Models\Setting\Outlet;
 
-class Billers extends Component
+class Outlets extends Component
 {
     /**
      * Create a new component instance.
@@ -22,8 +22,8 @@ class Billers extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.search.billers',[
-            'billers' => Contact::active()->where('type','3')->limit(10)->get()
+        return view('components.search.outlets',[
+            'outlets' => Outlet::active()->get(),
         ]);
     }
 }

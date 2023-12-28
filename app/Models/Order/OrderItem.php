@@ -5,6 +5,7 @@ namespace App\Models\Order;
 use App\Models\User;
 use App\Models\Order\Order;
 use App\Models\Product\Product;
+use App\Models\Inventory\StockReceipt;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,6 +30,10 @@ class OrderItem extends Model
     public function Order(): BelongsTo
     {
         return $this->belongsTo(Order::class,'order_id','id');
+    }
+    public function StockReceipt(): BelongsTo
+    {
+        return $this->belongsTo(StockReceipt::class);
     }
 
     public function Product(): BelongsTo

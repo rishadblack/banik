@@ -50,12 +50,12 @@ class Order extends Model
 
     public function Outlet(): BelongsTo
     {
-        return $this->belongsTo(Outlet::class);
+        return $this->belongsTo(Outlet::class,'outlet_id');
     }
 
     public function Warehouse(): BelongsTo
     {
-        return $this->belongsTo(Warehouse::class);
+        return $this->belongsTo(Warehouse::class,'warehouse_id');
     }
 
     public function scopeSearch($query, $term)

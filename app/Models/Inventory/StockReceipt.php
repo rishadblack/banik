@@ -4,11 +4,13 @@ namespace App\Models\Inventory;
 
 use App\Models\User;
 use App\Models\Setting\Outlet;
+use App\Models\Order\OrderItem;
 use App\Models\Setting\Warehouse;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Inventory\StockReceiptItem;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -28,9 +30,13 @@ class StockReceipt extends Model
     {
         return $query->whereStatus(1);
     }
-    public function StockReceiptItem(): HasOne
+    public function StockReceiptItem(): HasMany
     {
-        return $this->hasOne(StockReceiptItem::class);
+        return $this->hasMany(StockReceiptItem::class);
+    }
+    public function OrderItem(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
     }
     public function Outlet(): BelongsTo
     {

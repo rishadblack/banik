@@ -4,6 +4,8 @@ namespace App\Models\Accounting;
 
 use App\Models\User;
 use App\Models\Order\Order;
+use App\Models\Contact\Contact;
+use App\Models\Contact\ContactInfo;
 use App\Models\Setting\PaymentMethod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -29,7 +31,15 @@ class Transaction extends Model
     }
     public function PaymentMethod(): BelongsTo
     {
-        return $this->belongsTo(PaymentMethod::class);
+        return $this->belongsTo(PaymentMethod::class,'payment_method_id');
+    }
+    public function Contact(): BelongsTo
+    {
+        return $this->belongsTo(Contact::class,'contact_id');
+    }
+    public function ContactInfo(): BelongsTo
+    {
+        return $this->belongsTo(ContactInfo::class,'payment_method_id');
     }
     public function order(): HasMany
     {
