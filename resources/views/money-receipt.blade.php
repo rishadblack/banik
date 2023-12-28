@@ -270,7 +270,7 @@
 
                         <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right; line-height:normal'>
                             <span
-                                style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($transaction->due_amount = ($transaction->net_amount)-($transaction->amount)) }}</span>
+                                style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($transaction->net_amount - $transaction->amount) }}</span>
                         </p>
 
                     </td>

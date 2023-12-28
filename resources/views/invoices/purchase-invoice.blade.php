@@ -434,8 +434,7 @@
                         </td>
 
                     </tr>
-
-
+                    @foreach ($order->OrderItem as $OrderItem)
                         <tr style='height:12.25pt'>
 
                             <td width=36
@@ -443,7 +442,7 @@
                                 <p class=MsoNormal align=center
                                     style='margin-bottom:0in;text-align:center; line-height:normal;margin-top:0px'>
                                     <span
-                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->orderItem['0']->id }}</span>
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $OrderItem->id }}</span>
                                 </p>
 
                             </td>
@@ -451,7 +450,7 @@
                                 style='width:288.6pt;border-top:none;border-left: none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
                                 <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:0px'>
                                     <span
-                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->orderItem['0']->name }}</span>
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $OrderItem->name }}</span>
                                 </p>
 
                             </td>
@@ -460,7 +459,7 @@
                                 <p class=MsoNormal align=right
                                     style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:0px'>
                                     <span
-                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($order->orderItem['0']->amount )}}</span>
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($OrderItem->amount )}}</span>
                                 </p>
 
                             </td>
@@ -469,7 +468,7 @@
                                 <p class=MsoNormal align=center
                                     style='margin-bottom:0in;text-align:center; line-height:normal;margin-top:0px'>
                                     <span
-                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->orderItem['0']->quantity }}</span>
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $OrderItem->quantity }}</span>
                                 </p>
 
                             </td>
@@ -479,13 +478,12 @@
                                 <p class=MsoNormal align=right
                                     style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:0px'>
                                     <span
-                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($order->orderItem['0']->subtotal) }}</span>
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($OrderItem->subtotal) }}</span>
                                 </p>
 
                             </td>
                         </tr>
-
-
+                    @endforeach
                     <tr style='height:12.25pt'>
 
                         <td width=421 colspan=4

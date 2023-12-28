@@ -281,6 +281,13 @@ class PurchaseDetails extends Component
             'url' => route('invoice.purchase',['id' => $Purchase->id]),
         ]);
 
+
+        if (isset($payment_item['transaction_id']) && $payment_item['transaction_id']) {
+            $this->dispatch('print', [
+                'url' => route('money_receipt', ['id' => $payment_item['transaction_id']]),
+            ]);
+        }
+
         $this->alert('success', $message);
         $this->dispatch('refreshDatatable');
     }

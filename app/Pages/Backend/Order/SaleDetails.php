@@ -225,7 +225,7 @@ class SaleDetails extends Component
         $Sale->save();
 
         if (count($this->item_deleted_rows) > 0) {
-            OrderItem::where('order_id',$Sale->id)->whereIn('product_id', $this->item_deleted_rows)->delete();
+            OrderItem::where('order_id', $Sale->id)->whereIn('product_id', $this->item_deleted_rows)->delete();
         }
 
         foreach ($this->item_rows as $key => $item) {
@@ -248,9 +248,9 @@ class SaleDetails extends Component
         }
 
         foreach ($payment_item_rows as $key => $payment_item) {
-            if(isset($payment_item['transaction_id']) && $payment_item['transaction_id']){
+            if (isset($payment_item['transaction_id']) && $payment_item['transaction_id']) {
                 $SalePayment = Transaction::find($payment_item['transaction_id']);
-            }else{
+            } else {
                 $SalePayment = new Transaction();
             }
 
@@ -269,15 +269,21 @@ class SaleDetails extends Component
             $this->payment_item_rows = $payment_item_rows;
         }
 
-       if ($storeType == 'new') {
+        if ($storeType == 'new') {
             $this->SaleReset();
         } else {
             $this->sale_id = $Sale->id;
         }
 
         $this->dispatch('print', [
-            'url' => route('invoice.sales',['id' => $Sale->id]),
+            'url' => route('invoice.sales', ['id' => $Sale->id]),
         ]);
+
+        if (isset($payment_item['transaction_id']) && $payment_item['transaction_id']) {
+            $this->dispatch('print', [
+                'url' => route('money_receipt', ['id' => $payment_item['transaction_id']]),
+            ]);
+        }
 
         $this->alert('success', $message);
         $this->dispatch('refreshDatatable');
@@ -306,7 +312,7 @@ class SaleDetails extends Component
 
         $payment_item_rows = collect($this->payment_item_rows);
 
-        if($this->due_amount <= 0 || $this->due_amount < $this->payment_amount){
+        if ($this->due_amount <= 0 || $this->due_amount < $this->payment_amount) {
             $this->alert('error', 'Payment Amount is greater than Due Amount!');
             return true;
         }
@@ -377,17 +383,17 @@ class SaleDetails extends Component
     {
         $lastSale = Order::latest()->orderByDesc('id')->first();
 
-    if ($lastSale) {
-        $lastCode = $lastSale->code;
-        $newCodeNumber = intval($lastCode) + 1;
-        $this->code = str_pad($newCodeNumber, strlen($lastCode), '0', STR_PAD_LEFT);
-    } else {
-        $this->code = '001';
-    }
+        if ($lastSale) {
+            $lastCode = $lastSale->code;
+            $newCodeNumber = intval($lastCode) + 1;
+            $this->code = str_pad($newCodeNumber, strlen($lastCode), '0', STR_PAD_LEFT);
+        } else {
+            $this->code = '001';
+        }
 
         if ($this->sale_id) {
             $Sale = Order::find($this->sale_id);
-            if($Sale){
+            if ($Sale) {
                 $this->code = $Sale->code;
                 $this->ref = $Sale->ref;
                 $this->warehouse_id = $Sale->warehouse_id;
@@ -436,7 +442,6 @@ class SaleDetails extends Component
 
                     $this->payment_item_rows = $payment_item_rows;
                 }
-
             }
         }
     }
@@ -449,6 +454,6 @@ class SaleDetails extends Component
         $transaction = Transaction::all();
         $outlet = Outlet::all();
         $warehouse = Warehouse::all();
-        return view('pages.backend.order.Sale-details', compact( 'payment',  'product', 'transaction', 'outlet', 'warehouse','order'));
+        return view('pages.backend.order.Sale-details', compact('payment',  'product', 'transaction', 'outlet', 'warehouse', 'order'));
     }
 }
