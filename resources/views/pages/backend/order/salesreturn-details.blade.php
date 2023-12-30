@@ -217,20 +217,20 @@
                     <x-layouts.backend.card class="shadow">
                         <div class="row mb-1">
                             <div class="col-8">Discount</div>
-                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="discount"
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="discount_amount"
                                     class="widthtd"
-                                    placeholder=""><b>{{ numberFormat($discount, true) }}</b></x-input.text-order>
+                                    placeholder="">{{ numberFormat($discount_amount, true) }}</x-input.text-order>
                             </div>
                         </div>
                         <div class="row mb-1">
                             <div class="col-8">Tax</div>
-                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms=""
-                                    class="widthtd" placeholder=""><b>0</b></x-input.text-order></div>
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="vat_amount"
+                                    class="widthtd" placeholder=""></x-input.text-order></div>
                         </div>
                         <div class="row">
                             <div class="col-8">Shipping Charge</div>
-                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms=""
-                                    class="widthtd" placeholder=""><b>0</b></x-input.text-order></div>
+                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="shipping_charge"
+                                    class="widthtd" placeholder=""></x-input.text-order></div>
                         </div>
                     </x-layouts.backend.card>
                 </div>
@@ -252,10 +252,10 @@
                                     <td colspan="2"><b>Total</b></td>
                                     <td class="text-end text-decoration-underline"><b>{{numberFormat($net_amount,true)}}</b></td>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <td colspan="2"><b>Due</b></td>
                                     <td class="text-end  text-decoration-underline"><b>00.80 ৳</b></td>
-                                </tr>
+                                </tr> --}}
 
                             </tbody>
                         </table>

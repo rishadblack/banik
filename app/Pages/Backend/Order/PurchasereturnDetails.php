@@ -48,17 +48,21 @@ class PurchasereturnDetails extends Component
     public $paid_amount;
     public $code;
     public $net_amount;
+    public $vat_amount;
+    public $shipping_charge;
 
-    public $item_rows = [];
-    public $item_product_id = [];
-    public $item_name = [];
-    public $item_code = [];
-    public $item_price = [];
-    public $item_quantity = [];
-    public $item_discount = [];
-    public $item_subtotal = [];
+  //Purchase item
+  public $item_rows = [];
+  public $item_deleted_rows = [];
+  public $item_product_id = [];
+  public $item_name = [];
+  public $item_code = [];
+  public $item_price = [];
+  public $item_quantity = [];
+  public $item_discount = [];
+  public $item_subtotal = [];
 
-    public function updatedSearchProduct($value)
+  public function updatedSearchProduct($value)
     {
         if (empty($value)) {
             return true;
@@ -79,11 +83,12 @@ class PurchasereturnDetails extends Component
         $this->item_product_id[$Product->id] = $Product->id;
         $this->item_name[$Product->id] = $Product->name;
         $this->item_code[$Product->id] = $Product->code;
-        $this->item_price[$Product->id] = $Product->net_purchase_price;
+        $this->item_price[$Product->id] = numberFormat($Product->net_purchase_price);
         $this->item_quantity[$Product->id] = 1;
         $this->item_discount[$Product->id] = 0;
-        $this->item_subtotal[$Product->id] = $Product->net_purchase_price;
+        $this->item_subtotal[$Product->id] = numberFormat($Product->net_purchase_price);
 
+        $this->rowsUpdate();
         $this->reset('search_product');
         $this->dispatch('search_product_reset');
     }
@@ -114,16 +119,36 @@ class PurchasereturnDetails extends Component
         $this->rowsUpdate();
     }
 
+    public function updatedDiscountAmount($value)
+    {
+        $this->rowsUpdate();
+    }
+
+    public function updatedVatAmount($value)
+    {
+        $this->rowsUpdate();
+    }
+
+    public function updatedShippingCharge($value)
+    {
+        $this->rowsUpdate();
+    }
+
     public function rowsUpdate()
     {
         $item_subtotal = collect($this->item_subtotal)->sum();
         $item_quantity = collect($this->item_quantity)->sum();
         $item_discount = collect($this->item_discount)->sum();
+        $discount_amount = $this->discount_amount > 0 ? $this->discount_amount : 0;
+        $vat_amount = $this->vat_amount > 0 ? $this->vat_amount : 0;
+        $shipping_charge = $this->shipping_charge > 0 ? $this->shipping_charge : 0;
 
         $this->subtotal = $item_subtotal;
-        $this->net_amount = $item_subtotal;
-        $this->discount = $item_discount;
+        $this->discount_amount = $item_discount;
+        $this->net_amount = ($item_subtotal + $vat_amount + $shipping_charge) -  $discount_amount;
+        // $this->paid_amount = collect($this->payment_item_rows)->sum('payment_amount');
     }
+
 
     public function removeItem($productId)
     {
@@ -169,6 +194,8 @@ class PurchasereturnDetails extends Component
         $Purchase->payment_status = $this->payment_status ?? 0;
         $Purchase->delivery_status = $this->delivery_status ?? 0;
         $Purchase->discount = $this->discount ?? 0;
+        $Purchase->vat_amount = $this->vat_amount ?? 0;
+        $Purchase->shipping_charge = $this->shipping_charge ?? 0;
         $Purchase->save();
 
         foreach ($this->item_rows as $key => $value) {
@@ -214,16 +241,26 @@ class PurchasereturnDetails extends Component
             $this->payment_method_id = $Purchase->payment_method_id ?? 0;
             $this->delivery_status = $Purchase->delivery_status ?? 0;
             $this->discount = $Purchase->discount ?? 0;
+            $this->discount_amount = numberFormat($Purchase->discount_amount) ?? 0;
+            $this->vat_amount = numberFormat($Purchase->vat_amount);
+            $this->shipping_charge = numberFormat($Purchase->shipping_charge);
+            $this->subtotal = $Purchase->subtotal;
+            $this->net_amount = $Purchase->net_amount;
+            $this->additional_charge = $Purchase->additional_charge;
+            $this->paid_amount = $Purchase->paid_amount;
 
-            $this->product_id = $Purchase->OrderItem->product_id;
-            $this->name = $Purchase->OrderItem->name;
-            $this->amount = $Purchase->OrderItem->amount;
-            $this->quantity = $Purchase->OrderItem->quantity;
-            $this->received_quantity = $Purchase->OrderItem->received_quantity ?? 0;
-            $this->subtotal = $Purchase->OrderItem->subtotal ?? 0;
-            $this->discount_amount = $Purchase->OrderItem->discount_amount ?? 0;
-        } else {
-            $this->purchaseReset();
+            foreach ($Purchase->OrderItem as $key => $OrderItem) {
+                $item_rows = collect($this->item_rows);
+                $item_rows->push($OrderItem->product_id);
+                $this->item_rows = $item_rows;
+                $this->item_product_id[$OrderItem->product_id] = $OrderItem->product_id;
+                $this->item_name[$OrderItem->product_id] = $OrderItem->name;
+                $this->item_code[$OrderItem->product_id] = $OrderItem->Product->code;
+                $this->item_price[$OrderItem->product_id] = numberFormat($OrderItem->amount);
+                $this->item_quantity[$OrderItem->product_id] = $OrderItem->quantity;
+                $this->item_discount[$OrderItem->product_id] = numberFormat($OrderItem->discount) ?? 0;
+                $this->item_subtotal[$OrderItem->product_id] = numberFormat($OrderItem->subtotal);
+            }
         }
     }
 
