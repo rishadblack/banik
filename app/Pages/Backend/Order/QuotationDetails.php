@@ -43,19 +43,23 @@ class QuotationDetails extends Component
     public $delivery_charge;
     public $payment_date;
     public $net_amount;
+    public $vat_amount;
+    public $shipping_charge;
 
-    public $item_rows = [];
-    public $item_product_id = [];
-    public $item_name = [];
-    public $item_code = [];
-    public $item_price = [];
-    public $item_quantity = [];
-    public $item_discount = [];
-    public $item_subtotal = [];
+    //Purchase item
+  public $item_rows = [];
+  public $item_deleted_rows = [];
+  public $item_product_id = [];
+  public $item_name = [];
+  public $item_code = [];
+  public $item_price = [];
+  public $item_quantity = [];
+  public $item_discount = [];
+  public $item_subtotal = [];
 
-    public function updatedSearchProduct($value)
+  public function updatedSearchProduct($value)
     {
-        if(empty($value)){
+        if (empty($value)) {
             return true;
         }
 
@@ -63,7 +67,7 @@ class QuotationDetails extends Component
 
         $item_rows = collect($this->item_rows);
 
-        if($item_rows->contains($Product->id)){
+        if ($item_rows->contains($Product->id)) {
             $this->alert('error', 'Product Already Added!');
             return true;
         }
@@ -74,11 +78,12 @@ class QuotationDetails extends Component
         $this->item_product_id[$Product->id] = $Product->id;
         $this->item_name[$Product->id] = $Product->name;
         $this->item_code[$Product->id] = $Product->code;
-        $this->item_price[$Product->id] = $Product->net_purchase_price;
+        $this->item_price[$Product->id] = numberFormat($Product->net_purchase_price);
         $this->item_quantity[$Product->id] = 1;
         $this->item_discount[$Product->id] = 0;
-        $this->item_subtotal[$Product->id] = $Product->net_purchase_price;
+        $this->item_subtotal[$Product->id] = numberFormat($Product->net_purchase_price);
 
+        $this->rowsUpdate();
         $this->reset('search_product');
         $this->dispatch('search_product_reset');
     }
@@ -109,16 +114,36 @@ class QuotationDetails extends Component
         $this->rowsUpdate();
     }
 
+    public function updatedDiscountAmount($value)
+    {
+        $this->rowsUpdate();
+    }
+
+    public function updatedVatAmount($value)
+    {
+        $this->rowsUpdate();
+    }
+
+    public function updatedShippingCharge($value)
+    {
+        $this->rowsUpdate();
+    }
+
     public function rowsUpdate()
     {
         $item_subtotal = collect($this->item_subtotal)->sum();
         $item_quantity = collect($this->item_quantity)->sum();
         $item_discount = collect($this->item_discount)->sum();
+        $discount_amount = $this->discount_amount > 0 ? $this->discount_amount : 0;
+        $vat_amount = $this->vat_amount > 0 ? $this->vat_amount : 0;
+        $shipping_charge = $this->shipping_charge > 0 ? $this->shipping_charge : 0;
 
         $this->subtotal = $item_subtotal;
-        $this->net_amount = $item_subtotal;
-        $this->discount = $item_discount;
+        $this->discount_amount = $item_discount;
+        $this->net_amount = ($item_subtotal + $vat_amount + $shipping_charge) -  $discount_amount;
+        // $this->paid_amount = collect($this->payment_item_rows)->sum('payment_amount');
     }
+
 
     public function removeItem($productId)
     {
@@ -163,6 +188,12 @@ class QuotationDetails extends Component
         $Quotation->contact_id = $this->contact_id;
         $Quotation->status = $this->status;
         $Quotation->sales_person = $this->sales_person;
+        $Quotation->discount = $this->discount ?? 0;
+        $Quotation->subtotal = $this->subtotal ?? 0;
+        $Quotation->net_amount = $this->net_amount ?? 0;
+        $Quotation->additional_charge = $this->additional_charge ?? 0;
+        $Quotation->vat_amount = $this->vat_amount ?? 0;
+        $Quotation->shipping_charge = $this->shipping_charge ?? 0;
         $Quotation->save();
 
         foreach ($this->item_rows as $key => $value) {
@@ -210,18 +241,24 @@ class QuotationDetails extends Component
             $this->discount = $Quotation->discount;
             $this->sales_person = $Quotation->sales_person;
             $this->delivery_charge = $Quotation->delivery_charge;
-            $this->payment_method_id = $Quotation->payment_method_id;
+            $this->discount = numberFormat($Quotation->discount);
+            $this->vat_amount = numberFormat($Quotation->vat_amount);
+            $this->shipping_charge = numberFormat($Quotation->shipping_charge);
+            $this->subtotal = $Quotation->subtotal;
+            $this->net_amount = $Quotation->net_amount;
 
-
-            $this->product_id = $Quotation->OrderItem->product_id;
-            $this->name = $Quotation->OrderItem->name;
-            $this->amount = $Quotation->OrderItem->amount;
-            $this->quantity = $Quotation->OrderItem->quantity;
-            $this->delivery_quantity = $Quotation->OrderItem->delivery_quantity;
-            $this->subtotal = $Quotation->OrderItem->subtotal;
-            $this->discount_amount = $Quotation->OrderItem->discount_amount;
-        }else{
-            $this->quotationReset();
+            foreach ($Quotation->OrderItem as $key => $OrderItem) {
+                $item_rows = collect($this->item_rows);
+                $item_rows->push($OrderItem->product_id);
+                $this->item_rows = $item_rows;
+                $this->item_product_id[$OrderItem->product_id] = $OrderItem->product_id;
+                $this->item_name[$OrderItem->product_id] = $OrderItem->name;
+                $this->item_code[$OrderItem->product_id] = $OrderItem->Product->code;
+                $this->item_price[$OrderItem->product_id] = numberFormat($OrderItem->amount);
+                $this->item_quantity[$OrderItem->product_id] = $OrderItem->quantity;
+                $this->item_discount[$OrderItem->product_id] = numberFormat($OrderItem->discount) ?? 0;
+                $this->item_subtotal[$OrderItem->product_id] = numberFormat($OrderItem->subtotal);
+            }
         }
     }
 
