@@ -50,15 +50,15 @@ class SalesreturnDetails extends Component
     public $shipping_charge;
 
     //Purchase item
-  public $item_rows = [];
-  public $item_deleted_rows = [];
-  public $item_product_id = [];
-  public $item_name = [];
-  public $item_code = [];
-  public $item_price = [];
-  public $item_quantity = [];
-  public $item_discount = [];
-  public $item_subtotal = [];
+    public $item_rows = [];
+    public $item_deleted_rows = [];
+    public $item_product_id = [];
+    public $item_name = [];
+    public $item_code = [];
+    public $item_price = [];
+    public $item_quantity = [];
+    public $item_discount = [];
+    public $item_subtotal = [];
 
     public function updatedSearchProduct($value)
     {
@@ -177,7 +177,7 @@ class SalesreturnDetails extends Component
         ]);
 
         $Sale = Order::findOrNew($this->salereturn_id);
-        if($this->salereturn_id) {
+        if ($this->salereturn_id) {
             $message = 'Sale Return Updated Successfully!';
         } else {
             $message = 'Sale Return Added Successfully!';
@@ -192,8 +192,8 @@ class SalesreturnDetails extends Component
         $Sale->contact_id = $this->contact_id;
         $Sale->payment_status = $this->payment_status;
         $Sale->delivery_status = $this->delivery_status;
-        $Sale->discount = $this->discount??0;
-        $Sale->sales_person = $this->sales_person??0;
+        $Sale->discount = $this->discount ?? 0;
+        $Sale->sales_person = $this->sales_person ?? 0;
         $Sale->discount = $this->discount ?? 0;
         $Sale->subtotal = $this->subtotal ?? 0;
         $Sale->net_amount = $this->net_amount ?? 0;
@@ -203,7 +203,7 @@ class SalesreturnDetails extends Component
         $Sale->save();
 
         foreach ($this->item_rows as $key => $value) {
-            $SaleInfo = $Sale->OrderItem()->where('product_id',$this->item_product_id[$value])->firstOrNew(['order_id' => $Sale->id, 'product_id' => $this->item_product_id[$value]]);
+            $SaleInfo = $Sale->OrderItem()->where('product_id', $this->item_product_id[$value])->firstOrNew(['order_id' => $Sale->id, 'product_id' => $this->item_product_id[$value]]);
             $SaleInfo->user_id = $Sale->user_id;
             $SaleInfo->order_id = $Sale->id;
             $SaleInfo->product_id = $value;
@@ -215,10 +215,10 @@ class SalesreturnDetails extends Component
             $SaleInfo->save();
         }
 
-        if($storeType == 'new'){
+        if ($storeType == 'new') {
             $this->salesReset();
-        }else{
-            $this->salereturn_id = $Sale-> id;
+        } else {
+            $this->salereturn_id = $Sale->id;
         }
 
 
@@ -229,40 +229,51 @@ class SalesreturnDetails extends Component
     {
         $this->reset();
         $this->resetValidation();
-       $this->code = str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
+        $this->code = str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()
     {
-        if($this->salereturn_id) {
+        $lastSale = Order::latest()->orderByDesc('id')->first();
+
+        if ($lastSale) {
+            $lastCode = $lastSale->code;
+            $newCodeNumber = intval($lastCode) + 1;
+            $this->code = str_pad($newCodeNumber, strlen($lastCode), '0', STR_PAD_LEFT);
+        } else {
+            $this->code = '001';
+        }
+        if ($this->salereturn_id) {
             $Sale = Order::find($this->salereturn_id);
-            $this->code = $Sale->code;
-            $this->ref = $Sale->ref;
-            $this->warehouse_id = $Sale->warehouse_id;
-            $this->outlet_id = $Sale->outlet_id;
-            $this->contact_id = $Sale->contact_id;
-            $this->payment_status = $Sale->payment_status;
-            $this->delivery_status = $Sale->delivery_status;
-            $this->discount = $Sale->discount;
-            $this->sales_person = $Sale->sales_person;
-            $this->discount = numberFormat($Sale->discount);
-            $this->vat_amount = numberFormat($Sale->vat_amount);
-            $this->shipping_charge = numberFormat($Sale->shipping_charge);
-            $this->subtotal = $Sale->subtotal;
-            $this->net_amount = $Sale->net_amount;
+            if ($Sale) {
+                $this->code = $Sale->code;
+                $this->ref = $Sale->ref;
+                $this->warehouse_id = $Sale->warehouse_id;
+                $this->outlet_id = $Sale->outlet_id;
+                $this->contact_id = $Sale->contact_id;
+                $this->payment_status = $Sale->payment_status;
+                $this->delivery_status = $Sale->delivery_status;
+                $this->discount = $Sale->discount;
+                $this->sales_person = $Sale->sales_person;
+                $this->discount = numberFormat($Sale->discount);
+                $this->vat_amount = numberFormat($Sale->vat_amount);
+                $this->shipping_charge = numberFormat($Sale->shipping_charge);
+                $this->subtotal = $Sale->subtotal;
+                $this->net_amount = $Sale->net_amount;
 
 
-            foreach ($Sale->OrderItem as $key => $OrderItem) {
-                $item_rows = collect($this->item_rows);
-                $item_rows->push($OrderItem->product_id);
-                $this->item_rows = $item_rows;
-                $this->item_product_id[$OrderItem->product_id] = $OrderItem->product_id;
-                $this->item_name[$OrderItem->product_id] = $OrderItem->name;
-                $this->item_code[$OrderItem->product_id] = $OrderItem->Product->code;
-                $this->item_price[$OrderItem->product_id] = numberFormat($OrderItem->amount);
-                $this->item_quantity[$OrderItem->product_id] = $OrderItem->quantity;
-                $this->item_discount[$OrderItem->product_id] = numberFormat($OrderItem->discount)??0;
-                $this->item_subtotal[$OrderItem->product_id] = numberFormat($OrderItem->subtotal);
+                foreach ($Sale->OrderItem as $key => $OrderItem) {
+                    $item_rows = collect($this->item_rows);
+                    $item_rows->push($OrderItem->product_id);
+                    $this->item_rows = $item_rows;
+                    $this->item_product_id[$OrderItem->product_id] = $OrderItem->product_id;
+                    $this->item_name[$OrderItem->product_id] = $OrderItem->name;
+                    $this->item_code[$OrderItem->product_id] = $OrderItem->Product->code;
+                    $this->item_price[$OrderItem->product_id] = numberFormat($OrderItem->amount);
+                    $this->item_quantity[$OrderItem->product_id] = $OrderItem->quantity;
+                    $this->item_discount[$OrderItem->product_id] = numberFormat($OrderItem->discount) ?? 0;
+                    $this->item_subtotal[$OrderItem->product_id] = numberFormat($OrderItem->subtotal);
+                }
             }
         }
     }
@@ -271,11 +282,11 @@ class SalesreturnDetails extends Component
     public function render()
     {
         $customer = Contact::where('type', 1)->get();
-        $order = Order::Where('type',2);
+        $order = Order::Where('type', 2);
         $payment = OrderItem::all();
-        $product=Product::all();
+        $product = Product::all();
         $outlet = Outlet::all();
         $warehouse = Warehouse::all();
-        return view('pages.backend.order.salesreturn-details',compact('customer','payment','order','product','outlet','warehouse'));
+        return view('pages.backend.order.salesreturn-details', compact('customer', 'payment', 'order', 'product', 'outlet', 'warehouse'));
     }
 }

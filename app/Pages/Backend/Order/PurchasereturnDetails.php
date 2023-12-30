@@ -229,8 +229,17 @@ class PurchasereturnDetails extends Component
 
     public function mount()
     {
+        $lastPurchase = Order::latest()->orderByDesc('id')->first();
+        if ($lastPurchase) {
+            $lastCode = $lastPurchase->code;
+            $newCodeNumber = intval($lastCode) + 1;
+            $this->code = str_pad($newCodeNumber, strlen($lastCode), '0', STR_PAD_LEFT);
+        } else {
+            $this->code = '001';
+        }
         if ($this->purchase_id) {
             $Purchase = Order::find($this->purchase_id);
+            if ($Purchase) {
             $this->code = $Purchase->code;
             $this->ref = $Purchase->ref;
             $this->warehouse_id = $Purchase->warehouse_id;
@@ -261,6 +270,7 @@ class PurchasereturnDetails extends Component
                 $this->item_discount[$OrderItem->product_id] = numberFormat($OrderItem->discount) ?? 0;
                 $this->item_subtotal[$OrderItem->product_id] = numberFormat($OrderItem->subtotal);
             }
+        }
         }
     }
 
