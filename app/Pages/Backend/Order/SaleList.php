@@ -16,7 +16,12 @@ use App\Models\Accounting\Transaction;
 class SaleList extends Component
 {
     public $dalivery_id;
+
+    public $order_id;
+
+
     public $payment_id;
+
 
     public $vehicle_type;
     public $search_product;
@@ -55,26 +60,26 @@ class SaleList extends Component
             'code' => 'required|string',
         ]);
 
-        $DeliveryChallan = Delivery::findOrNew($this->dalivery_id);
+        $Delivery = Delivery::findOrNew($this->dalivery_id);
         if ($this->dalivery_id) {
             $message = 'Delivery Challan Updated Successfully!';
         } else {
             $message = 'Delivery Challan Added Successfully!';
-            $DeliveryChallan->user_id = Auth::id();
+            $Delivery->user_id = Auth::id();
         }
 
-        $DeliveryChallan->code = $this->code;
-        $DeliveryChallan->person_name = $this->person_name;
-        $DeliveryChallan->mobile = $this->mobile ?? 0;
-        $DeliveryChallan->vehicle_type = $this->vehicle_type ?? 0;
-        $DeliveryChallan->note = $this->note ?? 0;
-        $DeliveryChallan->ref = $this->ref ?? 0;
-        $DeliveryChallan->status = $this->status ?? 0;
-        $DeliveryChallan->save();
+        $Delivery->code = $this->code;
+        $Delivery->person_name = $this->person_name;
+        $Delivery->mobile = $this->mobile ?? 0;
+        $Delivery->vehicle_type = $this->vehicle_type ?? 0;
+        $Delivery->note = $this->note ?? 0;
+        $Delivery->ref = $this->ref ?? 0;
+        $Delivery->status = $this->status ?? 0;
+        $Delivery->save();
 
-        $DeliveryInfo = $DeliveryChallan->DeliveryItem()->firstOrCreate();
-        $DeliveryInfo->user_id =  $DeliveryChallan->user_id;
-        $DeliveryInfo->delivery_id = $DeliveryChallan->id;
+        $DeliveryInfo = $Delivery->DeliveryItem()->firstOrCreate();
+        $DeliveryInfo->user_id =  $Delivery->user_id;
+        $DeliveryInfo->delivery_id = $Delivery->id;
         $DeliveryInfo->product_id = $this->product_id ?? 0;
         $DeliveryInfo->quantity = $this->quantity ?? 0;
         $DeliveryInfo->save();
@@ -82,7 +87,7 @@ class SaleList extends Component
         if ($storeType == 'new') {
             $this->challanReset();
         } else {
-            $this->dalivery_id = $DeliveryChallan->id;
+            $this->dalivery_id = $Delivery->id;
         }
         $this->alert('success', $message);
         $this->dispatch('refreshDatatable');
@@ -153,7 +158,12 @@ class SaleList extends Component
     }
     public function render()
     {
+
+        // $order = Order::findOrNew($this->order_id);
+        // $this->order_id = $order->id;
+        // //  $order->id = $this->order_id;
+
         $transaction = Transaction::all();
-        return view('pages.backend.order.sale-list',compact('transaction',));
+        return view('pages.backend.order.sale-list', compact('transaction'));
     }
 }

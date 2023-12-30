@@ -58,8 +58,14 @@
             color: #fff;
             margin-left: 10px;
         }
-        .btn-warning{
+
+        .btn-warning {
             background-color: var(--bs-btn-hover-bg);
+        }
+
+        .width {
+            width: 130px!important;
+            height: 21px;
         }
     </style>
 @endpush
@@ -77,25 +83,27 @@
         <livewire:backend.order.datatable.sale-table />
     </x-layouts.backend.card>
 
+
+
     <x-modal id="deliveryModal">
         <x-slot:title>Delivery Info</x-slot:title>
         <div class="row">
-            <div class="col-4">
+            <div class="col-3">
                 <x-input.text wire:model="code" label="Code" />
             </div>
-            <div class="col-4">
+            {{-- <div class="col-4">
                 <x-search.products wire:model="product_id" label="Product Name" />
             </div>
             <div class="col-4">
                 <x-input.text wire:model="quantity" label="Quantity" />
-            </div>
-            <div class="col-4">
+            </div> --}}
+            <div class="col-3">
                 <x-input.text wire:model="person_name" label="Delivery Man Name" placeholder="Name" />
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <x-input.text wire:model="mobile" label="Mobile" placeholder="Mobile" />
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <x-input.text wire:model="vehicle_type" label="Vehicle Type/No" />
             </div>
             <div class="col-6">
@@ -103,7 +111,7 @@
             </div>
         </div>
         <hr class="mt-3">
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-2"></div>
             <div class="col-8 product d-flex mt-2 mb-2">
                 <x-search.products wire:model.live='search_product' class="productSearch" placeholder="Search Product Name" />
@@ -111,44 +119,36 @@
                     @click="$dispatch('openProductModal')">Add Product</x-button.default>
             </div>
             <div class="col-2"></div>
-        </div>
+        </div> --}}
         <table class="table table-striped table-hover shadow">
             <thead>
                 <th>SL</th>
                 <th>Product Name</th>
-                <th class="width text-center">Order Quantity</th>
-                <th class="width text-center">Delivery Quantity</th>
-                <th class="width text-center">Total Quantity</th>
-                <th class="text-center">Subtotal</th>
-                <th class="text-center">Action</th>
+                <th class="width">Order Quantity</th>
+                <th class="width">Delivery Quantity</th>
+                <th class="width">Total Quantity</th>
             </thead>
             <tbody>
+                {{-- @foreach ($order->OrderItem as $OrderItem) --}}
                 <tr class="shadow-none">
                     <td class="text-center">1</td>
 
-                    <td class="d-flex text-left">
+                    <td class="d-flex text-left" style="height: 47px;">
                         <div class="flex-1 ">
                             <div><a href="#" class="text-decoration-none text-body">Suscipit sunt
                                     sed provident</a>
                             </div>
-                            <div class="text-body text-opacity-50 small ">
-                                SKU: IP14PROMAX-512
-                            </div>
-                            <div class="text-body text-opacity-50 small">
-                                Stock : 0; Delivery product : 0
-                            </div>
+
                         </div>
                     </td>
-                    <td><x-input.text-order wire:model="amount" class="widthtd" placeholder="" /></td>
+                    <td><x-input.text-order wire:model="amount" class="widthtd" placeholder="" />20</td>
                     <td><x-input.text-order wire:model="quantity" class="widthtd" placeholder="" /></td>
-                    <td class="text-center"><x-input.text-order wire:model="discount" class="widthtd" placeholder="" />
+                    <td><x-input.text-order wire:model="discount" class="widthtd" placeholder="" />
                     </td>
-                    <td class="text-center">
-                        0
-                    </td>
-                    <td> <a wire:click="delete()" wire:navigate="true"class="btn btn-danger btn-sm rounded"><i
-                                class="fa fa-close"></i></a></td>
+
                 </tr>
+                {{-- @endforeach --}}
+
             </tbody>
         </table>
         <x-slot:footer>

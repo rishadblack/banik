@@ -40,8 +40,8 @@ class SaleTable extends DataTableComponent
 
             SelectFilter::make('Status')
                 ->options(filterOption('status.common'))
-                ->filter(function(Builder $builder, string $value) {
-                    $builder->where('brands.status',$value);
+                ->filter(function (Builder $builder, string $value) {
+                    $builder->where('brands.status', $value);
                 }),
         ];
     }
@@ -70,27 +70,27 @@ class SaleTable extends DataTableComponent
                 )
                 ->eagerLoadRelations()
                 ->searchable(),
-                Column::make('Discount', 'discount')
+            Column::make('Discount', 'discount')
                 ->format(
                     fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
                 )
-                    ->sortable()
-                    ->searchable()
-                    ->deselected(),
-                Column::make('Total Amount', 'net_amount')
+                ->sortable()
+                ->searchable()
+                ->deselected(),
+            Column::make('Total Amount', 'net_amount')
                 ->format(
                     fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
                 )
-                    ->sortable()
-                    ->searchable()
-                    ->deselected(),
-                Column::make('Paid Amount', 'paid_amount')
+                ->sortable()
+                ->searchable()
+                ->deselected(),
+            Column::make('Paid Amount', 'paid_amount')
                 ->format(
                     fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
                 )
-                    ->sortable()
-                    ->searchable()
-                    ->deselected(),
+                ->sortable()
+                ->searchable()
+                ->deselected(),
             Column::make('Create BY', 'User.name')
                 ->format(
                     fn ($value, $row, Column $column) => $value ? $value : '-'
@@ -111,32 +111,32 @@ class SaleTable extends DataTableComponent
             //     )->sortable()->html(),
             ButtonGroupColumn::make("Actions")
                 ->buttons([
-                    LinkColumn::make('Delivery')
-                        ->title(fn ($row) => 'Delivery')
-                        ->location(fn ($row) =>'javascript:void(0)')
-                        ->attributes(function ($row) {
-                            return [
-                                'data-id' => $row->id,
-                                'data-listener' => 'openDeliveryModal',
-                                'class' => 'badge bg-info me-1 p-2 ',
-                                'icon' => 'fa fa-edit',
-                                'title' => 'Delivery',
+                    // LinkColumn::make('Delivery')
+                    //     ->title(fn ($row) => 'Delivery')
+                    //     ->location(fn ($row) => 'javascript:void(0)')
+                    //     ->attributes(function ($row) {
+                    //         return [
+                    //             'data-id' => $row->id,
+                    //             'data-listener' => 'openDeliveryModal,$order->order_id',
+                    //             'class' => 'badge bg-info me-1 p-2 ',
+                    //             'icon' => 'fa fa-edit',
+                    //             'title' => 'Delivery',
 
-                            ];
-                        }),
-                        LinkColumn::make('Payment')
-                        ->title(fn ($row) => 'Payment')
-                        ->location(fn ($row) => 'javascript:void(0)')
-                        ->attributes(function ($row) {
-                            return [
-                                'data-id' => $row->id,
-                                'data-listener' => 'openPaymentModal',
-                                'class' => 'badge bg-success me-1 p-2 ',
-                                'icon' => 'fa fa-edit',
-                                'title' => 'Payment',
+                    //         ];
+                    //     }),
+                    // LinkColumn::make('Payment')
+                    // ->title(fn ($row) => 'Payment')
+                    // ->location(fn ($row) => 'javascript:void(0)')
+                    // ->attributes(function ($row) {
+                    //     return [
+                    //         'data-id' => $row->id,
+                    //         'data-listener' => 'openPaymentModal',
+                    //         'class' => 'badge bg-success me-1 p-2 ',
+                    //         'icon' => 'fa fa-edit',
+                    //         'title' => 'Payment',
 
-                            ];
-                        }),
+                    //     ];
+                    // }),
                     LinkColumn::make('Edit')
                         ->title(fn ($row) => 'Edit')
                         ->location(fn ($row) => route('backend.order.sale_details', ['sale_id' => $row->id]))
@@ -151,14 +151,16 @@ class SaleTable extends DataTableComponent
                         }),
                     LinkColumn::make('Print')
                         ->title(fn ($row) => 'Print')
-                        ->location(fn ($row) => route('invoice.sales',['id' => $row->id]))
+                        ->location(fn ($row) => 'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
+                                'data-listener' => 'print',
+                                'data-url' => route('invoice.sales', ['id' => $row->id]),
                                 'class' => 'badge bg-warning me-1 p-2 ',
                                 'icon' => 'fa fa-print',
                                 'title' => 'Print',
-                                'target'=>"_blank",
+                                // 'target'=>"_blank",
                             ];
                         }),
                     LinkColumn::make(' Delete')

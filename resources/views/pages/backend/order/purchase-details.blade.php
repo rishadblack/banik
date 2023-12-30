@@ -348,9 +348,9 @@
                                 <td>{{ $payment_item['txn_date'] }}</td>
                                 <td>
                                     @if (isset($payment_item['transaction_id']) && $payment_item['transaction_id'])
-                                        <a href="{{route('money_receipt',['id' => $payment_item['transaction_id']])}}"  class="btn btn-success btn-sm rounded" >
-                                            <span>Money Receipt</span>
-                                        </a>
+                                        <x-button.default
+                                            wire:click="$dispatch('print', { url:'{{ route('money_receipt', ['id' => $payment_item['transaction_id']]) }}' })"
+                                            class="btn btn-success btn-sm rounded">Money Receipt</x-button.default>
                                     @endif
                                     <button wire:click="removePaymentItem('{{ $key }}')"
                                         class="btn btn-danger btn-sm rounded" style="float:right">

@@ -226,7 +226,8 @@
                         </div>
                         <div class="row">
                             <div class="col-8">Shipping Charge</div>
-                            <div class="col-4 text-end"><x-input.text-order wire:model.live.debounce.500ms="shipping_charge" class="widthtd"
+                            <div class="col-4 text-end"><x-input.text-order
+                                    wire:model.live.debounce.500ms="shipping_charge" class="widthtd"
                                     placeholder=""></x-input.text-order></div>
                         </div>
                     </x-layouts.backend.card>
@@ -331,10 +332,10 @@
                                 <td>{{ $payment_item['txn_date'] }}</td>
                                 <td>
                                     @if (isset($payment_item['transaction_id']) && $payment_item['transaction_id'])
-                                    <a href="{{route('money_receipt',['id' => $payment_item['transaction_id']])}}"  class="btn btn-success btn-sm rounded" >
-                                        <span>Money Receipt</span>
-                                    </a>
-                                @endif
+                                        <x-button.default
+                                            wire:click="$dispatch('print', { url:'{{ route('money_receipt', ['id' => $payment_item['transaction_id']]) }}' })"
+                                            class="btn btn-success btn-sm rounded">Money Receipt</x-button.default>
+                                    @endif
                                     <button wire:click="removePaymentItem('{{ $key }}')"
                                         class="btn btn-danger btn-sm rounded" style="float:right">
                                         <i class="fa fa-close"></i></button>
@@ -360,8 +361,8 @@
                     <div class="dropdown">
                         @if ($sale_id && !empty($sale_id))
                             <x-button.default
-                                wire:click="$dispatch('print', { url:'{{ route('invoice.purchase', ['id' => $sale_id]) }}' })"
-                                class="btn-warning bg-warning">Print</x-button.default>
+                                wire:click="$dispatch('print', { url:'{{ route('invoice.sales', ['id' => $sale_id]) }}' })"
+                                class="btn bg-warning">Print</x-button.default>
                         @endif
                         <x-button.default wire:click="storeSale" wire:target="storeSale"
                             class="btn-success">Save</x-button.default>
@@ -390,8 +391,8 @@
             </x-layouts.backend.card>
             <x-layouts.backend.card>
                 <x-slot:title>Outlet & Warehouse</x-slot:title>
-                <x-search.outlets wire:model="outlet_id" label="Outlets"/>
-                <x-search.warehouses wire:model="warehouse_id" label="Warehouse"/>
+                <x-search.outlets wire:model="outlet_id" label="Outlets" />
+                <x-search.warehouses wire:model="warehouse_id" label="Warehouse" />
             </x-layouts.backend.card>
 
             <x-layouts.backend.card>

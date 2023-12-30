@@ -12,14 +12,17 @@ class InvoiceController extends Controller
 
     public function salesInvoice($id)
     {
-        $order = Order::where('type','1')->with('contact','contactinfo','OrderItem')->find($id);
+        $order = Order::where('type','1')->with('contact','contactinfo','OrderItem','OrderItem.Product')->find($id);
         return view('invoices.sales-invoice', ['order' => $order]);
     }
     public function purchaseInvoice($id)
     {
 
-        $order = Order::where('type','3')->with('contact','contactinfo','OrderItem')->find($id);
-        return view('invoices.purchase-invoice', ['order' => $order]);
+        $order = Order::where('type','3')->with('contact','contactinfo','OrderItem','OrderItem.Product')->find($id);
+
+        return view('invoices.purchase-invoice', [
+            'order' => $order
+        ]);
     }
 
     public function moneyReceipt($id)

@@ -254,7 +254,7 @@
 
                         <td width=121 colspan=2 style='width:91.1pt;padding:0in 5.4pt 0in 5.4pt; height:.15in'>
                             <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:1px'><span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->warehouse_id }}</span>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->Warehouse->name }}</span>
                             </p>
 
                         </td>
@@ -435,56 +435,56 @@
                         </td>
 
                     </tr>
+                    @foreach ($order->OrderItem as $OrderItem)
+                        <tr style='height:12.25pt'>
 
-                    <tr style='height:12.25pt'>
+                            <td width=36
+                                style='width:26.8pt;border:solid windowtext 1.0pt;border-top: none;padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
+                                <p class=MsoNormal align=center
+                                    style='margin-bottom:0in;text-align:center; line-height:normal;margin-top:0px'>
+                                    <span
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $OrderItem->id }}</span>
+                                </p>
 
-                        <td width=36
-                            style='width:26.8pt;border:solid windowtext 1.0pt;border-top: none;padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
-                            <p class=MsoNormal align=center
-                                style='margin-bottom:0in;text-align:center; line-height:normal;margin-top:0px'>
-                                <span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->orderItem['0']->id }}</span>
-                            </p>
+                            </td>
+                            <td width=385 colspan=3
+                                style='width:288.6pt;border-top:none;border-left: none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
+                                <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:0px'>
+                                    <span
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $OrderItem->name }}</span>
+                                </p>
 
-                        </td>
-                        <td width=385 colspan=3
-                            style='width:288.6pt;border-top:none;border-left: none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
-                            <p class=MsoNormal style='margin-bottom:0in;line-height:normal;margin-top:0px'>
-                                <span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->orderItem['0']->name }}</span>
-                            </p>
+                            </td>
+                            <td width=96
+                                style='width:72.15pt;border-top:none;border-left:none; border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
+                                <p class=MsoNormal align=right
+                                    style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:0px'>
+                                    <span
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($OrderItem->amount) }}</span>
+                                </p>
 
-                        </td>
-                        <td width=96
-                            style='width:72.15pt;border-top:none;border-left:none; border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
-                            <p class=MsoNormal align=right
-                                style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:0px'>
-                                <span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($order->orderItem['0']->amount) }}</span>
-                            </p>
+                            </td>
+                            <td width=84
+                                style='width:63.1pt;border-top:none;border-left:none;border-bottom: solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt; height:12.25pt'>
+                                <p class=MsoNormal align=center
+                                    style='margin-bottom:0in;text-align:center; line-height:normal;margin-top:0px'>
+                                    <span
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $OrderItem->quantity }}</span>
+                                </p>
 
-                        </td>
-                        <td width=84
-                            style='width:63.1pt;border-top:none;border-left:none;border-bottom: solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt; height:12.25pt'>
-                            <p class=MsoNormal align=center
-                                style='margin-bottom:0in;text-align:center; line-height:normal;margin-top:0px'>
-                                <span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ $order->orderItem['0']->quantity }}</span>
-                            </p>
+                            </td>
 
-                        </td>
+                            <td width=96
+                                style='width:72.15pt;border-top:none;border-left:none; border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
+                                <p class=MsoNormal align=right
+                                    style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:0px'>
+                                    <span
+                                        style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($OrderItem->subtotal) }}</span>
+                                </p>
 
-                        <td width=96
-                            style='width:72.15pt;border-top:none;border-left:none; border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt; padding:0in 5.4pt 0in 5.4pt;height:12.25pt'>
-                            <p class=MsoNormal align=right
-                                style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:0px'>
-                                <span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($order->orderItem['0']->subtotal) }}</span>
-                            </p>
-
-                        </td>
-                    </tr>
-
+                            </td>
+                        </tr>
+                    @endforeach
                     <tr style='height:12.25pt'>
 
                         <td width=421 colspan=4
