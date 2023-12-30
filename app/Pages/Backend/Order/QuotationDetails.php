@@ -230,8 +230,17 @@ class QuotationDetails extends Component
 
     public function mount()
     {
+        $lastQuotation = Order::latest()->orderByDesc('id')->first();
+        if ($lastQuotation) {
+            $lastCode = $lastQuotation->code;
+            $newCodeNumber = intval($lastCode) + 1;
+            $this->code = str_pad($newCodeNumber, strlen($lastCode), '0', STR_PAD_LEFT);
+        } else {
+            $this->code = '001';
+        }
         if($this->quotation_id) {
             $Quotation = Order::find($this->quotation_id);
+            if ($Quotation) {
             $this->code = $Quotation->code;
             $this->ref = $Quotation->ref;
             $this->warehouse_id = $Quotation->warehouse_id;
@@ -260,6 +269,7 @@ class QuotationDetails extends Component
                 $this->item_subtotal[$OrderItem->product_id] = numberFormat($OrderItem->subtotal);
             }
         }
+    }
     }
 
 
