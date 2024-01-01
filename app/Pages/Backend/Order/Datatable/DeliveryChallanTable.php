@@ -27,7 +27,7 @@ class DeliveryChallanTable extends DataTableComponent
         $this->setTheadAttributes([
             'default' => true,
             'class' => 'custom-dt-thead',
-          ]);
+        ]);
     }
 
     public function builder(): Builder
@@ -40,8 +40,8 @@ class DeliveryChallanTable extends DataTableComponent
 
             SelectFilter::make('Status')
                 ->options(filterOption('status.common'))
-                ->filter(function(Builder $builder, string $value) {
-                    $builder->where('deliveries.status',$value);
+                ->filter(function (Builder $builder, string $value) {
+                    $builder->where('deliveries.status', $value);
                 }),
         ];
     }
@@ -51,24 +51,24 @@ class DeliveryChallanTable extends DataTableComponent
 
         return [
             Column::make('Id', 'id')
-                ->format(fn() => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
+                ->format(fn () => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
                 ->sortable()
                 ->searchable()
                 ->excludeFromColumnSelect(),
-                Column::make('Code', 'code')
+            Column::make('Code', 'code')
                 ->sortable()
                 ->searchable(),
 
-                Column::make('Delivery Man', 'person_name')
+            Column::make('Delivery Man', 'person_name')
                 ->sortable()
                 ->searchable(),
-                Column::make('Mobile', 'mobile')
+            Column::make('Mobile', 'mobile')
                 ->sortable()
                 ->searchable(),
 
             Column::make('Create By', 'User.name')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? $value : '-'
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->eagerLoadRelations()
                 ->sortable()
@@ -78,8 +78,8 @@ class DeliveryChallanTable extends DataTableComponent
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')
-                        ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.order.delivery_challan_details', ['challan_id' => $row->id]))
+                        ->title(fn ($row) => 'Edit')
+                        ->location(fn ($row) => route('backend.order.delivery_challan_details', ['challan_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
@@ -90,8 +90,8 @@ class DeliveryChallanTable extends DataTableComponent
                             ];
                         }),
                     LinkColumn::make(' Delete')
-                        ->title(fn($row) => 'Delete')
-                        ->location(fn($row) => 'javascript:void(0)')
+                        ->title(fn ($row) => 'Delete')
+                        ->location(fn ($row) => 'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
@@ -103,8 +103,6 @@ class DeliveryChallanTable extends DataTableComponent
                             ];
                         }),
                 ]),
-            ];
-
+        ];
     }
-
 }

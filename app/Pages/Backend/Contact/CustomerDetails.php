@@ -120,6 +120,7 @@ class CustomerDetails extends Component
             $this->opening_balance = numberFormat($Customer->opening_balance);
             $this->credit_limit =numberFormat($Customer->credit_limit);
             $this->email = $Customer->email;
+            $this->status = $Customer->status;
 
 
             $this->name = $Customer->ContactInfo->name;

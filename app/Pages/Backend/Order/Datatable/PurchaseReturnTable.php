@@ -42,7 +42,7 @@ class PurchaseReturnTable extends DataTableComponent
             SelectFilter::make('Status')
                 ->options(filterOption('status.common'))
                 ->filter(function(Builder $builder, string $value) {
-                    $builder->where('brands.status',$value);
+                    $builder->where('orders.status',$value);
                 }),
         ];
     }
@@ -60,26 +60,64 @@ class PurchaseReturnTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
 
-                Column::make('Warehouse', 'Warehouse.name')
+                Column::make('Supplier Name', 'contactinfo.name')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? $value : '-'
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->sortable()
                 ->searchable(),
-                Column::make('outlet', 'Outlet.name')
+            Column::make('Contact', 'contactinfo.mobile')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? $value : '-'
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->sortable()
                 ->searchable(),
-                Column::make('Discount', 'discount_amount')
 
+            Column::make('Warehouse', 'Warehouse.name')
+                ->format(
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
+                )
                 ->sortable()
                 ->searchable()
                 ->deselected(),
+            Column::make('Outlet', 'Outlet.name')
+                ->format(
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
+                )
+                ->eagerLoadRelations()
+                ->sortable()
+                ->searchable()
+                ->deselected(),
+            Column::make('Discount', 'discount')
+            ->format(
+                fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+            )
+                ->sortable()
+                ->searchable()
+                ->deselected()
+                ->deselected(),
+            Column::make('Total Amount', 'net_amount')
+            ->format(
+                fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+            )
+                ->sortable()
+                ->searchable(),
+            Column::make('Paid Amount', 'paid_amount')
+            ->format(
+                fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+            )
+                ->sortable()
+                ->searchable(),
+            Column::make('Due Amount', 'due_amount')
+            ->format(
+                fn ($value, $row, Column $column) => $value ? numberFormat($value, True) : '-'
+            )
+                ->sortable()
+                ->searchable(),
+
             Column::make('Create BY', 'User.name')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? $value : '-'
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->eagerLoadRelations()
                 ->sortable()

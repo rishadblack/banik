@@ -2,9 +2,9 @@
 
 namespace App\Pages\Backend\Order;
 
-use Livewire\Component;
 use App\Models\Order\Order;
 use Livewire\Attributes\On;
+use App\Http\Common\Component;
 use Livewire\Attributes\Layout;
 
 

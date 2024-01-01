@@ -292,7 +292,10 @@ class SaleDetails extends Component
     {
         $this->reset();
         $this->resetValidation();
-        $this->code = str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
+        $latestOrder = Order::latest()->orderByDesc('id')->first();
+        $numericPart = $latestOrder ? ((int)substr($latestOrder->code, 3) + 1) : 1;
+        $this->code = 'SAL' . str_pad($numericPart, 6, '0', STR_PAD_LEFT);
+        // $this->code = 'SAL'.str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     #[On('openProductModal')]
@@ -386,9 +389,9 @@ class SaleDetails extends Component
         if ($lastSale) {
             $lastCode = $lastSale->code;
             $newCodeNumber = intval($lastCode) + 1;
-            $this->code = str_pad($newCodeNumber, strlen($lastCode), '0', STR_PAD_LEFT);
+            $this->code = 'SAL' . str_pad($newCodeNumber, 6, '0', STR_PAD_LEFT);
         } else {
-            $this->code = '001';
+            $this->code = 'SAL000001';
         }
 
         if ($this->sale_id) {
