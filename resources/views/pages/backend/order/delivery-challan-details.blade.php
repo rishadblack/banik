@@ -207,15 +207,15 @@
                     </x-layouts.backend.card>
                 </div>
 
-                <div class="col-lg-7 charges">
+                {{-- <div class="col-lg-7 charges">
                     <x-layouts.backend.card class="shadow">
 
                         <div class="row">
-                            <div class="col-7">Shipping Charge</div>
+                            <div class="col-7">Delivery Charge</div>
                             <div class="col-5 text-end"><b>0.00 ৳</b></div>
                         </div>
                     </x-layouts.backend.card>
-                </div>
+                </div> --}}
 
             </div>
         </div>

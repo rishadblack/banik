@@ -161,7 +161,7 @@ class PurchaseDetails extends Component
         $shipping_charge = $this->shipping_charge > 0 ? $this->shipping_charge : 0;
 
         $this->subtotal = $item_subtotal;
-        $this->discount_amount = $item_discount;
+        // $this->discount_amount = $item_discount;
         $this->net_amount = ($item_subtotal + $vat_amount + $shipping_charge) -  $discount_amount;
         $this->paid_amount = collect($this->payment_item_rows)->sum('payment_amount');
         $this->due_amount = $this->paid_amount > 0 ?  $this->net_amount - $this->paid_amount : $this->net_amount;
@@ -295,7 +295,10 @@ class PurchaseDetails extends Component
     {
         $this->reset();
         $this->resetValidation();
-        $this->code = str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
+        $latestOrder = Order::latest()->orderByDesc('id')->first();
+        $numericPart = $latestOrder ? ((int)substr($latestOrder->code, 3) + 1) : 1;
+        $this->code = 'PUR' . str_pad($numericPart, 6, '0', STR_PAD_LEFT);
+        // $this->code = str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 6, 'PUR00', STR_PAD_LEFT);
     }
 
     #[On('openProductModal')]
@@ -384,15 +387,16 @@ class PurchaseDetails extends Component
 
     public function mount()
     {
-        $lastPurchase = Order::latest()->orderByDesc('id')->first();
 
-    if ($lastPurchase) {
-        $lastCode = $lastPurchase->code;
-        $newCodeNumber = intval($lastCode) + 1;
-        $this->code = str_pad($newCodeNumber, strlen($lastCode), '0', STR_PAD_LEFT);
-    } else {
-        $this->code = '001';
-    }
+        $lastSale = Order::where('type', 1)->latest()->orderByDesc('id')->first();
+
+        if ($lastSale) {
+            $lastCode = $lastSale->code;
+            $newCodeNumber = intval($lastCode) + 1;
+            $this->code = 'PUR'.str_pad($newCodeNumber, 6, '0', STR_PAD_LEFT);
+        } else {
+            $this->code = 'PUR000001';
+        }
 
         if ($this->purchase_id) {
             $Purchase = Order::find($this->purchase_id);

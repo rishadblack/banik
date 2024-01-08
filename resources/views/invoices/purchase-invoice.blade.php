@@ -602,7 +602,7 @@
                             <p class=MsoNormal align=right
                                 style='margin-bottom:0in;text-align:right; line-height:normal;margin-top:0px'>
                                 <span
-                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat($order->additional_charge) }}</span>
+                                    style='font-size:8.0pt;font-family:"Arial",sans-serif'>{{ numberFormat(($order->shipping_charge)+($order->vat_amount)) }}</span>
                             </p>
 
                         </td>

@@ -191,7 +191,8 @@
                     </button>
                 </div>
                 <a class="brand-logo">
-                    <img src="{{ asset('backend/assets/img/logo.png') }}" class="invert-dark" alt height="20">
+                    {{-- <img src="{{ asset('backend/assets/img/logo.png') }}" class="invert-dark" alt height="20"> --}}
+                    Banik BMS
                 </a>
             </div>
 

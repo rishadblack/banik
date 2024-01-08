@@ -100,10 +100,10 @@ class ProductDetails extends Component
             $this->name = $Product->name;
             $this->code = $Product->code;
             $this->description = $Product->description;
-            $this->net_purchase_price = $Product->net_purchase_price;
-            $this->net_sale_price = $Product->net_sale_price;
+            $this->net_purchase_price = numberFormat($Product->net_purchase_price);
+            $this->net_sale_price = numberFormat($Product->net_sale_price);
             $this->is_inventory = $Product->is_inventory;
-            $this->profit_margin = $Product->profit_margin;
+            $this->profit_margin = numberFormat($Product->profit_margin);
             $this->brand_id = $Product->brand_id;
             $this->category_id = $Product->category_id;
             $this->unit_id = $Product->unit_id;

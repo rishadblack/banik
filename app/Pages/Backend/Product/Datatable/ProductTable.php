@@ -26,7 +26,7 @@ class ProductTable extends DataTableComponent
         $this->setTheadAttributes([
             'default' => true,
             'class' => 'custom-dt-thead',
-          ]);
+        ]);
     }
 
     public function builder(): Builder
@@ -47,8 +47,8 @@ class ProductTable extends DataTableComponent
                 }),
             SelectFilter::make('Status')
                 ->options(filterOption('status.common'))
-                ->filter(function(Builder $builder, string $value) {
-                    $builder->where('products.status',$value);
+                ->filter(function (Builder $builder, string $value) {
+                    $builder->where('products.status', $value);
                 }),
         ];
     }
@@ -56,7 +56,7 @@ class ProductTable extends DataTableComponent
     {
         return [
             Column::make('SN', 'id')
-                ->format(fn() => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
+                ->format(fn () => ++$this->index +  ($this->getPage() - 1) * $this->perPage)
                 ->sortable()
                 ->searchable()
                 ->excludeFromColumnSelect(),
@@ -69,34 +69,43 @@ class ProductTable extends DataTableComponent
 
             Column::make('Create BY', 'User.name')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? $value : '-'
+                    fn ($value, $row, Column $column) => $value ? $value : '-'
                 )
                 ->eagerLoadRelations()
                 ->sortable()
                 ->searchable()
                 ->deselected(),
+            Column::make('Cost Price', 'net_purchase_price')
+                ->sortable()
+                ->searchable(),
+            Column::make('Sales Price', 'net_sale_price')
+                ->sortable()
+                ->searchable(),
+            // Column::make('Available Stock')
+            //     ->sortable()
+            //     ->searchable(),
             Column::make('Product Brand', 'Brand.name')
-                ->sortable()
-                ->searchable(),
-            Column::make('Product Category', 'Category.name')
-                ->sortable()
-                ->searchable(),
-            Column::make('Product Unit', 'Unit.name')
-                ->sortable()
-                ->searchable(),
-            Column::make('Profit Margin', 'profit_margin')
                 ->sortable()
                 ->searchable()
                 ->deselected(),
-                Column::make('Status', 'status')
+            Column::make('Product Category', 'Category.name')
+                ->sortable()
+                ->searchable()
+                ->deselected(),
+            Column::make('Product Unit', 'Unit.name')
+                ->sortable()
+                ->searchable()
+                ->deselected(),
+
+            Column::make('Status', 'status')
                 ->format(
-                    fn($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.common.{$value}.class") . '">' . config("status.common.{$value}.name") . '</span>' : ''
+                    fn ($value, $row, Column $column) => $value ? '<span class="badge text-bg-' . config("status.common.{$value}.class") . '">' . config("status.common.{$value}.name") . '</span>' : ''
                 )->sortable()->html(),
             ButtonGroupColumn::make("Actions")
                 ->buttons([
                     LinkColumn::make('Edit')
-                        ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('backend.product.product_details', ['product_id' => $row->id]))
+                        ->title(fn ($row) => 'Edit')
+                        ->location(fn ($row) => route('backend.product.product_details', ['product_id' => $row->id]))
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,
@@ -107,8 +116,8 @@ class ProductTable extends DataTableComponent
                             ];
                         }),
                     LinkColumn::make(' Delete')
-                        ->title(fn($row) => 'Delete')
-                        ->location(fn($row) => 'javascript:void(0)')
+                        ->title(fn ($row) => 'Delete')
+                        ->location(fn ($row) => 'javascript:void(0)')
                         ->attributes(function ($row) {
                             return [
                                 'data-id' => $row->id,

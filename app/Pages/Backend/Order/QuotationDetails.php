@@ -139,7 +139,7 @@ class QuotationDetails extends Component
         $shipping_charge = $this->shipping_charge > 0 ? $this->shipping_charge : 0;
 
         $this->subtotal = $item_subtotal;
-        $this->discount_amount = $item_discount;
+        // $this->discount_amount = $item_discount;
         $this->net_amount = ($item_subtotal + $vat_amount + $shipping_charge) -  $discount_amount;
         // $this->paid_amount = collect($this->payment_item_rows)->sum('payment_amount');
     }
@@ -225,19 +225,19 @@ class QuotationDetails extends Component
     {
         $this->reset();
         $this->resetValidation();
-       $this->code = str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
+        $newCode = Order::latest()->orderByDesc('id')->first();
+        $numericPart = $newCode ? ((int)substr($newCode->code, 6) + 1) : 1;
+       $this->code = str_pad($numericPart, 6, '0', STR_PAD_LEFT);
     }
 
     public function mount()
     {
         $lastQuotation = Order::latest()->orderByDesc('id')->first();
-        if ($lastQuotation) {
+
             $lastCode = $lastQuotation->code;
             $newCodeNumber = intval($lastCode) + 1;
-            $this->code = str_pad($newCodeNumber, strlen($lastCode), '0', STR_PAD_LEFT);
-        } else {
-            $this->code = '001';
-        }
+            $this->code = 'QUOT' . str_pad($newCodeNumber, 6, '0', STR_PAD_LEFT);
+
         if($this->quotation_id) {
             $Quotation = Order::find($this->quotation_id);
             if ($Quotation) {

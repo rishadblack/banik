@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
 class PurchasereturnDetails extends Component
 {
     #[Url]
-    public $purchase_id;
+    public $preturn_id;
 
     public $search_product;
 
@@ -51,18 +51,18 @@ class PurchasereturnDetails extends Component
     public $vat_amount;
     public $shipping_charge;
 
-  //Purchase item
-  public $item_rows = [];
-  public $item_deleted_rows = [];
-  public $item_product_id = [];
-  public $item_name = [];
-  public $item_code = [];
-  public $item_price = [];
-  public $item_quantity = [];
-  public $item_discount = [];
-  public $item_subtotal = [];
+    //Purchase item
+    public $item_rows = [];
+    public $item_deleted_rows = [];
+    public $item_product_id = [];
+    public $item_name = [];
+    public $item_code = [];
+    public $item_price = [];
+    public $item_quantity = [];
+    public $item_discount = [];
+    public $item_subtotal = [];
 
-  public function updatedSearchProduct($value)
+    public function updatedSearchProduct($value)
     {
         if (empty($value)) {
             return true;
@@ -144,7 +144,7 @@ class PurchasereturnDetails extends Component
         $shipping_charge = $this->shipping_charge > 0 ? $this->shipping_charge : 0;
 
         $this->subtotal = $item_subtotal;
-        $this->discount_amount = $item_discount;
+        // $this->discount_amount = $item_discount;
         $this->net_amount = ($item_subtotal + $vat_amount + $shipping_charge) -  $discount_amount;
         // $this->paid_amount = collect($this->payment_item_rows)->sum('payment_amount');
     }
@@ -177,8 +177,8 @@ class PurchasereturnDetails extends Component
             'item_quantity' => 'required|min:1',
         ]);
 
-        $Purchase = Order::findOrNew($this->purchase_id);
-        if ($this->purchase_id) {
+        $Purchase = Order::findOrNew($this->preturn_id);
+        if ($this->preturn_id) {
             $message = 'Purchase Return Updated Successfully!';
         } else {
             $message = 'Purchase Return Added Successfully!';
@@ -199,21 +199,21 @@ class PurchasereturnDetails extends Component
         $Purchase->save();
 
         foreach ($this->item_rows as $key => $value) {
-            $PurchaseInfo = $Purchase->OrderItem()->where('product_id', $this->item_product_id[$value])->firstOrNew(['order_id' => $Purchase->id, 'product_id' => $this->item_product_id[$value]]);
-            $PurchaseInfo->user_id =  $Purchase->user_id;
-            $PurchaseInfo->order_id = $Purchase->id;
-            $PurchaseInfo->product_id = $this->product_id;
-            $PurchaseInfo->name = $this->item_name[$value];
-            $PurchaseInfo->amount = $this->item_price[$value];
-            $PurchaseInfo->quantity = $this->item_quantity[$value];
-            $PurchaseInfo->discount_amount = $this->item_discount[$value];
-            $PurchaseInfo->subtotal = $this->item_subtotal[$value];
-            $PurchaseInfo->save();
+            $PReturnInfo = $Purchase->OrderItem()->where('product_id', $this->item_product_id[$value])->firstOrNew(['order_id' => $Purchase->id, 'product_id' => $this->item_product_id[$value]]);
+            $PReturnInfo->user_id =  $Purchase->user_id;
+            $PReturnInfo->order_id = $Purchase->id;
+            $PReturnInfo->product_id = $this->product_id;
+            $PReturnInfo->name = $this->item_name[$value];
+            $PReturnInfo->amount = $this->item_price[$value];
+            $PReturnInfo->quantity = $this->item_quantity[$value];
+            $PReturnInfo->discount_amount = $this->item_discount[$value];
+            $PReturnInfo->subtotal = $this->item_subtotal[$value];
+            $PReturnInfo->save();
         }
         if ($storeType == 'new') {
             $this->purchaseReset();
         } else {
-            $this->purchase_id = $Purchase->id;
+            $this->preturn_id = $Purchase->id;
         }
 
 
@@ -224,53 +224,58 @@ class PurchasereturnDetails extends Component
     {
         $this->reset();
         $this->resetValidation();
-        $this->code = str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
+        $latestOrder = Order::latest()->orderByDesc('id')->first();
+        $numericPart = $latestOrder ? ((int)substr($latestOrder->code, 3) + 1) : 1;
+        $this->code = 'PRET' . str_pad($numericPart, 6, '0', STR_PAD_LEFT);
+        // $this->code = str_pad((Order::latest()->orderByDesc('id')->first()?->code + 1), 3, '0', STR_PAD_LEFT);
     }
 
     public function mount()
     {
-        $lastPurchase = Order::latest()->orderByDesc('id')->first();
-        if ($lastPurchase) {
-            $lastCode = $lastPurchase->code;
-            $newCodeNumber = intval($lastCode) + 1;
-            $this->code = str_pad($newCodeNumber, strlen($lastCode), '0', STR_PAD_LEFT);
-        } else {
-            $this->code = '001';
-        }
-        if ($this->purchase_id) {
-            $Purchase = Order::find($this->purchase_id);
-            if ($Purchase) {
-            $this->code = $Purchase->code;
-            $this->ref = $Purchase->ref;
-            $this->warehouse_id = $Purchase->warehouse_id;
-            $this->outlet_id = $Purchase->outlet_id;
-            $this->contact_id = $Purchase->contact_id;
-            $this->payment_status = $Purchase->payment_status;
-            $this->payment_date = $Purchase->payment_date ?? 0;
-            $this->payment_method_id = $Purchase->payment_method_id ?? 0;
-            $this->delivery_status = $Purchase->delivery_status ?? 0;
-            $this->discount = $Purchase->discount ?? 0;
-            $this->discount_amount = numberFormat($Purchase->discount_amount) ?? 0;
-            $this->vat_amount = numberFormat($Purchase->vat_amount);
-            $this->shipping_charge = numberFormat($Purchase->shipping_charge);
-            $this->subtotal = $Purchase->subtotal;
-            $this->net_amount = $Purchase->net_amount;
-            $this->additional_charge = $Purchase->additional_charge;
-            $this->paid_amount = $Purchase->paid_amount;
+        $lastSale = Order::latest()->orderByDesc('id')->first();
 
-            foreach ($Purchase->OrderItem as $key => $OrderItem) {
-                $item_rows = collect($this->item_rows);
-                $item_rows->push($OrderItem->product_id);
-                $this->item_rows = $item_rows;
-                $this->item_product_id[$OrderItem->product_id] = $OrderItem->product_id;
-                $this->item_name[$OrderItem->product_id] = $OrderItem->name;
-                $this->item_code[$OrderItem->product_id] = $OrderItem->Product->code;
-                $this->item_price[$OrderItem->product_id] = numberFormat($OrderItem->amount);
-                $this->item_quantity[$OrderItem->product_id] = $OrderItem->quantity;
-                $this->item_discount[$OrderItem->product_id] = numberFormat($OrderItem->discount) ?? 0;
-                $this->item_subtotal[$OrderItem->product_id] = numberFormat($OrderItem->subtotal);
-            }
+        if ($lastSale) {
+            $lastCode = $lastSale->code;
+            $newCodeNumber = intval($lastCode) + 1;
+            $this->code = 'PRET'.str_pad($newCodeNumber, 6, '0', STR_PAD_LEFT);
+        } else {
+            $this->code = 'PRET000001';
         }
+
+        if ($this->preturn_id) {
+            $Purchase = Order::find($this->preturn_id);
+            if ($Purchase) {
+                $this->code = $Purchase->code;
+                $this->ref = $Purchase->ref;
+                $this->warehouse_id = $Purchase->warehouse_id;
+                $this->outlet_id = $Purchase->outlet_id;
+                $this->contact_id = $Purchase->contact_id;
+                $this->payment_status = $Purchase->payment_status;
+                $this->payment_date = $Purchase->payment_date ?? 0;
+                $this->payment_method_id = $Purchase->payment_method_id ?? 0;
+                $this->delivery_status = $Purchase->delivery_status ?? 0;
+                $this->discount = $Purchase->discount ?? 0;
+                $this->discount_amount = numberFormat($Purchase->discount_amount) ?? 0;
+                $this->vat_amount = numberFormat($Purchase->vat_amount);
+                $this->shipping_charge = numberFormat($Purchase->shipping_charge);
+                $this->subtotal = $Purchase->subtotal;
+                $this->net_amount = $Purchase->net_amount;
+                $this->additional_charge = $Purchase->additional_charge;
+                $this->paid_amount = $Purchase->paid_amount;
+
+                foreach ($Purchase->OrderItem as $key => $OrderItem) {
+                    $item_rows = collect($this->item_rows);
+                    $item_rows->push($OrderItem->product_id);
+                    $this->item_rows = $item_rows;
+                    $this->item_product_id[$OrderItem->product_id] = $OrderItem->product_id;
+                    $this->item_name[$OrderItem->product_id] = $OrderItem->name;
+                    $this->item_code[$OrderItem->product_id] = $OrderItem->Product->code;
+                    $this->item_price[$OrderItem->product_id] = numberFormat($OrderItem->amount);
+                    $this->item_quantity[$OrderItem->product_id] = $OrderItem->quantity;
+                    $this->item_discount[$OrderItem->product_id] = numberFormat($OrderItem->discount) ?? 0;
+                    $this->item_subtotal[$OrderItem->product_id] = numberFormat($OrderItem->subtotal);
+                }
+            }
         }
     }
 
